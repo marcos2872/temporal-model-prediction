@@ -1,0 +1,274 @@
+{
+  "slug": "modelos-predicao-temporal",
+  "questao": "Como criar modelos de predicao temporal (guia 2019-2026)",
+  "fontes": [
+    {
+      "id": "10.24963/ijcai.2023/759",
+      "titulo": "Transformers in Time Series: A Survey",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v37i9.26317",
+      "titulo": "Are Transformers Effective for Time Series Forecasting?",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v35i12.17325",
+      "titulo": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
+      "ano": 2021,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1098/rsta.2020.0209",
+      "titulo": "Time-series forecasting with deep learning: a survey",
+      "ano": 2021,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v37i6.25854",
+      "titulo": "NHITS: Neural Hierarchical Interpolation for Time Series Forecasting",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.48550/arxiv.2211.14730",
+      "titulo": "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers",
+      "ano": 2022,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1016/j.inffus.2023.101819",
+      "titulo": "Long sequence time-series forecasting with deep learning: A survey",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1145/3533382",
+      "titulo": "Deep Learning for Time Series Forecasting: Tutorial and Literature Survey",
+      "ano": 2022,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1145/3580305.3599533",
+      "titulo": "TSMixer: Lightweight MLP-Mixer Model for Multivariate Time Series Forecasting",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v36i8.20881",
+      "titulo": "TS2Vec: Towards Universal Representation of Time Series",
+      "ano": 2022,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1089/big.2020.0159",
+      "titulo": "Deep Learning for Time Series Forecasting: A Survey",
+      "ano": 2020,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.3390/fi15080255",
+      "titulo": "A Review of ARIMA vs. Machine Learning Approaches for Time Series Forecasting in Data Driven Networks",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.48550/arxiv.2310.06625",
+      "titulo": "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.48550/arxiv.2210.02186",
+      "titulo": "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis",
+      "ano": 2022,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1145/3583780.3615160",
+      "titulo": "Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1007/s10462-025-11223-9",
+      "titulo": "A comprehensive survey of deep learning for time series forecasting: architectural diversity and open challenges",
+      "ano": 2025,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1016/j.engappai.2023.106507",
+      "titulo": "Diagnosisformer: An efficient rolling bearing fault diagnosis method based on improved Transformer",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v37i7.25976",
+      "titulo": "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting",
+      "ano": 2023,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1007/978-3-030-58610-2_30",
+      "titulo": "Spatio-Temporal Graph Transformer Networks for Pedestrian Trajectory Prediction",
+      "ano": 2020,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1016/j.eswa.2022.118128",
+      "titulo": "Stock market index prediction using deep Transformer model",
+      "ano": 2022,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1007/s13042-025-02560-w",
+      "titulo": "Deep learning for time series forecasting: a survey",
+      "ano": 2025,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1609/aaai.v38i10.28991",
+      "titulo": "MSGNet: Learning Multi-Scale Inter-series Correlations for Multivariate Time Series Forecasting",
+      "ano": 2024,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1145/3637528.3671451",
+      "titulo": "Foundation Models for Time Series Analysis: A Tutorial and Survey",
+      "ano": 2024,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.48550/arxiv.2012.07436",
+      "titulo": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
+      "ano": 2020,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "10.1016/j.ijforecast.2021.03.012",
+      "titulo": "Temporal Fusion Transformers for interpretable multi-horizon time series forecasting",
+      "ano": 2021,
+      "locator": "metadados API + titulo"
+    },
+    {
+      "id": "rank92-local",
+      "titulo": "ARIMA LSTM Prophet",
+      "ano": 2026,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank93-local",
+      "titulo": "Recent Advances Frontiers",
+      "ano": 2026,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank106-local",
+      "titulo": "Deep Learning TSF Survey",
+      "ano": 2025,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank107-local",
+      "titulo": "Architectural Diversity Open Challenges",
+      "ano": 2025,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank108-local",
+      "titulo": "AutoFormer TS NAS",
+      "ano": 2025,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank121-local",
+      "titulo": "Transformers in Time Series",
+      "ano": 2022,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank125-local",
+      "titulo": "Autoformer",
+      "ano": 2021,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank129-local",
+      "titulo": "Temporal Fusion Transformer",
+      "ano": 2019,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "rank133-local",
+      "titulo": "07-Power-of-Architecture-LTSF-2025",
+      "ano": null,
+      "locator": "local full-text (2 pp extraidas)"
+    },
+    {
+      "id": "10.1186/s40537-019-0192-5",
+      "titulo": "Survey on deep learning with class imbalance",
+      "ano": 2019,
+      "locator": "metadados API + titulo"
+    }
+  ],
+  "claims": [
+    {
+      "claim": "TFT modela covariaveis estaticas + futuras conhecidas + exogenas p/ multi-horizonte probabilistico",
+      "fonte_ids": [
+        "10.1016/j.ijforecast.2021.03.012",
+        "rank129-local"
+      ],
+      "confianca": "alta"
+    },
+    {
+      "claim": "Nucleo LTSF: Informer, PatchTST, Autoformer, iTransformer",
+      "fonte_ids": [
+        "10.1609/aaai.v35i12.17325",
+        "10.48550/arxiv.2211.14730",
+        "rank125-local",
+        "10.48550/arxiv.2310.06625"
+      ],
+      "confianca": "alta"
+    },
+    {
+      "claim": "Debate Transformers-vs-alternativas (questionamento + fixes: patching, inversao, mixing, hierarquia)",
+      "fonte_ids": [
+        "10.1609/aaai.v37i9.26317",
+        "10.1609/aaai.v37i6.25854",
+        "10.48550/arxiv.2211.14730",
+        "10.1145/3580305.3599533",
+        "10.48550/arxiv.2310.06625"
+      ],
+      "confianca": "alta"
+    },
+    {
+      "claim": "Comparativos ARIMA-vs-ML estruturam baseline primeiro",
+      "fonte_ids": [
+        "10.3390/fi15080255",
+        "rank92-local"
+      ],
+      "confianca": "media"
+    },
+    {
+      "claim": "Foundation/zero-shot e representacao universal sao fronteira com evidencia escassa no corpus",
+      "fonte_ids": [
+        "10.1145/3637528.3671451",
+        "10.1609/aaai.v36i8.20881"
+      ],
+      "confianca": "media"
+    },
+    {
+      "claim": "Nenhum numero de desempenho (MAPE/percentual/complexidade) afirmado: trechos recuperados nao os contem",
+      "fonte_ids": [
+        "rank106-local",
+        "rank107-local",
+        "rank133-local"
+      ],
+      "confianca": "alta"
+    }
+  ],
+  "experimentos_externos": [],
+  "declaracao": "sem_experimentos_declarados"
+}

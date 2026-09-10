@@ -1,0 +1,930 @@
+TY  - JOUR
+TI  - Transformers in Time Series: A Survey
+AU  - Qingsong Wen; Tian Zhou; Chaoli Zhang; Weiqi Chen; Ziqing Ma; Junchi Yan
+PY  - 2023
+DO  - 10.24963/ijcai.2023/759
+ER  - 
+
+TY  - JOUR
+TI  - Are Transformers Effective for Time Series Forecasting?
+AU  - Ailing Zeng; Muxi Chen; Lei Zhang; Qiang Xu
+PY  - 2023
+DO  - 10.1609/aaai.v37i9.26317
+ER  - 
+
+TY  - JOUR
+TI  - Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting
+AU  - Haoyi Zhou; Shanghang Zhang; Jieqi Peng; Shuai Zhang; Jianxin Li; Hui Xiong
+PY  - 2021
+DO  - 10.1609/aaai.v35i12.17325
+ER  - 
+
+TY  - JOUR
+TI  - Time-series forecasting with deep learning: a survey
+AU  - Bryan Lim; Stefan Zohren
+PY  - 2021
+DO  - 10.1098/rsta.2020.0209
+ER  - 
+
+TY  - JOUR
+TI  - NHITS: Neural Hierarchical Interpolation for Time Series Forecasting
+AU  - Cristian Challú; Kin G. Olivares; Boris N. Oreshkin; Federico Garza Ramirez; Max Mergenthaler Canseco; Artur Dubrawski
+PY  - 2023
+DO  - 10.1609/aaai.v37i6.25854
+ER  - 
+
+TY  - JOUR
+TI  - A Time Series is Worth 64 Words: Long-term Forecasting with Transformers
+AU  - Yuqi Nie; Nam Hoai Nguyen; Phanwadee Sinthong; Jayant Kalagnanam
+PY  - 2022
+DO  - 10.48550/arxiv.2211.14730
+ER  - 
+
+TY  - JOUR
+TI  - Survey on deep learning with class imbalance
+AU  - Justin Johnson; Taghi M. Khoshgoftaar
+PY  - 2019
+DO  - 10.1186/s40537-019-0192-5
+ER  - 
+
+TY  - JOUR
+TI  - Long sequence time-series forecasting with deep learning: A survey
+AU  - Zonglei Chen; Minbo Ma; Tianrui Li; Tianrui Li; Hongjun Wang; Chongshou Li
+PY  - 2023
+DO  - 10.1016/j.inffus.2023.101819
+ER  - 
+
+TY  - JOUR
+TI  - Deep Learning for Time Series Forecasting: Tutorial and Literature Survey
+AU  - Konstantinos Benidis; Syama Sundar Rangapuram; Valentín Flunkert; Bernie Wang; Danielle C. Maddix; Caner Türkmen
+PY  - 2022
+DO  - 10.1145/3533382
+ER  - 
+
+TY  - JOUR
+TI  - TSMixer: Lightweight MLP-Mixer Model for Multivariate Time Series Forecasting
+AU  - Vijay Ekambaram; Arindam Jati; Nam Nguyen; Phanwadee Sinthong; Jayant Kalagnanam
+PY  - 2023
+DO  - 10.1145/3580305.3599533
+ER  - 
+
+TY  - JOUR
+TI  - TS2Vec: Towards Universal Representation of Time Series
+AU  - 
+PY  - 2022
+DO  - 10.1609/aaai.v36i8.20881
+ER  - 
+
+TY  - JOUR
+TI  - Deep Learning for Time Series Forecasting: A Survey
+AU  - J. F. Torres; Dalil Hadjout; Abderrazak Sebaa; Francisco Martínez‐Álvarez; Alicia Troncoso
+PY  - 2020
+DO  - 10.1089/big.2020.0159
+ER  - 
+
+TY  - JOUR
+TI  - A Review of ARIMA vs. Machine Learning Approaches for Time Series Forecasting in Data Driven Networks
+AU  - Vaia I. Kontopoulou; Athanasios D. Panagopoulos; Iοannis Kakkos; George K. Matsopoulos
+PY  - 2023
+DO  - 10.3390/fi15080255
+ER  - 
+
+TY  - JOUR
+TI  - iTransformer: Inverted Transformers Are Effective for Time Series Forecasting
+AU  - Yong Liu; Tengge Hu; Haoran Zhang; Haixu Wu; Shiyu Wang; Lintao Ma
+PY  - 2023
+DO  - 10.48550/arxiv.2310.06625
+ER  - 
+
+TY  - JOUR
+TI  - TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis
+AU  - Haixu Wu; Tengge Hu; Yong Liu; Hang Zhou; Jianmin Wang; Mingsheng Long
+PY  - 2022
+DO  - 10.48550/arxiv.2210.02186
+ER  - 
+
+TY  - JOUR
+TI  - Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting
+AU  - 
+PY  - 2023
+DO  - 10.1145/3583780.3615160
+ER  - 
+
+TY  - JOUR
+TI  - A comprehensive survey of deep learning for time series forecasting: architectural diversity and open challenges
+AU  - Jongseon Kim; Hyungjoon Kim; HyunGi Kim; Dongjun Lee; Sungroh Yoon
+PY  - 2025
+DO  - 10.1007/s10462-025-11223-9
+ER  - 
+
+TY  - JOUR
+TI  - Diagnosisformer: An efficient rolling bearing fault diagnosis method based on improved Transformer
+AU  - 
+PY  - 2023
+DO  - 10.1016/j.engappai.2023.106507
+ER  - 
+
+TY  - JOUR
+TI  - Spatio-Temporal Meta-Graph Learning for Traffic Forecasting
+AU  - 
+PY  - 2023
+DO  - 10.1609/aaai.v37i7.25976
+ER  - 
+
+TY  - JOUR
+TI  - Spatio-Temporal Graph Transformer Networks for Pedestrian Trajectory Prediction
+AU  - 
+PY  - 2020
+DO  - 10.1007/978-3-030-58610-2_30
+ER  - 
+
+TY  - JOUR
+TI  - Stock market index prediction using deep Transformer model
+AU  - 
+PY  - 2022
+DO  - 10.1016/j.eswa.2022.118128
+ER  - 
+
+TY  - JOUR
+TI  - Deep learning for time series forecasting: a survey
+AU  - Xiangjie Kong; Zhenghao Chen; Weiyao Liu; Kaijie Ning; Lechao Zhang; Syauqie Muhammad Marier
+PY  - 2025
+DO  - 10.1007/s13042-025-02560-w
+ER  - 
+
+TY  - JOUR
+TI  - MSGNet: Learning Multi-Scale Inter-series Correlations for Multivariate Time Series Forecasting
+AU  - 
+PY  - 2024
+DO  - 10.1609/aaai.v38i10.28991
+ER  - 
+
+TY  - JOUR
+TI  - Foundation Models for Time Series Analysis: A Tutorial and Survey
+AU  - Yuxuan Liang; Haomin Wen; Yuqi Nie; Yushan Jiang; Ming Jin; Dongjin Song
+PY  - 2024
+DO  - 10.1145/3637528.3671451
+ER  - 
+
+TY  - JOUR
+TI  - Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting
+AU  - Haoyi Zhou; Shanghang Zhang; Jieqi Peng; Shuai Zhang; Jianxin Li; Hui Xiong
+PY  - 2020
+DO  - 10.48550/arxiv.2012.07436
+ER  - 
+
+TY  - JOUR
+TI  - A systematic review for transformer-based long-term series forecasting
+AU  - Liyilei Su; Xumin Zuo; Rui Li; Xin Wang; Heng Zhao; Bingding Huang
+PY  - 2025
+DO  - 10.1007/s10462-024-11044-2
+ER  - 
+
+TY  - JOUR
+TI  - The Capacity and Robustness Trade-Off: Revisiting the Channel Independent Strategy for Multivariate Time Series Forecasting
+AU  - 
+PY  - 2024
+DO  - 10.1109/tkde.2024.3400008
+ER  - 
+
+TY  - JOUR
+TI  - Deep Learning for Time Series Forecasting: Advances and Open Problems
+AU  - 
+PY  - 2023
+DO  - 10.3390/info14110598
+ER  - 
+
+TY  - JOUR
+TI  - LSTTN: A Long-Short Term Transformer-based spatiotemporal neural network for traffic flow forecasting
+AU  - 
+PY  - 2024
+DO  - 10.1016/j.knosys.2024.111637
+ER  - 
+
+TY  - JOUR
+TI  - SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction
+AU  - Minhao Liu; Ailing Zeng; Muxi Chen; Zhijian Xu; Qiuxia Lai; Lingna Ma
+PY  - 2021
+DO  - 10.48550/arxiv.2106.09305
+ER  - 
+
+TY  - JOUR
+TI  - Long-term Forecasting with TiDE: Time-series Dense Encoder
+AU  - Abhimanyu Das; Weihao Kong; Andrew Leach; Shaan Mathur; Rajat Sen; Rose Yu
+PY  - 2023
+DO  - 10.48550/arxiv.2304.08424
+ER  - 
+
+TY  - JOUR
+TI  - Spatio-temporal wind speed forecasting using graph networks and novel Transformer architectures
+AU  - Lars Ødegaard Bentsen; Narada Dilp Warakagoda; Roy Stenbro; Paal Engelstad
+PY  - 2022
+DO  - 10.1016/j.apenergy.2022.120565
+ER  - 
+
+TY  - JOUR
+TI  - Optimizing multi-step wind power forecasting: Integrating advanced deep neural networks with stacking-based probabilistic learning
+AU  - 
+PY  - 2024
+DO  - 10.1016/j.apenergy.2024.123487
+ER  - 
+
+TY  - JOUR
+TI  - Real-time decision-making for Digital Twin in additive manufacturing with Model Predictive Control using time-series deep neural networks
+AU  - 
+PY  - 2025
+DO  - 10.1016/j.jmsy.2025.03.009
+ER  - 
+
+TY  - JOUR
+TI  - ARIMA Models in Solar Radiation Forecasting in Different Geographic Locations
+AU  - Ewa Chodakowska; Joanicjusz Nazarko; Łukasz Nazarko; Hesham S. Rabayah; Raed M. Abendeh; Rami Alawneh
+PY  - 2023
+DO  - 10.3390/en16135029
+ER  - 
+
+TY  - JOUR
+TI  - Fredformer: Frequency Debiased Transformer for Time Series Forecasting
+AU  - Xihao Piao; Zheng Chen; Taichi Murayama; Yasuko Matsubara; Yasushi Sakurai
+PY  - 2024
+DO  - 10.1145/3637528.3671928
+ER  - 
+
+TY  - JOUR
+TI  - DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction
+AU  - Chengqing Yu; Fei Wang; Zezhi Shao; Tao Sun; Lin Wu; Yongjun Xu
+PY  - 2023
+DO  - 10.1145/3583780.3614851
+ER  - 
+
+TY  - JOUR
+TI  - DiffSTG: Probabilistic Spatio-Temporal Graph Forecasting with Denoising Diffusion Models
+AU  - Haomin Wen; Youfang Lin; Yutong Xia; Huaiyu Wan; Qingsong Wen; Roger Zimmermann
+PY  - 2023
+DO  - 10.1145/3589132.3625614
+ER  - 
+
+TY  - JOUR
+TI  - GPT4MTS: Prompt-based Large Language Model for Multimodal Time-series Forecasting
+AU  - 
+PY  - 2024
+DO  - 10.1609/aaai.v38i21.30383
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformers for interpretable multi-horizon time series forecasting
+AU  - Bryan Lim; Sercan Ö. Arık; Nicolas Loeff; Tomas Pfister
+PY  - 2021
+DO  - 10.1016/j.ijforecast.2021.03.012
+ER  - 
+
+TY  - JOUR
+TI  - Evaluating the Effectiveness of Time Series Transformers for Demand Forecasting in Retail
+AU  - José Manuel Oliveira; Patrícia Ramos
+PY  - 2024
+DO  - 10.3390/math12172728
+ER  - 
+
+TY  - JOUR
+TI  - Prediction of biogas production in anaerobic co-digestion of organic wastes using deep learning models
+AU  - 
+PY  - 2021
+DO  - 10.1016/j.watres.2021.117697
+ER  - 
+
+TY  - JOUR
+TI  - A study of deep learning-based multi-horizon building energy forecasting
+AU  - Zhongjun Ni; Chi Zhang; Magnus Karlsson; Shaofang Gong
+PY  - 2023
+DO  - 10.1016/j.enbuild.2023.113810
+ER  - 
+
+TY  - JOUR
+TI  - Multi-Sensor Fault Detection, Identification, Isolation and Health Forecasting for Autonomous Vehicles
+AU  - 
+PY  - 2021
+DO  - 10.3390/s21072547
+ER  - 
+
+TY  - JOUR
+TI  - Time-Lag Selection for Time-Series Forecasting Using Neural Network and Heuristic Algorithm
+AU  - Ola Surakhi; Martha Arbayani Zaidan; Pak Lun Fung; Naser Hossein Motlagh; Sami Serhan; Mohammad AlKhanafseh
+PY  - 2021
+DO  - 10.3390/electronics10202518
+ER  - 
+
+TY  - JOUR
+TI  - Time Series Forecasting Model for Supermarket Sales using FB-Prophet
+AU  - 
+PY  - 2021
+DO  - 10.1109/iccmc51019.2021.9418033
+ER  - 
+
+TY  - JOUR
+TI  - RSAM: Robust Self-Attention Based Multi-Horizon Model for Solar Irradiance Forecasting
+AU  - 
+PY  - 2020
+DO  - 10.1109/tste.2020.3046098
+ER  - 
+
+TY  - JOUR
+TI  - A Transformer-based Framework for Multivariate Time Series Representation Learning
+AU  - 
+PY  - 2021
+DO  - 10.1145/3447548.3467401
+ER  - 
+
+TY  - JOUR
+TI  - Multi-Horizon Electricity Load and Price Forecasting Using an Interpretable Multi-Head Self-Attention and EEMD-Based Framework
+AU  - 
+PY  - 2021
+DO  - 10.1109/access.2021.3086039
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformers for Interpretable Multi-horizon Time Series\n Forecasting
+AU  - Bryan Lim; Sercan Ö. Arık; Nicolas Loeff; Tomas Pfister
+PY  - 2019
+DO  - 10.48550/arxiv.1912.09363
+ER  - 
+
+TY  - JOUR
+TI  - Evaluation of interpretability methods for multivariate time series forecasting
+AU  - 
+PY  - 2021
+DO  - 10.1007/s10489-021-02662-2
+ER  - 
+
+TY  - JOUR
+TI  - A deep learning approach to solar radio flux forecasting
+AU  - 
+PY  - 2021
+DO  - 10.1016/j.actaastro.2021.08.004
+ER  - 
+
+TY  - JOUR
+TI  - TAB: Unified Benchmarking of Time Series Anomaly Detection Methods
+AU  - Xiangfei Qiu; Zhe Li; Wanghui Qiu; Shiyan Hu; Lekui Zhou; Xingjian Wu
+PY  - 2025
+DO  - 10.14778/3746405.3746407
+ER  - 
+
+TY  - JOUR
+TI  - Forecasting intermittent time series with Gaussian Processes and Tweedie likelihood
+AU  - 
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - TimePFN: Effective Multivariate Time Series Forecasting with Synthetic Data
+AU  - Ege Onur Taga; M. Emrullah Ildiz; Samet Oymak
+PY  - 2025
+DO  - 10.1609/aaai.v39i19.34288
+ER  - 
+
+TY  - JOUR
+TI  - A Comprehensive Survey of Time Series Forecasting: Concepts, Challenges, and Future Directions
+AU  - Mingyue Cheng; Zhiding Liu; Xiaoyu Tao; Qi Liu; Jintao Zhang; Tingyue Pan
+PY  - 2025
+DO  - 10.36227/techrxiv.174430535.53879341/v1
+ER  - 
+
+TY  - JOUR
+TI  - LLM-Mixer: Multiscale Mixing in LLMs for Time Series Forecasting
+AU  - 
+PY  - 2024
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Probabilistic Hierarchical Forecasting with Deep Poisson Mixtures
+AU  - 
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction
+AU  - 
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Comparative effectiveness analysis of univariate time-series forecasting models for disease mortality rates in the global burden of disease database: a case study of global hypertensive heart disease among women of childbearing age.
+AU  - 
+PY  - 2025
+DO  - 10.3389/fpubh.2025.1681569
+ER  - 
+
+TY  - JOUR
+TI  - A Mamba Foundation Model for Time Series Forecasting
+AU  - Haoyu Ma; Yushu Chen; Wenlai Zhao; Jinzhe Yang; Younghun Ji; Xinghua Xu
+PY  - 2024
+DO  - 10.48550/arxiv.2411.02941
+ER  - 
+
+TY  - JOUR
+TI  - Towards Foundation Models for Critical Care Time Series
+AU  - M. Burger; Федор Сергеев; Malte Londschien; Daphné Chopard; Hugo Yèche; Eike Gerdes
+PY  - 2024
+DO  - 10.48550/arxiv.2411.16346
+ER  - 
+
+TY  - JOUR
+TI  - Enhancing wind and solar energy forecasting through time-series feature engineering and ensemble machine learning.
+AU  - 
+PY  - 2026
+DO  - 10.1038/s41598-026-49373-7
+ER  - 
+
+TY  - JOUR
+TI  - Mamba4Cast: Efficient Zero-Shot Time Series Forecasting with State Space Models
+AU  - Sathya Kamesh Bhethanabhotla; Omar Swelam; Julien Siems; David Salinas; Frank Hutter
+PY  - 2024
+DO  - 10.48550/arxiv.2410.09385
+ER  - 
+
+TY  - JOUR
+TI  - Retrieval Augmented Time Series Forecasting
+AU  - Kutay Tire; Ege Onur Taga; M. Emrullah Ildiz; Samet Oymak
+PY  - 2024
+DO  - 10.48550/arxiv.2411.08249
+ER  - 
+
+TY  - JOUR
+TI  - Clustering Multivariate Time Series using Energy Distance
+AU  - 
+PY  - 2023
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - PatchFormer: A Patch-Based Time Series Foundation Model with Hierarchical Masked Reconstruction and Cross-Domain Transfer Learning for Zero-Shot Multi-Horizon Forecasting
+AU  - 
+PY  - 2026
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - An End-to-End Air Quality Prediction System Using Temporal Fusion Transformer with Multi-Horizon Forecasting
+AU  - 
+PY  - 2026
+DO  - 10.2139/ssrn.6622198
+ER  - 
+
+TY  - JOUR
+TI  - VMD-TFT: A Variational Mode Decomposition-Augmented Temporal Fusion Transformer for Multi-Horizon Solar Irradiance Forecasting
+AU  - 
+PY  - 2026
+DO  - 10.1109/access.2026.3730818
+ER  - 
+
+TY  - JOUR
+TI  - Data-Driven Multi-Horizon Taxi Demand Forecasting Using Transformer-Based Temporal Modeling
+AU  - 
+PY  - 2026
+DO  - 10.5220/0015189300004091
+ER  - 
+
+TY  - JOUR
+TI  - Forecasting EV Charging Load with a Temporal Fusion Transformer: A Multi-Horizon and Interpretable Approach with Environmental Features
+AU  - 
+PY  - 2026
+DO  - 10.2139/ssrn.6202680
+ER  - 
+
+TY  - JOUR
+TI  - Review for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2026
+DO  - 10.1088/3049-4753/ae4982/v1/review2
+ER  - 
+
+TY  - JOUR
+TI  - Review for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2026
+DO  - 10.1088/3049-4753/ae4982/v2/review1
+ER  - 
+
+TY  - JOUR
+TI  - Review for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2026
+DO  - 10.1088/3049-4753/ae4982/v2/review2
+ER  - 
+
+TY  - JOUR
+TI  - Decision letter for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2026
+DO  - 10.1088/3049-4753/ae4982/v2/decision1
+ER  - 
+
+TY  - JOUR
+TI  - Decision letter for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2026
+DO  - 10.1088/3049-4753/ae4982/v1/decision1
+ER  - 
+
+TY  - JOUR
+TI  - Attention Without Estimation: Zero-Shot Time Series Foundation Models versus Long-Memory Econometrics in Realized Volatility Forecasting
+AU  - 
+PY  - 2026
+DO  - 10.21203/rs.3.rs-10306663/v1
+ER  - 
+
+TY  - JOUR
+TI  - Influenza-Like Illness Forecasting Using Multisource Data: Comparative Deep Learning Study.
+AU  - 
+PY  - 2026
+DO  - 10.2196/91844
+ER  - 
+
+TY  - JOUR
+TI  - Unified multi-task learning for hydrological processes using a shared transformer framework.
+AU  - 
+PY  - 2026
+DO  - 10.1038/s41598-026-55130-7
+ER  - 
+
+TY  - JOUR
+TI  - Forecasting Congestion and Enabling Proactive Management on Expressways During Public Holidays: A Survey of Methods, Open Issues, and Research Directions.
+AU  - 
+PY  - 2026
+DO  - 10.3390/s26154734
+ER  - 
+
+TY  - JOUR
+TI  - A fractal-enhanced deep learning framework for forecasting agricultural production in India.
+AU  - 
+PY  - 2026
+DO  - 10.1038/s41598-026-55859-1
+ER  - 
+
+TY  - JOUR
+TI  - A Survey of Deep Multivariate Time-Series Models with an Empirical Reproducibility Audit
+AU  - 
+PY  - 2026
+DO  - 10.21203/rs.3.rs-9278660/v1
+ER  - 
+
+TY  - JOUR
+TI  - China runoff-field forecasting based on cross-scale gating and basin-topology attention.
+AU  - 
+PY  - 2026
+DO  - 10.1371/journal.pone.0350218
+ER  - 
+
+TY  - JOUR
+TI  - Integrating MIKE model simulations with CNNs for rapid and accurate urban flood prediction.
+AU  - 
+PY  - 2026
+DO  - 10.1016/j.isci.2026.116187
+ER  - 
+
+TY  - JOUR
+TI  - Monthly trends, determinants, and forecasting of perinatal mortality in Ghana: a comparison of ARIMA, BPNN, DLNN, and GRNN models.
+AU  - 
+PY  - 2026
+DO  - 10.3389/frph.2026.1849802
+ER  - 
+
+TY  - JOUR
+TI  - Research on temperature prediction model for key components in highspeed rail electrical cabinets based on LSTM.
+AU  - 
+PY  - 2026
+DO  - 10.1371/journal.pone.0355411
+ER  - 
+
+TY  - JOUR
+TI  - A comparative evaluation of time-series models for forecasting inpatient deaths and discharges against medical advice.
+AU  - 
+PY  - 2026
+DO  - 10.1038/s41598-026-37913-0
+ER  - 
+
+TY  - JOUR
+TI  - Hybrid machine learning forecasting for resilient and sustainable pharmaceutical supply chains under regulatory and seasonal disruption.
+AU  - 
+PY  - 2026
+DO  - 10.3389/frai.2026.1803863
+ER  - 
+
+TY  - JOUR
+TI  - The forecasting of pediatric asthma clinic visits: A comparative analysis of time-series models under varying training set sizes.
+AU  - 
+PY  - 2026
+DO  - 10.1177/20552076261430219
+ER  - 
+
+TY  - JOUR
+TI  - OCPP integrated artificial intelligence for forecasting scheduling and anomaly detection in city scale electric vehicle charging under urban tariffs.
+AU  - 
+PY  - 2026
+DO  - 10.1038/s41598-026-49535-7
+ER  - 
+
+TY  - JOUR
+TI  - Large language model-driven time-series forecasting of financial network indicators.
+AU  - 
+PY  - 2026
+DO  - 10.3389/frai.2026.1722121
+ER  - 
+
+TY  - JOUR
+TI  - ARIMA LSTM Prophet
+AU  - Mahajan
+PY  - 2026
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Recent Advances Frontiers
+AU  - Liao
+PY  - 2026
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - CT-PatchTST: Channel-Time Patch Time-Series Transformer for Long-Term Renewable Energy Forecasting
+AU  - 
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformer for Multi-Horizon Probabilistic Forecasting of Weekly Retail Sales
+AU  - 
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - How Foundational are Foundation Models for Time Series Forecasting?
+AU  - 
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Pre-trained Forecasting Models: Strong Zero-Shot Feature Extractors for Time Series Classification
+AU  - 
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - CT-PatchTST: Channel-Time Patch Time-Series Transformer for Long-Term Renewable Energy Forecasting
+AU  - 
+PY  - 2025
+DO  - 10.1109/iscipt67144.2025.11265471
+ER  - 
+
+TY  - JOUR
+TI  - Enhancing Long-Term Time Series Forecasting via Hybrid DLinear-PatchTST Ensemble Framework
+AU  - 
+PY  - 2025
+DO  - 10.54254/2755-2721/2025.kl22290
+ER  - 
+
+TY  - JOUR
+TI  - Adaformer: Adaptive Time-Frequency Hybrid Transformer for Long-Term Time Series Forecasting
+AU  - 
+PY  - 2025
+DO  - 10.2139/ssrn.5172494
+ER  - 
+
+TY  - JOUR
+TI  - Stock price prediction: Long short-term memory vs. Autoformer and time series foundation model
+AU  - 
+PY  - 2025
+DO  - 10.59720/24-228
+ER  - 
+
+TY  - JOUR
+TI  - TLFIG-Transformer: Trend-Oriented Linear Fuzzy Information Granulation-Based Transformer Model for Long-Term Time-Series Forecasting
+AU  - 
+PY  - 2025
+DO  - 10.1109/csecs64665.2025.11009918
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformer for Multi-Horizon Probabilistic Forecasting of Weekly Retail Sales
+AU  - 
+PY  - 2025
+DO  - 10.1109/icdabi67967.2025.11547479
+ER  - 
+
+TY  - JOUR
+TI  - Review for "Zero-shot Forecasting of Streamflow Using Time Series Foundation Models: Are We There Yet?"
+AU  - 
+PY  - 2025
+DO  - 10.1088/3049-4753/ae4982/v1/review1
+ER  - 
+
+TY  - JOUR
+TI  - Generalisation Bounds of Zero-Shot Economic Forecasting using Time Series Foundation Models
+AU  - 
+PY  - 2025
+DO  - 10.21203/rs.3.rs-6750307/v1
+ER  - 
+
+TY  - JOUR
+TI  - Deep Learning TSF Survey
+AU  - Kong
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Architectural Diversity Open Challenges
+AU  - Kim
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - AutoFormer TS NAS
+AU  - Zhang
+PY  - 2025
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - A Multi-Channel Spatial-Temporal Transformer Model for Traffic Flow Forecasting
+AU  - 
+PY  - 2024
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Chronos: Learning the Language of Time Series
+AU  - 
+PY  - 2024
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting
+AU  - 
+PY  - 2024
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Hideformer: Hierarchical Dual-Encoder Transformer for Long-Term Time Series Forecasting
+AU  - 
+PY  - 2024
+DO  - 10.2139/ssrn.4862106
+ER  - 
+
+TY  - JOUR
+TI  - Robformer: A robust decomposition transformer for long-term time series forecasting
+AU  - 
+PY  - 2024
+DO  - 10.1016/j.patcog.2024.110552
+ER  - 
+
+TY  - JOUR
+TI  - Learn to Accumulate Evidence from All Training Samples: Theory and Practice
+AU  - 
+PY  - 2023
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping
+AU  - 
+PY  - 2023
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Lag-Llama: Towards Foundation Models for Probabilistic Time Series Forecasting
+AU  - 
+PY  - 2023
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Time Series Transformer for Long Term Rainfall Forecasting Towards Water Distribution Management in Smart Cities.
+AU  - 
+PY  - 2023
+DO  - 10.1109/bigdata59044.2023.10386081
+ER  - 
+
+TY  - JOUR
+TI  - Multi-Country and Multi-Horizon GDP Forecasting Using Temporal Fusion Transformers
+AU  - 
+PY  - 2023
+DO  - 10.2139/ssrn.4329721
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformer for Multi Horizon Bitcoin Price Forecasting
+AU  - 
+PY  - 2023
+DO  - 10.1109/itis59651.2023.10420330
+ER  - 
+
+TY  - JOUR
+TI  - Multi-Horizon Well Performance Forecasting with Temporal Fusion Transformers
+AU  - 
+PY  - 2023
+DO  - 10.2139/ssrn.4403939
+ER  - 
+
+TY  - JOUR
+TI  - Transformers in Time Series
+AU  - Wen
+PY  - 2022
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - The Modern Mathematics of Deep Learning
+AU  - 
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting
+AU  - 
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Comparing Prophet and Deep Learning to ARIMA in Forecasting Wholesale Food Prices
+AU  - 
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Autoformer
+AU  - Wu
+PY  - 2021
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Probabilistic Multi-Step-Ahead Short-Term Water Demand Forecasting with Lasso
+AU  - 
+PY  - 2020
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Time Series Analysis and Forecasting of COVID-19 Cases Using LSTM and ARIMA Models
+AU  - 
+PY  - 2020
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting
+AU  - 
+PY  - 2019
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Temporal Fusion Transformer
+AU  - Lim
+PY  - 2019
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Quantile Regression for Qualifying Match of GEFCom2017 Probabilistic Load Forecasting
+AU  - 
+PY  - 2018
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Forecasting Economics and Financial Time Series: ARIMA vs. LSTM
+AU  - 
+PY  - 2018
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - Lasso estimation for GEFCom2014 probabilistic electric load forecasting
+AU  - 
+PY  - 2016
+DO  - 
+ER  - 
+
+TY  - JOUR
+TI  - 07-Power-of-Architecture-LTSF-2025
+AU  - 
+PY  - 
+DO  - 
+ER  - 
