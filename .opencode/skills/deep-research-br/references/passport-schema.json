@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Material Passport simplificado (inspirado no ARS; esquema próprio)",
+  "type": "object",
+  "required": ["slug", "fontes", "claims"],
+  "properties": {
+    "slug": {"type": "string"},
+    "questao": {"type": "string"},
+    "fontes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "titulo"],
+        "properties": {
+          "id": {"type": "string", "description": "DOI, W-ID, arXiv ID ou caminho local"},
+          "titulo": {"type": "string"},
+          "ano": {"type": ["integer", "null"]},
+          "locator": {"type": "string", "description": "ex: abstract, p.4, tab.2"}
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "fonte_ids", "confianca"],
+        "properties": {
+          "claim": {"type": "string"},
+          "fonte_ids": {"type": "array", "items": {"type": "string"}},
+          "confianca": {"enum": ["alta", "media", "baixa"]}
+        }
+      }
+    },
+    "declaracao": {"type": "string", "enum": ["sem_experimentos_declarados", "experimentos_declarados"]}
+  }
+}
