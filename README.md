@@ -10,6 +10,7 @@ Esta pasta organiza a bibliografia fundamental e resume o caminho prático de im
 ```
 temporal-model/
 ├── README.md              <- este arquivo (guia + fórmulas + referências)
+├── dados/                   <- séries CETESB EF01 Mogi das Cruzes (pH + OD, 5 min) + README
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
 ```
 
@@ -161,7 +162,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 ## 7. Próximos passos neste repo
 
 - [x] Busca bibliográfica sistemática (2026-09-10) — ver seção 8 e `busca_bibliografica/`
-- [ ] Definir dataset (ex: `ETTh`, vendas, energia, ação)
+- [x] Definir dataset — CETESB EF01 Mogi das Cruzes, univariado (pH e OD em `dados/`, ver `dados/README.md`)
 - [ ] Criar `notebooks/00-baseline-arima-prophet.ipynb`
 - [ ] Criar `src/windowing.py` + `train_lstm.py`
 - [ ] Evoluir para `TFT / PatchTST`
