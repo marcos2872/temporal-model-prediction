@@ -1,0 +1,18 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Temporários da skill deep-research-br
+*.tmp.txt
+reports/
+reviews/
