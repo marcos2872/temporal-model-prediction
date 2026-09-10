@@ -16,3 +16,7 @@ node_modules/
 *.tmp.txt
 reports/
 reviews/
+pdfs/
+artigos/
+pdfs_texto/
+.obsidian/
