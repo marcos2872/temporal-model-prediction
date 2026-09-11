@@ -1,0 +1,15 @@
+# Dependências do projeto (instalar com uv)
+#
+#   uv venv .venv --python 3.12
+#   uv pip install --python .venv/bin/python -r requirements.txt
+#
+# Prophet baixa o CmdStan no primeiro ajuste (~200 MB); se falhar,
+# o notebook 00 trata Prophet como opcional e segue com os demais baselines.
+pandas==3.0.5
+numpy==2.5.3
+matplotlib==3.11.1
+statsmodels==0.15.0
+scikit-learn==1.9.1
+jupyter==1.1.1
+ipykernel==7.3.0
+prophet==1.4.0
