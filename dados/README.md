@@ -25,8 +25,8 @@ Estatísticas calculadas sobre os valores presentes em 10/09/2026.
 - **Linha 1:** cabeçalho da CETESB (`Entidade responsável...`)
 - **Linha 2:** cabeçalho das colunas (`Data hora;<variável>`)
 - **Coluna 1:** data-hora no formato `dd/mm/aaaa hh:mm` (ex.: `01/06/2026 00:00`)
-- **Coluna 2:** valor medido; **célula vazia = dado faltante** (falha de transmissão/medição, frequente — ~18%)
-- Grade completa de 5 min teria 26.496 slots no período; 287 timestamps estão **ausentes** (linha inexistente), além das células vazias
+- **Coluna 2:** valor medido; **célula vazia = dado faltante** (falha de transmissão/medição, frequente — ~18%, em gaps de até 24 passos = 2 h)
+- A grade do período tem exatamente 26.209 slots (01/06 00:00 → 31/08 00:00 a cada 5 min) e todos estão presentes como linhas — não há timestamps ausentes, só células vazias
 
 ## Como ler (pandas)
 
