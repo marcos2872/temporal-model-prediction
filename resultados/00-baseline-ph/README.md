@@ -1,7 +1,7 @@
 # Experimento 00 — baseline univariado pH (EF01)
 
-Artefatos gerados por `notebooks/00-baseline-arima-prophet.ipynb` (executado de ponta a ponta, 0 erros).
-Reproduzir: `uv run --with jupyter jupyter nbconvert --to notebook --execute --inplace notebooks/00-baseline-arima-prophet.ipynb`
+Artefatos gerados por `notebooks/00-baseline-ph.ipynb` (executado de ponta a ponta, 0 erros).
+Reproduzir: `uv run --with jupyter jupyter nbconvert --to notebook --execute --inplace notebooks/00-baseline-ph.ipynb`
 (com o `.venv` ativo, ou `uv pip install -r requirements.txt` antes).
 
 ## Configuração do experimento

@@ -11,7 +11,7 @@ Esta pasta organiza a bibliografia fundamental e resume o caminho prático de im
 temporal-model/
 ├── README.md              <- este arquivo (guia + fórmulas + referências)
 ├── dados/                   <- séries CETESB EF01 Mogi das Cruzes (pH + OD, 5 min) + README
-├── notebooks/               <- 00-baseline-arima-prophet.ipynb (pH, H=12, L=2016, executado)
+├── notebooks/               <- 00-baseline-ph.ipynb + 00b-baseline-od.ipynb (executados)
 ├── resultados/              <- índice + uma pasta por experimento (`00-baseline-ph/`, ...)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
@@ -166,7 +166,8 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 
 - [x] Busca bibliográfica sistemática (2026-09-10) — ver seção 8 e `busca_bibliografica/`
 - [x] Definir dataset — CETESB EF01 Mogi das Cruzes, univariado (pH e OD em `dados/`, ver `dados/README.md`)
-- [x] Criar `notebooks/00-baseline-arima-prophet.ipynb` (pH, L=30d, H=1d + holdout de 10 dias — executado; régua: **sazonal-naive, MAE 0,0501**; artefatos em `resultados/00-baseline-ph/`)
+- [x] Criar `notebooks/00-baseline-ph.ipynb` (pH, L=30d, H=1d + holdout de 10 dias — executado; régua: **sazonal-naive, MAE 0,0501**; artefatos em `resultados/00-baseline-ph/`)
+- [x] Criar `notebooks/00b-baseline-od.ipynb` (mesmo protocolo no OD, segmento 01/06→21/07 — executado; régua: **sazonal-naive, MAE 0,1525**; artefatos em `resultados/00b-baseline-od/`)
 - [ ] Criar `src/windowing.py` + `train_lstm.py`
 - [ ] Evoluir para `TFT / PatchTST`
 - [ ] Expor `app.py` FastAPI
