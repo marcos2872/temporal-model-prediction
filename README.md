@@ -13,6 +13,7 @@ temporal-model/
 ├── dados/                   <- séries CETESB EF01 Mogi das Cruzes (pH + OD, 5 min) + README
 ├── notebooks/               <- 9 notebooks 00–08 (ver notebooks/README.md; executados em servidor remoto)
 ├── resultados/              <- índice + uma pasta por experimento (`00-baseline-ph/`, ...)
+├── app.py                   <- API FastAPI (ensembles 06/07, Swagger em /docs)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
 ```
@@ -175,8 +176,23 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/06-ensemble-ph.ipynb` (ensemble NNLS no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,0357, −4,3%**; LGBM zerado; artefatos em `resultados/06-ensemble-ph/`)
 - [x] Criar `notebooks/07-ensemble-od.ipynb` (ensemble NNLS no OD 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,1325, −4,0%**; dlres com peso 0,30; artefatos em `resultados/07-ensemble-od/`)
 - [x] Criar `notebooks/08-benchmark-2025.ipynb` (todos os campeões × 2025 intocado + lag-365, só inferência em servidor remoto; **réguas finais: pH ens 0,0509 (−15%), OD ens 0,2107 (−22%)**; lag-365 inútil 0,46/0,93; Prophet explode; artefatos em `resultados/08-benchmark-2025/`)
-- [ ] Expor `app.py` FastAPI
+- [x] Expor `app.py` FastAPI (ensembles 06/07 servidos localmente; `POST /prever` com CSV CETESB + `?horizonte_horas=1..24`; Swagger em `/docs`; golden test vs recomputação ±5e-5)
 - [ ] Saída probabilística (quantis) e teste de transferência para 2026 quando houver dado validado
+
+## 7b. API de previsão (local)
+
+```bash
+.venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
+# Swagger UI: http://127.0.0.1:8000/docs  (botão "Try it out" no POST /prever)
+curl -X POST "http://127.0.0.1:8000/prever?variavel=ph&horizonte_horas=24" \
+  -F "arquivo=@teste_api_ph.csv"
+```
+
+Envie um CSV CETESB (pH ou OD, ≥ ~8 dias a cada 5 min) e receba 12–288 valores do
+período seguinte com timestamps. O pipeline validado roda sempre 24 h e devolve o
+prefixo pedido; gaps > 2 h no fim da série retornam `422` em vez de prever no escuro.
+Modelos carregados no startup a partir de `resultados/` (o `.pkl` do LGBM é gitignored —
+para deploy, copie `resultados/0{6,7}-*/modelos/lgbm_steps.pkl` junto).
 
 ## 8. Busca bibliográfica sistemática — modelos de predição temporal (2026-09-10)
 
