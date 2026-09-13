@@ -6,6 +6,7 @@
 | [`00b-baseline-od.ipynb`](00b-baseline-od.ipynb) | Mesmo protocolo no OD, segmento 01/06→21/07 | [`../resultados/00b-baseline-od/`](../resultados/00b-baseline-od/) |
 | [`01-lstm-ph.ipynb`](01-lstm-ph.ipynb) | LSTM-h no pH, mesmo protocolo (grade horária + ×12) | [`../resultados/01-lstm-ph/`](../resultados/01-lstm-ph/) |
 | [`01b-lstm-od.ipynb`](01b-lstm-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/01b-lstm-od/`](../resultados/01b-lstm-od/) |
+| [`02-lstnet-ph.ipynb`](02-lstnet-ph.ipynb) | LSTNet nativo 5 min no pH (nova régua) | [`../resultados/02-lstnet-ph/`](../resultados/02-lstnet-ph/) |
 
 ## 1. Ambiente (uma vez)
 
@@ -34,7 +35,7 @@ Se o kernel não aparecer: com o `.venv` ativo, rode
   --ExecutePreprocessor.timeout=900 notebooks/00-baseline-ph.ipynb
 ```
 Troque o nome do arquivo para o `00b` ou `01`. Tempo típico: 5–10 min
-(ARIMA reestimado por origem + ajuste do Prophet; o `01` treina o LSTM em CPU, ~5 min).
+(ARIMA reestimado por origem + ajuste do Prophet; o `01` treina o LSTM em CPU, ~5 min; o `02` treina o LSTNet, ~10 min).
 
 ## 3. O que cada execução gera
 
