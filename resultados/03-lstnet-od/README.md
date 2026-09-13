@@ -1,10 +1,10 @@
-# Experimento 02b — LSTNet no OD (EF01), regime anual (treino 2024)
+# Experimento 03 — LSTNet no OD (EF01), regime anual (treino 2024)
 
 Mesma arquitetura do 02 (contexto nativo 2016 + RevIN + skip p=1d + AR-288), treinada no
 OD 2024 com early stopping na val (4 fatias). 2025 intocado.
-Artefatos gerados por `notebooks/02b-lstnet-od.ipynb` (executado de ponta a ponta, 0 erros;
+Artefatos gerados por `notebooks/03-lstnet-od.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, torch CPU).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/02b-lstnet-od.ipynb`
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/03-lstnet-od.ipynb`
 (treino ~7 min em 12c com a máquina livre; stride 8 no treino pelo volume maior).
 
 ## Configuração do experimento
@@ -81,5 +81,5 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 ## Leitura dos resultados
 
 1. **Virada no OD: LSTNet 0,1380 vence o sazonal-naive 0,1579 (−12,6%) na val, e 0,1369 × 0,1579 nos dias-âncora.** Com 1 ano de treino (incluindo o verão/outono de alta amplitude), o modelo aprendeu o que 3 meses de inverno não ensinaram. A régua do OD cai pela primeira vez.
-2. Treino longo e saudável: 22 épocas, best na 12, sem colapso (ao contrário do 01b).
-3. Fila: PatchTST/DLinear (03b) e ensemble (04b) miram 0,1380; checkpoint guardado para o benchmark 2025 (08) — onde o teste de verdade acontece, com o lag-365 na briga.
+2. Treino longo e saudável: 22 épocas, best na 12, sem colapso (treino estável do início ao fim).
+3. Fila: PatchTST/DLinear (05) e ensemble (07) miram 0,1380; checkpoint guardado para o benchmark 2025 (08) — onde o teste de verdade acontece, com o lag-365 na briga.

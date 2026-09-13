@@ -11,7 +11,7 @@ Esta pasta organiza a bibliografia fundamental e resume o caminho prático de im
 temporal-model/
 ├── README.md              <- este arquivo (guia + fórmulas + referências)
 ├── dados/                   <- séries CETESB EF01 Mogi das Cruzes (pH + OD, 5 min) + README
-├── notebooks/               <- 00-baseline-ph.ipynb + 00b-baseline-od.ipynb (executados)
+├── notebooks/               <- 9 notebooks 00–08 (ver notebooks/README.md; executados em servidor remoto)
 ├── resultados/              <- índice + uma pasta por experimento (`00-baseline-ph/`, ...)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
@@ -167,13 +167,13 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Busca bibliográfica sistemática (2026-09-10) — ver seção 8 e `busca_bibliografica/`
 - [x] Definir dataset — CETESB EF01 Mogi das Cruzes, univariado (pH e OD em `dados/`, ver `dados/README.md`)
 - [x] Criar `notebooks/00-baseline-ph.ipynb` (regime anual: baselines no pH 2024, treino + val 4 fatias — executado em servidor remoto; régua: **sazonal-naive 0,0421**; Prophet colapsa 0,1703; artefatos em `resultados/00-baseline-ph/`)
-- [x] Criar `notebooks/00b-baseline-od.ipynb` (baselines no OD 2024 — executado em servidor remoto; régua: **sazonal-naive 0,1579**; Prophet colapsa 0,4091; artefatos em `resultados/00b-baseline-od/`)
+- [x] Criar `notebooks/01-baseline-od.ipynb` (baselines no OD 2024 — executado em servidor remoto; régua: **sazonal-naive 0,1579**; Prophet colapsa 0,4091; artefatos em `resultados/01-baseline-od/`)
 - [x] Criar `notebooks/02-lstnet-ph.ipynb` (LSTNet nativo no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: 0,0373, −11,4% sobre o sazonal**; artefatos em `resultados/02-lstnet-ph/`)
-- [x] Criar `notebooks/02b-lstnet-od.ipynb` (LSTNet no OD 2024 — executado em servidor remoto; **NOVA RÉGUA (1ª vez no OD): 0,1380, −12,6%**; artefatos em `resultados/02b-lstnet-od/`)
-- [x] Criar `notebooks/03-patchtst-ph.ipynb` (PatchTST + DLinear no pH 2024 — executado em servidor remoto; régua segue LSTNet; dlinear 0,0394 > patchtst 0,0414 (overfita); artefatos em `resultados/03-patchtst-ph/`)
-- [x] Criar `notebooks/03b-patchtst-od.ipynb` (os três no OD 2024 — executado em servidor remoto; régua segue LSTNet; patchtst/dlinear ~0,143; artefatos em `resultados/03b-patchtst-od/`)
-- [x] Criar `notebooks/04-ensemble-ph.ipynb` (ensemble NNLS no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,0357, −4,3%**; LGBM zerado; artefatos em `resultados/04-ensemble-ph/`)
-- [x] Criar `notebooks/04b-ensemble-od.ipynb` (ensemble NNLS no OD 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,1325, −4,0%**; dlres com peso 0,30; artefatos em `resultados/04b-ensemble-od/`)
+- [x] Criar `notebooks/03-lstnet-od.ipynb` (LSTNet no OD 2024 — executado em servidor remoto; **NOVA RÉGUA (1ª vez no OD): 0,1380, −12,6%**; artefatos em `resultados/03-lstnet-od/`)
+- [x] Criar `notebooks/04-patchtst-ph.ipynb` (PatchTST + DLinear no pH 2024 — executado em servidor remoto; régua segue LSTNet; dlinear 0,0394 > patchtst 0,0414 (overfita); artefatos em `resultados/04-patchtst-ph/`)
+- [x] Criar `notebooks/05-patchtst-od.ipynb` (os três no OD 2024 — executado em servidor remoto; régua segue LSTNet; patchtst/dlinear ~0,143; artefatos em `resultados/05-patchtst-od/`)
+- [x] Criar `notebooks/06-ensemble-ph.ipynb` (ensemble NNLS no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,0357, −4,3%**; LGBM zerado; artefatos em `resultados/06-ensemble-ph/`)
+- [x] Criar `notebooks/07-ensemble-od.ipynb` (ensemble NNLS no OD 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,1325, −4,0%**; dlres com peso 0,30; artefatos em `resultados/07-ensemble-od/`)
 - [x] Criar `notebooks/08-benchmark-2025.ipynb` (todos os campeões × 2025 intocado + lag-365, só inferência em servidor remoto; **réguas finais: pH ens 0,0509 (−15%), OD ens 0,2107 (−22%)**; lag-365 inútil 0,46/0,93; Prophet explode; artefatos em `resultados/08-benchmark-2025/`)
 - [ ] Expor `app.py` FastAPI
 - [ ] Saída probabilística (quantis) e teste de transferência para 2026 quando houver dado validado

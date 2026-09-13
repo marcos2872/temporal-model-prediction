@@ -1,11 +1,11 @@
-# Experimento 04b — Ensemble residual + LightGBM no OD (EF01), regime anual (treino 2024)
+# Experimento 07 — Ensemble residual + LightGBM no OD (EF01), regime anual (treino 2024)
 
 Piso sazonal-naive + 288 LGBM no resíduo + DLinear-res + NNLS (pesos fitados na val).
-Régua 02b recarregada. 2025 intocado.
-Artefatos gerados por `notebooks/04b-ensemble-od.ipynb` (executado de ponta a ponta, 0 erros;
+Régua 03 recarregada. 2025 intocado.
+Artefatos gerados por `notebooks/07-ensemble-od.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, 12c).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/04b-ensemble-od.ipynb`
-(exige o checkpoint do 02b; ~3 min em 12c livre; `lgbm_steps.pkl` tem 121 MB — gitignored, regenerável).
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/07-ensemble-od.ipynb`
+(exige o checkpoint do 03; ~3 min em 12c livre; `lgbm_steps.pkl` tem 121 MB — gitignored, regenerável).
 
 ## Configuração do experimento
 
@@ -21,11 +21,11 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | **ens** | **0,1325** | 0,1814 |
 | lstnet(02) | 0,1380 | 0,1869 |
 | dlres | 0,1422 | 0,1959 |
-| patchtst/dlinear (03b) | 0,1432 / 0,1435 | 0,1909 / 0,1958 |
+| patchtst/dlinear (05) | 0,1432 / 0,1435 | 0,1909 / 0,1958 |
 | lgbm | 0,1577 | 0,2216 |
 | sazonal_naive_288 | 0,1579 | 0,2202 |
 
-(copiado de `metricas_val.csv`; 03b incluídos para referência — **nova régua do treino OD: ensemble 0,1325, −4,0% sobre o LSTNet.**)
+(copiado de `metricas_val.csv`; 05 incluídos para referência — **nova régua do treino OD: ensemble 0,1325, −4,0% sobre o LSTNet.**)
 
 ## Val dias-âncora (28 dias)
 

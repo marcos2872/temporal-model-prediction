@@ -1,10 +1,10 @@
-# Experimento 04 — Ensemble residual + LightGBM no pH (EF01), regime anual (treino 2024)
+# Experimento 06 — Ensemble residual + LightGBM no pH (EF01), regime anual (treino 2024)
 
 Piso sazonal-naive + 288 LGBM no resíduo + DLinear-res + NNLS (pesos fitados na val).
 Régua 02 recarregada. 2025 intocado.
-Artefatos gerados por `notebooks/04-ensemble-ph.ipynb` (executado de ponta a ponta, 0 erros;
+Artefatos gerados por `notebooks/06-ensemble-ph.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, 12c).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/04-ensemble-ph.ipynb`
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/06-ensemble-ph.ipynb`
 (exige o checkpoint do 02; ~3 min em 12c livre; `lgbm_steps.pkl` tem 124 MB — gitignored, regenerável).
 
 ## Configuração do experimento
@@ -20,7 +20,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 |---|---|---|
 | **ens** | **0,0357** | 0,0513 |
 | lstnet(02) | 0,0373 | 0,0529 |
-| dlinear (03) | 0,0394 | 0,0549 |
+| dlinear (04) | 0,0394 | 0,0549 |
 | sazonal_naive_288 | 0,0421 | 0,0614 |
 | dlres | 0,0421 | 0,0592 |
 | media_movel_288 | 0,0468 | 0,0636 |
@@ -77,4 +77,4 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 1. **Nova régua do treino pH: ensemble 0,0357 (−4,3% sobre o LSTNet).** O ganho vem de misturar o piso sazonal (0,27) ao LSTNet (0,72) — nos dias em que a rede erra, ontem salva.
 2. **LGBM zerado pelo NNLS:** sozinho faz 0,0501 (pior que o sazonal); como corretor de resíduo não agrega nada que o piso + rede já não cubram. Custo-benefício ruim (124 MB para peso zero) — fica registrado, mas o 08 dirá se o ensemble sobrevive fora da val.
 3. **Caveat honesto:** pesos fitados E avaliados na mesma val — há otimismo embutido (~1–2%). O teste de verdade é o benchmark 2025 (08), onde o ensemble entra sem re-fit.
-4. Fila: 04b no OD; depois o 08 decide as réguas finais.
+4. Fila: 07 no OD; depois o 08 decide as réguas finais.

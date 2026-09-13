@@ -1,11 +1,11 @@
-# Experimento 03 — PatchTST + DLinear no pH (EF01), regime anual (treino 2024)
+# Experimento 04 — PatchTST + DLinear no pH (EF01), regime anual (treino 2024)
 
 PatchTST nativo (Nie et al. 2022: patches 48/24 → 83 tokens, transformer 3×64/4 heads) +
 controle DLinear, treinados em 2024 com early stopping na val (4 fatias). Régua 02
 recarregada só para inferência. 2025 intocado.
-Artefatos gerados por `notebooks/03-patchtst-ph.ipynb` (executado de ponta a ponta, 0 erros;
+Artefatos gerados por `notebooks/04-patchtst-ph.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, torch CPU).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/03-patchtst-ph.ipynb`
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/04-patchtst-ph.ipynb`
 (exige o checkpoint do 02; ~10 min em 12c livre).
 
 ## Configuração do experimento

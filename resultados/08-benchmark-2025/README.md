@@ -1,18 +1,18 @@
 # Experimento 08 — Benchmark 2025: todos os campeões × ano intocado (só inferência)
 
-Avaliação final do regime anual: checkpoints de 00–04 (treino 2024) previstos em 2025,
+Avaliação final do regime anual: checkpoints de 00–07 (treino 2024) previstos em 2025,
 ano nunca tocado por nenhum treino, val ou tuning. Inclui o sazonal **lag-365** (copia a
 mesma data de 2024, com fallback honesto p/ saz-288 onde 2024 falha) e quebra mensal do erro.
 Artefatos gerados por `notebooks/08-benchmark-2025.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, 12c livres).
 Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/08-benchmark-2025.ipynb`
-(exige os 14 checkpoints de 00–04; ~10 min em 12c livres; sem treino).
+(exige os 14 checkpoints de 00–07; ~10 min em 12c livres; sem treino).
 
 ## Configuração do experimento
 
 - **Benchmark:** `dados/benchmark/ef01-...-2025.csv` (pH + OD), limpeza idêntica, janelas `L=8640 → H=288`
 - **Cobertura:** pH 24.589 janelas + 86 dias-âncora (31/jan → 29/set; outages matam out–dez) · OD 46.556 janelas + 163 dias-âncora (31/jan → 30/dez)
-- **Modelos (11 por variável):** 3 baratos + lag-365 + lstnet + patchtst + dlinear + lgbm + dlres + ens (pesos NNLS do 04, sem re-fit) + prophet (artefato do 00, só inferência)
+- **Modelos (11 por variável):** 3 baratos + lag-365 + lstnet + patchtst + dlinear + lgbm + dlres + ens (pesos NNLS do 06/07, sem re-fit) + prophet (artefato do 00/01, só inferência)
 - **lag-365:** fallback em só 1,2% (pH) / 1,3% (OD) — o fracasso dele é real (deriva interanual), não falta de dado
 
 ## Tabela principal — benchmark rolante 2025
@@ -24,9 +24,9 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | **ens (04)** | **0,0509** | 0,0704 |
 | lstnet (02) | 0,0529 | 0,0732 |
 | sazonal_naive_288 | 0,0597 | 0,0823 |
-| dlinear (03) | 0,0600 | 0,0856 |
+| dlinear (04) | 0,0600 | 0,0856 |
 | lgbm | 0,0671 | 0,0907 |
-| patchtst (03) | 0,0688 | 0,0949 |
+| patchtst (04) | 0,0688 | 0,0949 |
 | dlres | 0,0710 | 0,1073 |
 | media_movel_288 | 0,0715 | 0,0926 |
 | persistencia | 0,0844 | 0,1133 |
@@ -37,11 +37,11 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 | modelo | MAE | RMSE |
 |---|---|---|
-| **ens (04b)** | **0,2107** | 0,3220 |
-| lstnet (02b) | 0,2127 | 0,3220 |
-| patchtst (03b) | 0,2213 | 0,3226 |
+| **ens (07)** | **0,2107** | 0,3220 |
+| lstnet (03) | 0,2127 | 0,3220 |
+| patchtst (05) | 0,2213 | 0,3226 |
 | dlres | 0,2286 | 0,3407 |
-| dlinear (03b) | 0,2325 | 0,3416 |
+| dlinear (05) | 0,2325 | 0,3416 |
 | sazonal_naive_288 | 0,2714 | 0,4015 |
 | lgbm | 0,2943 | 0,4197 |
 | media_movel_288 | 0,4545 | 0,5645 |
@@ -87,7 +87,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | `metricas_por_mes_{ph,od}.csv` | MAE médio por mês em CSV |
 | `figs/` | As 10 figuras explicadas acima |
 
-Sem pasta `modelos/` — nenhum treino aqui; todos os checkpoints são dos experimentos 00–04.
+Sem pasta `modelos/` — nenhum treino aqui; todos os checkpoints são dos experimentos 00–07.
 
 ## Leitura dos resultados — veredito final do projeto
 

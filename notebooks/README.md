@@ -3,15 +3,14 @@
 | Notebook | Experimento | Resultados |
 |---|---|---|
 | [`00-baseline-ph.ipynb`](00-baseline-ph.ipynb) | Baselines no pH 2024 + val 4 fatias | [`../resultados/00-baseline-ph/`](../resultados/00-baseline-ph/) |
-| [`00b-baseline-od.ipynb`](00b-baseline-od.ipynb) | Mesmo protocolo no OD 2024 | [`../resultados/00b-baseline-od/`](../resultados/00b-baseline-od/) |
+| [`01-baseline-od.ipynb`](01-baseline-od.ipynb) | Mesmo protocolo no OD 2024 | [`../resultados/01-baseline-od/`](../resultados/01-baseline-od/) |
 | [`02-lstnet-ph.ipynb`](02-lstnet-ph.ipynb) | LSTNet nativo 5 min no pH (nova régua) | [`../resultados/02-lstnet-ph/`](../resultados/02-lstnet-ph/) |
-| [`02b-lstnet-od.ipynb`](02b-lstnet-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/02b-lstnet-od/`](../resultados/02b-lstnet-od/) |
-| [`03-patchtst-ph.ipynb`](03-patchtst-ph.ipynb) | PatchTST + DLinear no pH (régua segue LSTNet) | [`../resultados/03-patchtst-ph/`](../resultados/03-patchtst-ph/) |
-| [`03b-patchtst-od.ipynb`](03b-patchtst-od.ipynb) | Os três no OD (régua segue LSTNet) | [`../resultados/03b-patchtst-od/`](../resultados/03b-patchtst-od/) |
-| [`04-ensemble-ph.ipynb`](04-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (nova régua) | [`../resultados/04-ensemble-ph/`](../resultados/04-ensemble-ph/) |
-| [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
+| [`03-lstnet-od.ipynb`](03-lstnet-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/03-lstnet-od/`](../resultados/03-lstnet-od/) |
+| [`04-patchtst-ph.ipynb`](04-patchtst-ph.ipynb) | PatchTST + DLinear no pH (régua segue LSTNet) | [`../resultados/04-patchtst-ph/`](../resultados/04-patchtst-ph/) |
+| [`05-patchtst-od.ipynb`](05-patchtst-od.ipynb) | Os três no OD (régua segue LSTNet) | [`../resultados/05-patchtst-od/`](../resultados/05-patchtst-od/) |
+| [`06-ensemble-ph.ipynb`](06-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (nova régua) | [`../resultados/06-ensemble-ph/`](../resultados/06-ensemble-ph/) |
+| [`07-ensemble-od.ipynb`](07-ensemble-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/07-ensemble-od/`](../resultados/07-ensemble-od/) |
 | [`08-benchmark-2025.ipynb`](08-benchmark-2025.ipynb) | Todos os campeões × 2025 intocado + lag-365 (só inferência) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
-| [`08-transfer-ph-od.ipynb`](08-transfer-ph-od.ipynb) | Campeões × dados novos fev–abr/2026, só inferência (ponte CTX=2016 exata) | [`../resultados/08-transfer-ph-od/`](../resultados/08-transfer-ph-od/) |
 
 ## 1. Ambiente (uma vez)
 
@@ -37,20 +36,25 @@ Se o kernel não aparecer: com o `.venv` ativo, rode
 **Via terminal (reproduzível, regenera tudo):**
 ```bash
 .venv/bin/jupyter nbconvert --to notebook --execute --inplace \
-  --ExecutePreprocessor.timeout=900 notebooks/00-baseline-ph.ipynb
+  --ExecutePreprocessor.timeout=2400 notebooks/00-baseline-ph.ipynb
 ```
-Troque o nome do arquivo para o `00b` ou `01`. Tempo típico: 5–10 min
-(ARIMA reestimado por origem + ajuste do Prophet; o `01` treina o LSTM em CPU, ~5 min; o `02` treina o LSTNet, ~10 min).
+Troque o nome do arquivo. Tempos típicos em 12c livres: baselines (ARIMA + Prophet)
+15–30 min; LSTNet/PatchTST ~10 min; ensembles ~5 min; 08-benchmark ~10 min.
+Rode **um notebook por vez** (12c/23 GB estouram com jobs concorrentes);
+para runs compartilhando a máquina, limite threads (`OMP_NUM_THREADS=4`).
 
 ## 3. O que cada execução gera
 
 Tudo cai em `resultados/<experimento>/` (criado automaticamente):
-`metricas_baseline.csv`, `metricas_holdout.csv`, `modelos/` (ARIMA `.pkl`, Prophet `.json`) e `figs/`.
+`metricas_treino.csv`, `metricas_val.csv`, `metricas_val_diaria.csv`,
+`metricas_por_dia.csv`, `modelos/` (checkpoints `.pt`, ARIMA `.pkl`, Prophet `.json`,
+LightGBM `.pkl` gitignored) e `figs/`.
 
 ## 4. Problemas comuns
 
-- **Prophet pulado na §8:** CmdStan ausente — rode
+- **Prophet pulado:** CmdStan ausente — rode
   `.venv/bin/python -c "from cmdstanpy import install_cmdstan; install_cmdstan()"` (precisa de `g++`/`make`) e reexecute.
-- **ARIMA lento:** é esperado (reestimação por origem); reduza `ARIMA_STRIDE` na §1 de setup para mais origens, ou aumente para menos.
+- **ARIMA lento:** é esperado (reestimação por origem); ajuste `ARIMA_STRIDE` na célula de setup.
 - **`ModuleNotFoundError`:** kernel errado — confira no canto superior direito do Jupyter se é o do `.venv`.
 - **Reexecutar apaga outputs antigos:** o `nbconvert --inplace` sobrescreve métricas, modelos e figuras. Para comparar versões, copie `resultados/<exp>/` antes.
+- **Dependências entre notebooks:** 04/05 recarregam o LSTNet do 02/03, 06/07 recarregam o 02/03 (assert com mensagem clara se ausente); o 08 exige os 14 checkpoints de 00–07 — rode na ordem numérica (00/01 → 02/03 → 04/05 → 06/07) antes dele.

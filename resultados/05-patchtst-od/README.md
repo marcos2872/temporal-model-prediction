@@ -1,11 +1,11 @@
-# Experimento 03b — PatchTST + DLinear no OD (EF01), regime anual (treino 2024)
+# Experimento 05 — PatchTST + DLinear no OD (EF01), regime anual (treino 2024)
 
 PatchTST nativo + controle DLinear, treinados no OD 2024 com early stopping na val.
-Régua 02b recarregada só para inferência. 2025 intocado.
-Artefatos gerados por `notebooks/03b-patchtst-od.ipynb` (executado de ponta a ponta, 0 erros;
+Régua 03 recarregada só para inferência. 2025 intocado.
+Artefatos gerados por `notebooks/05-patchtst-od.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`, torch CPU).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/03b-patchtst-od.ipynb`
-(exige o checkpoint do 02b; stride 8 no treino; ~10 min em 12c livre).
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/05-patchtst-od.ipynb`
+(exige o checkpoint do 03; stride 8 no treino; ~10 min em 12c livre).
 
 ## Configuração do experimento
 
@@ -23,7 +23,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | media_movel_288 | 0,3260 | 0,4289 |
 | persistencia | 0,3929 | 0,5728 |
 
-(copiado de `metricas_val.csv`) — **régua segue LSTNet (02b)**; patchtst e dlinear empatados em 2º, ambos batem o sazonal (−9%).
+(copiado de `metricas_val.csv`) — **régua segue LSTNet (03)**; patchtst e dlinear empatados em 2º, ambos batem o sazonal (−9%).
 
 ## Val dias-âncora (28 dias)
 
@@ -72,4 +72,4 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 1. **Régua segue LSTNet (0,1380).** PatchTST e DLinear empatados (~0,143, −9% sobre o sazonal) — mesma convergência de métodos vista no pH.
 2. Divergência rolante × dias-âncora no patchtst (0,1432 vs 0,1594): nos dias-âncora ele perde do sazonal — instabilidade diária segue o calcanhar de todos menos o LSTNet.
-3. Fila: ensemble (04b) combina os três; checkpoints guardados para o 08.
+3. Fila: ensemble (07) combina os três; checkpoints guardados para o 08.

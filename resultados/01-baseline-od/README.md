@@ -1,11 +1,11 @@
-# Experimento 00b — Baselines no OD (EF01), regime anual (treino 2024)
+# Experimento 01 — Baselines no OD (EF01), regime anual (treino 2024)
 
 Baselines clássicos no desenho travado (`L=8640 → H=288`), em 1 ano de treino.
 Treino = janelas válidas de 2024 fora da val; val = 4 fatias (19–28/abr parcial no OD,
 20–29/jul, 15–24/set, 20–24/nov). 2025 intocado (benchmark no 08). Lag-365 estreia no 08.
-Artefatos gerados por `notebooks/00b-baseline-od.ipynb` (executado de ponta a ponta, 0 erros;
+Artefatos gerados por `notebooks/01-baseline-od.ipynb` (executado de ponta a ponta, 0 erros;
 procedência: `temporal-remote` 192.168.1.6, dir `/home/marcos/temporal-model`).
-Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/00b-baseline-od.ipynb`
+Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 notebooks/01-baseline-od.ipynb`
 
 ## Configuração do experimento
 
@@ -23,7 +23,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | persistencia | 0,3929 | 0,5728 |
 | prophet | 0,4091 | 0,5003 |
 
-(copiado de `metricas_val.csv`) — **régua dos baselines OD: sazonal-naive 0,1579** (já batida pelo LSTNet do 02b: 0,1380).
+(copiado de `metricas_val.csv`) — **régua dos baselines OD: sazonal-naive 0,1579** (já batida pelo LSTNet do 03: 0,1380).
 
 ## Treino rolante (referência)
 
@@ -76,6 +76,6 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Leitura dos resultados
 
-1. **Régua dos baselines OD: sazonal-naive 0,1579** — mas o 02b já a superou (LSTNet 0,1380). Ordem dos demais como no regime antigo, com gaps maiores (OD anual é mais volátil).
+1. **Régua dos baselines OD: sazonal-naive 0,1579** — mas o 03 já a superou (LSTNet 0,1380). Ordem dos demais como no regime antigo, com gaps maiores (OD anual é mais volátil).
 2. **ARIMA = persistência nos dias-âncora** (fallback 100% — grade horária com NaN). **Prophet colapsa** (0,41, 2,6× a régua), igual ao pH: fora do jogo no regime anual.
-3. Fila: 03b/04b miram o LSTNet 0,1380; lag-365 estreia no benchmark.
+3. Fila: 05/07 miram o LSTNet 0,1380; lag-365 estreia no benchmark.

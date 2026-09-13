@@ -83,4 +83,4 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 1. **Nova régua do treino pH: LSTNet MAE 0,0373 (val) / 0,0360 (dias-âncora), −11% sobre o sazonal.** Com 1 ano de treino a margem sobre o sazonal cresceu (era −9% no regime de 3 meses) — mais dados ajudaram o modelo mais que a regra.
 2. Treino saudável: val cai até a ep. 7 e estabiliza; early stopping na 17 sem divergência treino/val.
-3. Fila: PatchTST/DLinear (03) precisam bater 0,0373; checkpoint guardado para o benchmark 2025 (08).
+3. Fila: PatchTST/DLinear (04) precisam bater 0,0373; checkpoint guardado para o benchmark 2025 (08).
