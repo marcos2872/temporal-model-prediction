@@ -168,8 +168,8 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Definir dataset — CETESB EF01 Mogi das Cruzes, univariado (pH e OD em `dados/`, ver `dados/README.md`)
 - [x] Criar `notebooks/00-baseline-ph.ipynb` (pH, L=30d, H=1d + holdout de 10 dias — executado; régua: **sazonal-naive, MAE 0,0501**; artefatos em `resultados/00-baseline-ph/`)
 - [x] Criar `notebooks/00b-baseline-od.ipynb` (mesmo protocolo no OD, segmento 01/06→21/07 — executado; régua: **sazonal-naive, MAE 0,1525**; artefatos em `resultados/00b-baseline-od/`)
-- [ ] Criar `src/windowing.py` + `train_lstm.py`
-- [ ] Evoluir para `TFT / PatchTST`
+- [x] Criar `notebooks/01-lstm-ph.ipynb` (LSTM-h no pH, mesmo protocolo, grade horária Lh=720/Hh=24 + ×12 — executado; resultado honesto: **MAE 0,1120/0,1081, não bate o sazonal-naive**; grade horária descartada para H=288; artefatos em `resultados/01-lstm-ph/`)
+- [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
 - [ ] Expor `app.py` FastAPI
 
 ## 8. Busca bibliográfica sistemática — modelos de predição temporal (2026-09-10)
