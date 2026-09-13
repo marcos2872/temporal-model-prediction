@@ -22,7 +22,7 @@ Números abaixo = MAE na val, salvo indicação.
 
 Quadro das réguas (benchmark 2025, critério principal): **pH → ensemble 0,0509** · **OD → ensemble 0,2107**.
 
-Histórico: até set/2026 o projeto usou o regime trimestral (dados jun–ago/2026 + fev–abr/2026).
+Histórico: até set/2026 o projeto usou um regime trimestral, com outro conjunto de dados.
 Na migração para o regime anual (13/09/2026) os experimentos LSTM-h, amplitude-forward,
 refit e gate foram removidos e a numeração foi compactada e **reatribuída** — os atuais
 01/03/05/07 não são os antigos 01/05/06/07 (ex.: o antigo 02b-lstnet-od virou 03-lstnet-od).
