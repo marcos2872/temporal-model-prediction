@@ -25,3 +25,4 @@ pdfs_texto/
 resultados/04-ensemble-ph/modelos/lgbm_steps.pkl
 resultados/04b-ensemble-od/modelos/lgbm_steps.pkl
 resultados/05-amplitude-od/modelos/lgbm_mult_steps.pkl
+resultados/06-refit-od/modelos/lgbm_mult_A_steps.pkl

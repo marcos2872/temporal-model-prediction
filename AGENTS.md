@@ -37,15 +37,17 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 
 - Detect: `sshmcp_list_servers` shows a configured server (e.g. `temporal-remote`).
   If no server / MCP unavailable → ignore this section, run locally with `.venv`.
-- Flow when active (code local, compute remote):
-  1. Local: create/edit `notebooks/NN-*.ipynb` + small scaffolds only; commit + push
-     (`feat(model): ...`, never commit `.venv/` nor `*.pkl >100MB` — extend `.gitignore` per exp).
-  2. Remote via sshmcp: `git pull` → ensure venv (`uv venv/.pip install -r requirements.txt`)
-     → `nbconvert --execute --inplace notebooks/NN-*.ipynb` → `git add resultados/<exp>/`
-     (respecting `.gitignore`) → commit + push.
-  3. Local: `git pull` → evaluate `metricas_*.csv`/`figs/` → write `resultados/<exp>/README.md`
-     + index rows → separate `docs:` commit + push (confirm with user per Git rule).
-- Never run heavy training locally when remote is available; never `--amend` pushed commits.
+- Flow when active (code local, compute remote, transfer via MCP — no git on remote):
+  1. Local: create/edit `notebooks/NN-*.ipynb`; extend `.gitignore` per exp for `*.pkl >100MB`.
+  2. Remote via sshmcp: `git pull --ff-only` (deps only: `dados/`, checkpoints — anonymous read works)
+     → ensure venv (`uv venv` / `pip install -r requirements.txt` if needed)
+     → `sshmcp_upload_file` the notebook → `nbconvert --execute --inplace` in background
+     (`nohup ... &`, poll with short `ps`/`tail` calls — the MCP channel times out on long runs).
+  3. Local: `sshmcp_download_file` (executed notebook) + `sshmcp_download_directory`
+     (`resultados/<exp>/`, absolute paths — `~` doesn't expand) → verify no nested dupes,
+     metrics/figs complete, 0 error outputs → evaluate → write `resultados/<exp>/README.md`
+     + index rows → `feat(model):` + `docs:` commits + push (all git happens locally).
+- Never run heavy training locally when remote is available; never commit `.venv/` nor `*.pkl >100MB`.
 
 ## Git
 

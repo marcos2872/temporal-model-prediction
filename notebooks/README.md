@@ -13,6 +13,7 @@
 | [`04-ensemble-ph.ipynb`](04-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (executado) | [`../resultados/04-ensemble-ph/`](../resultados/04-ensemble-ph/) |
 | [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 (executado) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
 | [`05-amplitude-od.ipynb`](05-amplitude-od.ipynb) | Correção de amplitude no OD, segmento 01/06→21/07 (saz reescalado + LGBM-mult + DLinear ponderado) | [`../resultados/05-amplitude-od/`](../resultados/05-amplitude-od/) |
+| [`06-refit-od.ipynb`](06-refit-od.ipynb) | Refit honesto + amplitude-forward no OD (Estágio A comparável + B walk-forward) | [`../resultados/06-refit-od/`](../resultados/06-refit-od/) |
 
 ## 1. Ambiente (uma vez)
 
