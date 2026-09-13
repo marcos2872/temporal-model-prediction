@@ -33,6 +33,20 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - Main README: new performance numbers only with a verifiable citation (author + table/page); formulas are canonical study formulations, not literal quotes — say so.
 - Never reference gitignored dirs (`pdfs/`, `pdfs_texto/`, `reviews/`, `reports/`, `artigos/`, `.venv`) from committed docs — they don't go to GitHub. Cite `busca_bibliografica/` + DOI/arXiv links instead.
 
+## Remote run (only if SSH MCP is active)
+
+- Detect: `sshmcp_list_servers` shows a configured server (e.g. `temporal-remote`).
+  If no server / MCP unavailable → ignore this section, run locally with `.venv`.
+- Flow when active (code local, compute remote):
+  1. Local: create/edit `notebooks/NN-*.ipynb` + small scaffolds only; commit + push
+     (`feat(model): ...`, never commit `.venv/` nor `*.pkl >100MB` — extend `.gitignore` per exp).
+  2. Remote via sshmcp: `git pull` → ensure venv (`uv venv/.pip install -r requirements.txt`)
+     → `nbconvert --execute --inplace notebooks/NN-*.ipynb` → `git add resultados/<exp>/`
+     (respecting `.gitignore`) → commit + push.
+  3. Local: `git pull` → evaluate `metricas_*.csv`/`figs/` → write `resultados/<exp>/README.md`
+     + index rows → separate `docs:` commit + push (confirm with user per Git rule).
+- Never run heavy training locally when remote is available; never `--amend` pushed commits.
+
 ## Git
 
 - Conventional commits (`docs:` / `feat(model):` …). Never commit or push without explicit user confirmation; when in doubt propose split (docs vs experiment) via the question tool. Do not amend pushed commits.
