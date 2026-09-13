@@ -177,6 +177,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/07-ensemble-od.ipynb` (ensemble NNLS no OD 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,1325, −4,0%**; dlres com peso 0,30; artefatos em `resultados/07-ensemble-od/`)
 - [x] Criar `notebooks/08-benchmark-2025.ipynb` (todos os campeões × 2025 intocado + lag-365, só inferência em servidor remoto; **réguas finais: pH ens 0,0509 (−15%), OD ens 0,2107 (−22%)**; lag-365 inútil 0,46/0,93; Prophet explode; artefatos em `resultados/08-benchmark-2025/`)
 - [x] Expor `app.py` FastAPI (ensembles 06/07 servidos localmente; `POST /prever` com CSV CETESB + `?horizonte_horas=1..24`; Swagger em `/docs`; golden test vs recomputação ±5e-5)
+- [x] Conclusão do projeto em `CONCLUSAO.md` (réguas finais, auditoria de campo 12–13/09, multivariados bloqueados por falta de covariáveis)
 - [ ] Saída probabilística (quantis) e teste de transferência para 2026 quando houver dado validado
 
 ## 7b. API de previsão (local)
