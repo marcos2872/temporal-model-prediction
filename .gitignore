@@ -21,6 +21,6 @@ artigos/
 pdfs_texto/
 .obsidian/
 
-# Artefatos grandes de experimentos (limite 100 MB do GitHub; regeneráveis via notebook)
-resultados/04-ensemble-ph/modelos/lgbm_steps.pkl
-resultados/04b-ensemble-od/modelos/lgbm_steps.pkl
+# Artefatos grandes de experimentos (limite 100 MB do GitHub; regeneráveis via notebook;
+# o commit leva apenas o .pkl.gz correspondente, que a API sabe ler)
+resultados/*/modelos/lgbm_steps.pkl

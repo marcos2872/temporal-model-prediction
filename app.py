@@ -115,11 +115,15 @@ def carrega(var: str):
         "dlres": _load_state(DLinearLite, base / dlres_nome, residual=True),
         "lgbm": None,
     }
-    if ens["lgbm"] != 0.0:  # pH tem peso 0 — nem carrega o .pkl de 124 MB
-        pk = base / "lgbm_steps.pkl"
+    if ens["lgbm"] != 0.0:  # pH tem peso 0 — nem carrega o LGBM
+        import gzip
+
+        pk_gz, pk = base / "lgbm_steps.pkl.gz", base / "lgbm_steps.pkl"
+        pk = pk_gz if pk_gz.exists() else pk  # .pkl local (gitignored) como fallback
         if not pk.exists():
-            raise FileNotFoundError(f"checkpoint ausente: {pk}")
-        with open(pk, "rb") as f:
+            raise FileNotFoundError(f"checkpoint ausente: {pk_gz} (ou {pk})")
+        opener = gzip.open if pk.suffix == ".gz" else open
+        with opener(pk, "rb") as f:
             modelos["lgbm"] = pickle.load(f)
     MODELOS[var] = modelos
 
