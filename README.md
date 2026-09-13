@@ -166,21 +166,17 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 
 - [x] Busca bibliográfica sistemática (2026-09-10) — ver seção 8 e `busca_bibliografica/`
 - [x] Definir dataset — CETESB EF01 Mogi das Cruzes, univariado (pH e OD em `dados/`, ver `dados/README.md`)
-- [x] Criar `notebooks/00-baseline-ph.ipynb` (pH, L=30d, H=1d + holdout de 10 dias — executado; régua: **sazonal-naive, MAE 0,0501**; artefatos em `resultados/00-baseline-ph/`)
-- [x] Criar `notebooks/00b-baseline-od.ipynb` (mesmo protocolo no OD, segmento 01/06→21/07 — executado; régua: **sazonal-naive, MAE 0,1525**; artefatos em `resultados/00b-baseline-od/`)
-- [x] Criar `notebooks/01-lstm-ph.ipynb` (LSTM-h no pH, mesmo protocolo, grade horária Lh=720/Hh=24 + ×12 — executado; resultado honesto: **MAE 0,1120/0,1081, não bate o sazonal-naive**; grade horária descartada para H=288; artefatos em `resultados/01-lstm-ph/`)
-- [x] Criar `notebooks/01b-lstm-od.ipynb` (mesmo método no OD, segmento limpo 01/06→21/07 — executado; **MAE 0,2277/0,6220, colapso progressivo com a amplitude de julho**; artefatos em `resultados/01b-lstm-od/`)
-- [x] Criar `notebooks/02-lstnet-ph.ipynb` (LSTNet nativo 5 min no pH: conv + GRU + skip p=1d + AR-288 + RevIN — executado; **NOVA RÉGUA: MAE 0,0456/0,0446, −9%/−4% sobre o sazonal-naive**; artefatos em `resultados/02-lstnet-ph/`)
-- [x] Criar `notebooks/02b-lstnet-od.ipynb` (mesmo método no OD, segmento limpo 01/06→21/07 — executado; **melhor neural no teste: 0,0981 (−36%), mas holdout 0,2428 perde do sazonal-naive 0,1550** com a amplitude crescente de julho; artefatos em `resultados/02b-lstnet-od/`)
-- [x] Criar `notebooks/03-patchtst-ph.ipynb` (PatchTST nativo + DLinear + régua LSTNet recarregada — executado; **régua segue LSTNet 0,0456/0,0446**; patchtst 0,0611/0,0457, dlinear 0,0498/0,0538 com 8 s de treino; artefatos em `resultados/03-patchtst-ph/`)
-- [x] Criar `notebooks/03b-patchtst-od.ipynb` (os três no OD limpo — executado; **régua segue sazonal-naive 0,1525/0,1550**; melhor neural no holdout é o DLinear 0,2146; artefatos em `resultados/03b-patchtst-od/`)
-- [x] Criar `notebooks/04-ensemble-ph.ipynb` (ensemble residual + LightGBM no pH: piso sazonal + 288 LGBM + DLinear-res + NNLS — executado em servidor remoto; **régua segue LSTNet 0,0456/0,0446**, ens 2º com 0,0475/0,0462; artefatos em `resultados/04-ensemble-ph/`)
-- [x] Criar `notebooks/04b-ensemble-od.ipynb` (mesmo método no OD limpo 01/06→21/07 — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 2º no teste 0,1024 e 3º no holdout 0,2105; lgbm supera lstnet no holdout; artefatos em `resultados/04b-ensemble-od/`)
-- [x] Criar `notebooks/05-amplitude-od.ipynb` (correção de amplitude no OD limpo: saz reescalado + LGBM-mult + DLinear ponderado — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 0,1009/0,2126, saz_escalado 2º no holdout 0,1874; artefatos em `resultados/05-amplitude-od/`)
-- [x] Criar `notebooks/06-refit-od.ipynb` (refit honesto + amplitude-forward no OD limpo — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ensA novo melhor no teste 0,0920, lstnet_ft a +6,6% no holdout 0,1653; artefatos em `resultados/06-refit-od/`)
-- [x] Criar `notebooks/07-gate-od.ipynb` (gate de instabilidade no OD limpo — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, gates degeneram, oracle 0,1019/0,1103 quantifica o teto; artefatos em `resultados/07-gate-od/`)
-- [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
+- [x] Criar `notebooks/00-baseline-ph.ipynb` (regime anual: baselines no pH 2024, treino + val 4 fatias — executado em servidor remoto; régua: **sazonal-naive 0,0421**; Prophet colapsa 0,1703; artefatos em `resultados/00-baseline-ph/`)
+- [x] Criar `notebooks/00b-baseline-od.ipynb` (baselines no OD 2024 — executado em servidor remoto; régua: **sazonal-naive 0,1579**; Prophet colapsa 0,4091; artefatos em `resultados/00b-baseline-od/`)
+- [x] Criar `notebooks/02-lstnet-ph.ipynb` (LSTNet nativo no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: 0,0373, −11,4% sobre o sazonal**; artefatos em `resultados/02-lstnet-ph/`)
+- [x] Criar `notebooks/02b-lstnet-od.ipynb` (LSTNet no OD 2024 — executado em servidor remoto; **NOVA RÉGUA (1ª vez no OD): 0,1380, −12,6%**; artefatos em `resultados/02b-lstnet-od/`)
+- [x] Criar `notebooks/03-patchtst-ph.ipynb` (PatchTST + DLinear no pH 2024 — executado em servidor remoto; régua segue LSTNet; dlinear 0,0394 > patchtst 0,0414 (overfita); artefatos em `resultados/03-patchtst-ph/`)
+- [x] Criar `notebooks/03b-patchtst-od.ipynb` (os três no OD 2024 — executado em servidor remoto; régua segue LSTNet; patchtst/dlinear ~0,143; artefatos em `resultados/03b-patchtst-od/`)
+- [x] Criar `notebooks/04-ensemble-ph.ipynb` (ensemble NNLS no pH 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,0357, −4,3%**; LGBM zerado; artefatos em `resultados/04-ensemble-ph/`)
+- [x] Criar `notebooks/04b-ensemble-od.ipynb` (ensemble NNLS no OD 2024 — executado em servidor remoto; **NOVA RÉGUA: ens 0,1325, −4,0%**; dlres com peso 0,30; artefatos em `resultados/04b-ensemble-od/`)
+- [x] Criar `notebooks/08-benchmark-2025.ipynb` (todos os campeões × 2025 intocado + lag-365, só inferência em servidor remoto; **réguas finais: pH ens 0,0509 (−15%), OD ens 0,2107 (−22%)**; lag-365 inútil 0,46/0,93; Prophet explode; artefatos em `resultados/08-benchmark-2025/`)
 - [ ] Expor `app.py` FastAPI
+- [ ] Saída probabilística (quantis) e teste de transferência para 2026 quando houver dado validado
 
 ## 8. Busca bibliográfica sistemática — modelos de predição temporal (2026-09-10)
 

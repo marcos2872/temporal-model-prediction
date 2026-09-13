@@ -11,15 +11,17 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 
 ## Data (`dados/`, see `dados/README.md`)
 
-- CETESB CSVs are **not** plain CSVs: encoding `windows-1252`, separator `;`, decimal comma, row 1 is a CETESB header (skip it), dates are `dd/mm/aaaa hh:mm`, empty cell = missing (~18%). Copy the pandas snippet from `dados/README.md` — do not guess parsing.
-- Known landmine: OD sensor dead `21/07/2026 01:10 → 06/08/2026 11:30` (16.4 days of NaN). Any OD experiment must use the clean segment or handle the gap explicitly.
-- Data line 1 of each file declares validation status; post-22/08/2026 is provisional.
+- Regime anual: treino = 2024 (`dados/treino/`), benchmark = 2025 (`dados/benchmark/`, intocado até a avaliação final). Ambos 100% validados, sem trecho provisório.
+- CETESB CSVs are **not** plain CSVs: encoding `windows-1252`, separator `;`, decimal comma, row 1 is a CETESB header (skip it), dates are `dd/mm/aaaa hh:mm`, empty cell = missing. Copy the pandas snippet from `dados/README.md` — do not guess parsing.
+- Known landmines (2024): pH outages 16–18/jan (2,3 d), 29/abr–02/mai (2,7 d), **27/mai–13/jun (~17 d)** + micro-tails; any pH window overlapping NaN is dropped — report coverage per val slice. OD 2024 has only micro-outages.
+- Val = 4 slices of 10 days, one per season (19–28/abr, 20–29/jul, 15–24/set, 20–24/nov); windows assigned by end date. 2025 is NEVER touched by train/val/early-stopping/tuning.
 
 ## Experiment protocol (locked — keep comparable)
 
-- Univariate only (one variable per experiment). `L=8640` (30 d), `H=288` (1 d), 5-min step, temporal 70/15/15 split **no shuffle** + pure 10-day holdout with 10 daily origins. Interpolation max 24 steps (2 h).
+- Univariate only (one variable per experiment). `L=8640` (30 d), `H=288` (1 d), 5-min step, interpolation max 24 steps (2 h). Daily anchors at 23:55.
 - ARIMA(2,1,2) runs on an **hourly grid** (`L=720h`/`H=24h`, repeat ×12) for cost — do not run it at 5-min resolution.
-- Rulers to beat: pH seasonal-naive MAE 0.0501 (rolling) / 0.0466 (holdout); OD 0.1525 / 0.1550.
+- Rulers (benchmark 2025, primário): pH ensemble MAE 0.0509 · OD ensemble MAE 0.2107. Treino-2024 val rulers: pH ens 0.0357 · OD ens 0.1325.
+- Run ONE remote job at a time (12c/23GB OOMs fast); cap threads (`OMP/MKL/OpenBLAS_NUM_THREADS=4`) when sharing the box, uncapped when solo. Never `sleep` inside remote commands (MCP channel times out); poll with short `cat`/`ls` calls. `pkill -f` patterns must not match your own command line — use the `[.]` bracket trick.
 
 ## Naming and layout
 

@@ -1,20 +1,17 @@
-# Notebooks — como rodar
+# Notebooks — como rodar (regime anual: treino 2024, benchmark 2025)
 
 | Notebook | Experimento | Resultados |
 |---|---|---|
-| [`00-baseline-ph.ipynb`](00-baseline-ph.ipynb) | Baselines no pH, L=30d/H=1d + holdout de 10 dias | [`../resultados/00-baseline-ph/`](../resultados/00-baseline-ph/) |
-| [`00b-baseline-od.ipynb`](00b-baseline-od.ipynb) | Mesmo protocolo no OD, segmento 01/06→21/07 | [`../resultados/00b-baseline-od/`](../resultados/00b-baseline-od/) |
-| [`01-lstm-ph.ipynb`](01-lstm-ph.ipynb) | LSTM-h no pH, mesmo protocolo (grade horária + ×12) | [`../resultados/01-lstm-ph/`](../resultados/01-lstm-ph/) |
-| [`01b-lstm-od.ipynb`](01b-lstm-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/01b-lstm-od/`](../resultados/01b-lstm-od/) |
+| [`00-baseline-ph.ipynb`](00-baseline-ph.ipynb) | Baselines no pH 2024 + val 4 fatias | [`../resultados/00-baseline-ph/`](../resultados/00-baseline-ph/) |
+| [`00b-baseline-od.ipynb`](00b-baseline-od.ipynb) | Mesmo protocolo no OD 2024 | [`../resultados/00b-baseline-od/`](../resultados/00b-baseline-od/) |
 | [`02-lstnet-ph.ipynb`](02-lstnet-ph.ipynb) | LSTNet nativo 5 min no pH (nova régua) | [`../resultados/02-lstnet-ph/`](../resultados/02-lstnet-ph/) |
-| [`02b-lstnet-od.ipynb`](02b-lstnet-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/02b-lstnet-od/`](../resultados/02b-lstnet-od/) |
+| [`02b-lstnet-od.ipynb`](02b-lstnet-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/02b-lstnet-od/`](../resultados/02b-lstnet-od/) |
 | [`03-patchtst-ph.ipynb`](03-patchtst-ph.ipynb) | PatchTST + DLinear no pH (régua segue LSTNet) | [`../resultados/03-patchtst-ph/`](../resultados/03-patchtst-ph/) |
-| [`03b-patchtst-od.ipynb`](03b-patchtst-od.ipynb) | Os três no OD, segmento 01/06→21/07 (régua segue sazonal) | [`../resultados/03b-patchtst-od/`](../resultados/03b-patchtst-od/) |
-| [`04-ensemble-ph.ipynb`](04-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (executado) | [`../resultados/04-ensemble-ph/`](../resultados/04-ensemble-ph/) |
-| [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 (executado) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
-| [`05-amplitude-od.ipynb`](05-amplitude-od.ipynb) | Correção de amplitude no OD, segmento 01/06→21/07 (saz reescalado + LGBM-mult + DLinear ponderado) | [`../resultados/05-amplitude-od/`](../resultados/05-amplitude-od/) |
-| [`06-refit-od.ipynb`](06-refit-od.ipynb) | Refit honesto + amplitude-forward no OD (Estágio A comparável + B walk-forward) | [`../resultados/06-refit-od/`](../resultados/06-refit-od/) |
-| [`07-gate-od.ipynb`](07-gate-od.ipynb) | Gate de instabilidade no OD (sazonal ↔ lstnet_ft, teto-oráculo) | [`../resultados/07-gate-od/`](../resultados/07-gate-od/) |
+| [`03b-patchtst-od.ipynb`](03b-patchtst-od.ipynb) | Os três no OD (régua segue LSTNet) | [`../resultados/03b-patchtst-od/`](../resultados/03b-patchtst-od/) |
+| [`04-ensemble-ph.ipynb`](04-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (nova régua) | [`../resultados/04-ensemble-ph/`](../resultados/04-ensemble-ph/) |
+| [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
+| [`08-benchmark-2025.ipynb`](08-benchmark-2025.ipynb) | Todos os campeões × 2025 intocado + lag-365 (só inferência) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
+| [`08-transfer-ph-od.ipynb`](08-transfer-ph-od.ipynb) | Campeões × dados novos fev–abr/2026, só inferência (ponte CTX=2016 exata) | [`../resultados/08-transfer-ph-od/`](../resultados/08-transfer-ph-od/) |
 
 ## 1. Ambiente (uma vez)
 
