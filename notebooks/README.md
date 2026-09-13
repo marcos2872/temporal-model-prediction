@@ -14,6 +14,7 @@
 | [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 (executado) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
 | [`05-amplitude-od.ipynb`](05-amplitude-od.ipynb) | Correção de amplitude no OD, segmento 01/06→21/07 (saz reescalado + LGBM-mult + DLinear ponderado) | [`../resultados/05-amplitude-od/`](../resultados/05-amplitude-od/) |
 | [`06-refit-od.ipynb`](06-refit-od.ipynb) | Refit honesto + amplitude-forward no OD (Estágio A comparável + B walk-forward) | [`../resultados/06-refit-od/`](../resultados/06-refit-od/) |
+| [`07-gate-od.ipynb`](07-gate-od.ipynb) | Gate de instabilidade no OD (sazonal ↔ lstnet_ft, teto-oráculo) | [`../resultados/07-gate-od/`](../resultados/07-gate-od/) |
 
 ## 1. Ambiente (uma vez)
 
