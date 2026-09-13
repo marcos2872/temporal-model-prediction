@@ -1,1 +1,1 @@
-{"pesos": {"sazonal": 0.0, "lstnet": 0.9146, "lgbm": 0.0831, "dlres": 0.0031}, "mode": "nnls-ensemble sobre sazonal+lstnet+lgbm+dlres"}
+{"pesos": {"sazonal": 0.2701, "lstnet": 0.7247, "lgbm": 0.0, "dlres": 0.0045}, "mode": "nnls-ensemble sobre sazonal+lstnet+lgbm+dlres", "val_slices": [["2024-04-19", "2024-04-28"], ["2024-07-20", "2024-07-29"], ["2024-09-15", "2024-09-24"], ["2024-11-20", "2024-11-24"]]}
