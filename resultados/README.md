@@ -21,9 +21,3 @@ Números abaixo = MAE na val, salvo indicação.
 | [`08-benchmark-2025/`](08-benchmark-2025/) | Todos os campeões × 2025 intocado (+ lag-365) — **veredito final** | pH: ens 0,0509, lstnet 0,0529, saz 0,0597, lag365 0,464, prophet 1,90 · OD: ens 0,2107, lstnet 0,2127, saz 0,2714, lag365 0,925, prophet 5,04 |
 
 Quadro das réguas (benchmark 2025, critério principal): **pH → ensemble 0,0509** · **OD → ensemble 0,2107**.
-
-Histórico: até set/2026 o projeto usou um regime trimestral, com outro conjunto de dados.
-Na migração para o regime anual (13/09/2026) os experimentos LSTM-h, amplitude-forward,
-refit e gate foram removidos e a numeração foi compactada e **reatribuída** — os atuais
-01/03/05/07 não são os antigos 01/05/06/07 (ex.: o antigo 02b-lstnet-od virou 03-lstnet-od).
-Todo o material antigo permanece recuperável no histórico do git.
