@@ -176,6 +176,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/03b-patchtst-od.ipynb` (os três no OD limpo — executado; **régua segue sazonal-naive 0,1525/0,1550**; melhor neural no holdout é o DLinear 0,2146; artefatos em `resultados/03b-patchtst-od/`)
 - [x] Criar `notebooks/04-ensemble-ph.ipynb` (ensemble residual + LightGBM no pH: piso sazonal + 288 LGBM + DLinear-res + NNLS — executado em servidor remoto; **régua segue LSTNet 0,0456/0,0446**, ens 2º com 0,0475/0,0462; artefatos em `resultados/04-ensemble-ph/`)
 - [x] Criar `notebooks/04b-ensemble-od.ipynb` (mesmo método no OD limpo 01/06→21/07 — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 2º no teste 0,1024 e 3º no holdout 0,2105; lgbm supera lstnet no holdout; artefatos em `resultados/04b-ensemble-od/`)
+- [x] Criar `notebooks/05-amplitude-od.ipynb` (correção de amplitude no OD limpo: saz reescalado + LGBM-mult + DLinear ponderado — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 0,1009/0,2126, saz_escalado 2º no holdout 0,1874; artefatos em `resultados/05-amplitude-od/`)
 - [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
 - [ ] Expor `app.py` FastAPI
 
