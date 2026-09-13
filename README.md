@@ -169,6 +169,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/00-baseline-ph.ipynb` (pH, L=30d, H=1d + holdout de 10 dias — executado; régua: **sazonal-naive, MAE 0,0501**; artefatos em `resultados/00-baseline-ph/`)
 - [x] Criar `notebooks/00b-baseline-od.ipynb` (mesmo protocolo no OD, segmento 01/06→21/07 — executado; régua: **sazonal-naive, MAE 0,1525**; artefatos em `resultados/00b-baseline-od/`)
 - [x] Criar `notebooks/01-lstm-ph.ipynb` (LSTM-h no pH, mesmo protocolo, grade horária Lh=720/Hh=24 + ×12 — executado; resultado honesto: **MAE 0,1120/0,1081, não bate o sazonal-naive**; grade horária descartada para H=288; artefatos em `resultados/01-lstm-ph/`)
+- [x] Criar `notebooks/01b-lstm-od.ipynb` (mesmo método no OD, segmento limpo 01/06→21/07 — executado; **MAE 0,2277/0,6220, colapso progressivo com a amplitude de julho**; artefatos em `resultados/01b-lstm-od/`)
 - [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
 - [ ] Expor `app.py` FastAPI
 

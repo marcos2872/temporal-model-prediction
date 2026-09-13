@@ -5,6 +5,7 @@
 | [`00-baseline-ph.ipynb`](00-baseline-ph.ipynb) | Baselines no pH, L=30d/H=1d + holdout de 10 dias | [`../resultados/00-baseline-ph/`](../resultados/00-baseline-ph/) |
 | [`00b-baseline-od.ipynb`](00b-baseline-od.ipynb) | Mesmo protocolo no OD, segmento 01/06→21/07 | [`../resultados/00b-baseline-od/`](../resultados/00b-baseline-od/) |
 | [`01-lstm-ph.ipynb`](01-lstm-ph.ipynb) | LSTM-h no pH, mesmo protocolo (grade horária + ×12) | [`../resultados/01-lstm-ph/`](../resultados/01-lstm-ph/) |
+| [`01b-lstm-od.ipynb`](01b-lstm-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/01b-lstm-od/`](../resultados/01b-lstm-od/) |
 
 ## 1. Ambiente (uma vez)
 
