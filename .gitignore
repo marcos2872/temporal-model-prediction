@@ -20,3 +20,6 @@ pdfs/
 artigos/
 pdfs_texto/
 .obsidian/
+
+# Artefatos grandes de experimentos (limite 100 MB do GitHub; regeneráveis via notebook)
+resultados/04-ensemble-ph/modelos/lgbm_steps.pkl

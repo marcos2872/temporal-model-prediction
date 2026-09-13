@@ -1,0 +1,1 @@
+{"pesos": {"sazonal": 0.0, "lstnet": 0.9146, "lgbm": 0.0831, "dlres": 0.0031}, "mode": "nnls-ensemble sobre sazonal+lstnet+lgbm+dlres"}
