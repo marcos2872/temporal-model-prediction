@@ -28,13 +28,20 @@ Servidos em `app.py` (`POST /prever`, Swagger em `/docs`).
 4. **Sazonalidade anual climática ≠ repetição:** copiar o ano anterior falha porque
    o nível das séries deriva entre anos.
 
-## Auditoria de campo (12–13/09/2026, pH, 280 slots)
+## Auditoria de campo (12–13/09/2026, via `app.py` × dado real medido depois)
 
-MAE observado **0,165** (3× a referência 0,051): o rio caiu de 5,8 para 5,5 em
-horas (provável evento externo) e o modelo, univariado, manteve o ciclo diário
-no patamar antigo. Nas 6 primeiras horas, antes da queda, o MAE foi 0,06 —
-cravado no benchmark. Conclusão: a referência é média sobre dias majoritariamente
-estáveis; **dia de evento custa ~3×, dia estável paga o prometido**.
+| Ponto | Observado | Referência | Regime |
+|---|---|---|---|
+| pH 24 h (280 slots) | 0,165 | 0,051 | evento (rio 5,8 → 5,5) |
+| OD 1 h calma (9 slots) | 0,040 | 0,211 | estável |
+| OD 24 h (285 slots) | 0,574 | 0,211 | evento (rio 4,9 → 4,2) |
+
+pH e OD colapsaram **juntos** em 12→13/09 — duas variáveis independentes caindo ao
+mesmo tempo indicam causa exógena (chuva, descarga, efluente). O modelo ainda previu
+a subida do ciclo diário da manhã enquanto a realidade afundava: o retrato do limite
+univariado. Nas horas estáveis antes da queda, ambas as variáveis pagaram o prometido
+(pH 0,06 nas 6 primeiras horas; OD 0,04 na hora calma). Conclusão: a referência é média
+sobre regimes mistos — **dia de evento custa ~3×, dia estável paga o prometido** (ou melhor).
 Ver `app.py` (resposta inclui `mae_referencia_24h` exatamente para calibrar a leitura).
 
 ## Próximo passo natural: multivariados — BLOQUEADO por falta de covariáveis
@@ -49,7 +56,6 @@ O dia 13/09 seria o teste crítico perfeito, se um dia houver chuva para condici
 
 ## Fila restante (sem dependência de dados novos)
 
-- Acumular pontos de auditoria de campo (meta: ~30 dias → MAE real vs 0,051);
+- Acumular pontos de auditoria de campo (3 pontos em 13/09/2026; meta: ~30 dias → MAE real vs referência, por regime);
 - Alerta de deriva na API (avisar quando a entrada sai da distribuição de treino);
-- Saída probabilística (quantis) — agora com motivação concreta de campo;
-- `app.py` para o OD em produção (hoje só o pH foi testado contra dado real).
+- Saída probabilística (quantis) — agora com motivação concreta de campo.
