@@ -171,6 +171,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/01-lstm-ph.ipynb` (LSTM-h no pH, mesmo protocolo, grade horária Lh=720/Hh=24 + ×12 — executado; resultado honesto: **MAE 0,1120/0,1081, não bate o sazonal-naive**; grade horária descartada para H=288; artefatos em `resultados/01-lstm-ph/`)
 - [x] Criar `notebooks/01b-lstm-od.ipynb` (mesmo método no OD, segmento limpo 01/06→21/07 — executado; **MAE 0,2277/0,6220, colapso progressivo com a amplitude de julho**; artefatos em `resultados/01b-lstm-od/`)
 - [x] Criar `notebooks/02-lstnet-ph.ipynb` (LSTNet nativo 5 min no pH: conv + GRU + skip p=1d + AR-288 + RevIN — executado; **NOVA RÉGUA: MAE 0,0456/0,0446, −9%/−4% sobre o sazonal-naive**; artefatos em `resultados/02-lstnet-ph/`)
+- [x] Criar `notebooks/02b-lstnet-od.ipynb` (mesmo método no OD, segmento limpo 01/06→21/07 — executado; **melhor neural no teste: 0,0981 (−36%), mas holdout 0,2428 perde do sazonal-naive 0,1550** com a amplitude crescente de julho; artefatos em `resultados/02b-lstnet-od/`)
 - [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
 - [ ] Expor `app.py` FastAPI
 

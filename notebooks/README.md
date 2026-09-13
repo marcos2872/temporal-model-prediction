@@ -7,6 +7,7 @@
 | [`01-lstm-ph.ipynb`](01-lstm-ph.ipynb) | LSTM-h no pH, mesmo protocolo (grade horária + ×12) | [`../resultados/01-lstm-ph/`](../resultados/01-lstm-ph/) |
 | [`01b-lstm-od.ipynb`](01b-lstm-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/01b-lstm-od/`](../resultados/01b-lstm-od/) |
 | [`02-lstnet-ph.ipynb`](02-lstnet-ph.ipynb) | LSTNet nativo 5 min no pH (nova régua) | [`../resultados/02-lstnet-ph/`](../resultados/02-lstnet-ph/) |
+| [`02b-lstnet-od.ipynb`](02b-lstnet-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 | [`../resultados/02b-lstnet-od/`](../resultados/02b-lstnet-od/) |
 
 ## 1. Ambiente (uma vez)
 
