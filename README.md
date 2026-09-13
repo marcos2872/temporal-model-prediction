@@ -178,6 +178,7 @@ Ordem sugerida de leitura (links na §3): surveys (§3.1, ex.: Wen → Lim/Zohre
 - [x] Criar `notebooks/04b-ensemble-od.ipynb` (mesmo método no OD limpo 01/06→21/07 — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 2º no teste 0,1024 e 3º no holdout 0,2105; lgbm supera lstnet no holdout; artefatos em `resultados/04b-ensemble-od/`)
 - [x] Criar `notebooks/05-amplitude-od.ipynb` (correção de amplitude no OD limpo: saz reescalado + LGBM-mult + DLinear ponderado — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ens 0,1009/0,2126, saz_escalado 2º no holdout 0,1874; artefatos em `resultados/05-amplitude-od/`)
 - [x] Criar `notebooks/06-refit-od.ipynb` (refit honesto + amplitude-forward no OD limpo — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, ensA novo melhor no teste 0,0920, lstnet_ft a +6,6% no holdout 0,1653; artefatos em `resultados/06-refit-od/`)
+- [x] Criar `notebooks/07-gate-od.ipynb` (gate de instabilidade no OD limpo — executado em servidor remoto; **régua segue sazonal-naive 0,1525/0,1550**, gates degeneram, oracle 0,1019/0,1103 quantifica o teto; artefatos em `resultados/07-gate-od/`)
 - [ ] Evoluir para `PatchTST / DLinear` **em resolução nativa** (candidatos do 02, ver leitura em `resultados/01-lstm-ph/README.md`)
 - [ ] Expor `app.py` FastAPI
 

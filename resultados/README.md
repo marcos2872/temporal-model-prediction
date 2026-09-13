@@ -18,5 +18,6 @@ Cada experimento tem sua pasta `NN-<modelo>-<variavel>/` com `README.md` própri
 | [`04b-ensemble-od/`](04b-ensemble-od/) | Mesmo método no OD limpo — **régua segue sazonal**; ens 2º no teste, 3º no holdout; lgbm supera lstnet no holdout | sazonal 0,1525/0,1550; lstnet 0,0981/0,2428; ens 0,1024/0,2105; lgbm 0,1889/0,2090; dlres 0,1440/0,2591 |
 | [`05-amplitude-od/`](05-amplitude-od/) | Correção de amplitude no OD limpo (saz reescalado + LGBM-mult + DLinear ponderado) — **régua segue sazonal**; saz_escalado 2º no holdout | sazonal 0,1525/0,1550; saz_esc 0,1506/0,1874; ens 0,1009/0,2126; lgbm_mult 0,1784/0,2190; dlw 0,1526/0,2371 |
 | [`06-refit-od/`](06-refit-od/) | Refit honesto + amplitude-forward no OD (A comparável + B walk-forward) — **régua segue sazonal**; ensA novo melhor no teste, lstnet_ft a +6,6% no holdout | sazonal 0,1525/0,1550; ensA 0,0920/0,1994; lstnet_ft 0,1097/0,1653; lgbm_A 0,1662/0,1808 |
+| [`07-gate-od/`](07-gate-od/) | Gate de instabilidade no OD (sazonal ↔ ft, teto-oráculo) — **régua segue sazonal**; gates degeneram (regra nunca dispara, lr sempre); oracle −29% mostra o preço da imprevisibilidade | sazonal 0,1525/0,1550; gate-rule 0,1525/0,1550; gate-lr 0,1097/0,1653; oracle 0,1019/0,1103 |
 
 Quadro das réguas (holdout diário, critério principal): **pH → LSTNet 0,0446** · **OD → sazonal-naive 0,1550**.
