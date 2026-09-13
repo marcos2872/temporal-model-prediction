@@ -13,6 +13,6 @@ Cada experimento tem sua pasta `NN-<modelo>-<variavel>/` com `README.md` própri
 | [`02-lstnet-ph/`](02-lstnet-ph/) | LSTNet nativo 5 min no pH (conv + GRU + skip p=1d + AR-288 + RevIN) — **NOVA RÉGUA do pH** | **lstnet 0,0456 (rolante) / 0,0446 (holdout)**, −9% / −4% sobre o sazonal-naive |
 | [`02b-lstnet-od/`](02b-lstnet-od/) | Mesmo método no OD, segmento limpo 01/06→21/07 — melhor neural no **teste** (−36%), régua do **holdout** segue sazonal | lstnet 0,0981 (rolante) / 0,2428 (holdout); régua 0,1525 / 0,1550 |
 | [`03-patchtst-ph/`](03-patchtst-ph/) | PatchTST nativo + DLinear + régua LSTNet recarregada — **régua segue LSTNet**; DLinear bate o sazonal no rolante | lstnet 0,0456/0,0446; patchtst 0,0611/0,0457; dlinear 0,0498/0,0538 |
+| [`03b-patchtst-od/`](03b-patchtst-od/) | Os três no OD limpo — **régua segue sazonal**; melhor neural no holdout é o linear | sazonal 0,1525/0,1550; dlinear 0,1376/0,2146; lstnet 0,0981/0,2428; patchtst 0,1327/0,2434 |
 
-Próximos experimentos previstos (§7 do [README principal](../README.md)):
-`03b-patchtst-od/` (os três no OD limpo) — mesma estrutura, mesmo split, para comparação justa.
+Quadro das réguas (holdout diário, critério principal): **pH → LSTNet 0,0446** · **OD → sazonal-naive 0,1550**.
