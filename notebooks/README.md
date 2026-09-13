@@ -11,6 +11,7 @@
 | [`03-patchtst-ph.ipynb`](03-patchtst-ph.ipynb) | PatchTST + DLinear no pH (régua segue LSTNet) | [`../resultados/03-patchtst-ph/`](../resultados/03-patchtst-ph/) |
 | [`03b-patchtst-od.ipynb`](03b-patchtst-od.ipynb) | Os três no OD, segmento 01/06→21/07 (régua segue sazonal) | [`../resultados/03b-patchtst-od/`](../resultados/03b-patchtst-od/) |
 | [`04-ensemble-ph.ipynb`](04-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (executado) | [`../resultados/04-ensemble-ph/`](../resultados/04-ensemble-ph/) |
+| [`04b-ensemble-od.ipynb`](04b-ensemble-od.ipynb) | Mesmo método no OD, segmento 01/06→21/07 (executado) | [`../resultados/04b-ensemble-od/`](../resultados/04b-ensemble-od/) |
 
 ## 1. Ambiente (uma vez)
 
