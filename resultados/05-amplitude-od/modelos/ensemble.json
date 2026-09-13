@@ -1,0 +1,1 @@
+{"pesos": {"sazonal": 0.0907, "saz_esc": 0.0, "lstnet": 0.8218, "lgbm_mult": 0.0863, "dlw": 0.0}, "mode": "nnls-ensemble sobre sazonal+saz_esc+lstnet+lgbm_mult+dlw"}
