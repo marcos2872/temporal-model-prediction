@@ -25,10 +25,17 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 
 ## Naming and layout
 
-- Notebooks: `notebooks/NN-<modelo>-<variavel>.ipynb`. Results: `resultados/NN-<modelo>-<variavel>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`. Index in `resultados/README.md`.
+- Notebooks: `notebooks/NN-<modelo>-<variavel>.ipynb`. Results: `resultados/NN-<modelo>-<variavel>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`. Index in `resultados/README.md`. Binaries under `modelos/` are NOT committed — see "Model checkpoints" below.
 - New experiments reuse the same split/protocol; add their row to `resultados/README.md` and checkbox to main README §7.
 - Rename notebooks only with `git mv`; update the tree + checklist in main README, the experiment README reproduce command, and the `resultados/README.md` row.
 - Re-running a notebook with `nbconvert --inplace` **overwrites** its `resultados/<exp>/` artifacts — back the folder up first if the old run matters. Typical runtime 5–10 min.
+
+## Model checkpoints (GitHub Release — never in git)
+
+- `resultados/*/modelos/` binaries (`.pt`, `.pkl`, `.pkl.gz`, `prophet_*.json`, `arima*.pkl`) are gitignored; only the tiny `normalizacao.json` / `ensemble.json` stay tracked. Checkpoints are regenerable via notebooks 00–07 and downloadable with `bash scripts/baixar_modelos.sh [--dir DIR] [--tag TAG]` (uses `gh`, falls back to `curl`; verifies `SHA256SUMS.txt` and extracts at the repo root, preserving `resultados/<exp>/modelos/` paths).
+- Upload (new/updated checkpoints): one asset per experiment (`00-baseline-ph-modelos.tar.gz` … `07-ensemble-od-modelos.tar.gz`), each containing ONLY the gitignored binaries with relative paths (e.g. `resultados/06-ensemble-ph/modelos/{dlinear_res_ph.pt,lgbm_steps.pkl.gz}`); the 120+ MB `.pkl` are excluded — the API reads the `.pkl.gz`. Generate `SHA256SUMS.txt` with **basenames** (`cd` into the asset dir before `sha256sum *.tar.gz > SHA256SUMS.txt` — absolute paths break `sha256sum -c` after download). Then `gh release create <tag> --title "..." --notes-file notes.md <assets> SHA256SUMS.txt`, or `gh release upload <tag> --clobber` for fixes. Biggest asset ~50 MB; GitHub per-file limit is 2 GB.
+- Release notes must contain: provenance (HEAD SHA the checkpoints came from), rulers (benchmark 2025 pH ens 0.0509 · OD ens 0.2107; val pH 0.0357 · OD 0.1325), an asset→experiment→files table, `SHA256SUMS.txt` mention, the download command, and the note that `.pkl` >100 MB are excluded while small JSONs stay in git.
+- Before committing any removal/upload: fresh `gh release download` into an empty dir + `sha256sum -c SHA256SUMS.txt` + extract + checksum-compare vs local + `.venv/bin/python -c "from app import carrega; carrega('ph'); carrega('od')"` + end-to-end `bash scripts/baixar_modelos.sh --dir /tmp/...`.
 
 ## Docs rules
 
@@ -40,7 +47,7 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - Detect: `sshmcp_list_servers` shows a configured server (e.g. `temporal-remote`).
   If no server / MCP unavailable → ignore this section, run locally with `.venv`.
 - Flow when active (code local, compute remote, transfer via MCP — no git on remote):
-  1. Local: create/edit `notebooks/NN-*.ipynb`; extend `.gitignore` per exp for `*.pkl >100MB`.
+  1. Local: create/edit `notebooks/NN-*.ipynb`; checkpoints never go to git (see "Model checkpoints") — no `.gitignore` change needed for new exps unless new binary extensions appear.
   2. Remote prep via sshmcp (no git commands on remote): check work dir, venv
      (`uv venv` / `pip install -r requirements.txt` if needed) and deps (`dados/`,
      checkpoints). Missing files → `sshmcp_upload_file` / `sshmcp_upload_directory`.
@@ -52,7 +59,7 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
      0 error outputs → evaluate → write `resultados/<exp>/README.md` (record remote
      host + work dir as provenance) + index rows → `feat(model):` + `docs:` commits
      + push (all git happens locally).
-- Never run heavy training locally when remote is available; never commit `.venv/` nor `*.pkl >100MB`.
+- Never run heavy training locally when remote is available; never commit `.venv/` nor `resultados/*/modelos/` binaries (only `normalizacao.json` / `ensemble.json` stay tracked).
 
 ## Git
 

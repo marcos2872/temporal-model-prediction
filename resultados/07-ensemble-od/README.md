@@ -64,7 +64,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | `metricas_val.csv` | Val rolante em CSV (primária) |
 | `metricas_val_diaria.csv` | Dias-âncora em CSV |
 | `metricas_por_dia.csv` | MAE por dia-âncora em CSV |
-| `modelos/lgbm_steps.pkl` | 288 regressores (121 MB; gitignored, regenerável) |
+| `modelos/lgbm_steps.pkl.gz` | 288 regressores (42 MB; no Release `modelos-v1`, regenerável; o `.pkl` de 121 MB é gitignored) |
 | `modelos/dlinear_res_od.pt` | DLinear do resíduo (state_dict) |
 | `modelos/ensemble.json` | Pesos NNLS + fatias de val |
 | `modelos/normalizacao.json` | Modo do experimento |

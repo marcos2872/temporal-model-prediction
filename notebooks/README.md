@@ -48,7 +48,9 @@ para runs compartilhando a máquina, limite threads (`OMP_NUM_THREADS=4`).
 Tudo cai em `resultados/<experimento>/` (criado automaticamente):
 `metricas_treino.csv`, `metricas_val.csv`, `metricas_val_diaria.csv`,
 `metricas_por_dia.csv`, `modelos/` (checkpoints `.pt`, ARIMA `.pkl`, Prophet `.json`,
-LightGBM `.pkl` gitignored) e `figs/`.
+LightGBM `.pkl.gz`) e `figs/`. Os checkpoints de `modelos/` **não vão ao git** —
+vivem no GitHub Release [`modelos-v1`](https://github.com/marcos2872/temporal-model-prediction/releases/tag/modelos-v1);
+para reutilizar sem retreinar, baixe com `bash scripts/baixar_modelos.sh` na raiz do repo.
 
 ## 4. Problemas comuns
 

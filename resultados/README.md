@@ -3,6 +3,9 @@
 Cada experimento tem sua pasta `NN-<nome>/` com `README.md` próprio
 (tabela de métricas, artefatos e leitura dos resultados), `metricas*.csv`,
 `modelos/` e `figs/`. Não commitar fora de pastas de experimento.
+Os checkpoints de `modelos/` (`.pt`, `.pkl`, `.pkl.gz`, Prophet `.json`) **não vão ao git** —
+vivem no GitHub Release [`modelos-v1`](https://github.com/marcos2872/temporal-model-prediction/releases/tag/modelos-v1)
+(baixe com `bash scripts/baixar_modelos.sh`); só `normalizacao.json`/`ensemble.json` ficam versionados.
 
 Protocolo: janelas `L=8640 → H=288` · treino = 2024 menos 4 fatias de val (19–28/abr,
 20–29/jul, 15–24/set, 20–24/nov, uma por estação) · benchmark = 2025 inteiro (08).

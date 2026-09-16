@@ -107,7 +107,11 @@ def carrega(var: str):
     dlres_nome = "dlinear_res_ph.pt" if var == "ph" else "dlinear_res_od.pt"
     for p in (base / "ensemble.json", base / dlres_nome, ck02):
         if not p.exists():
-            raise FileNotFoundError(f"checkpoint ausente: {p}")
+            raise FileNotFoundError(
+                f"checkpoint ausente: {p} "
+                "(checkpoints vivem no GitHub Release `modelos-v1` — "
+                "rode: bash scripts/baixar_modelos.sh)"
+            )
     ens = json.load(open(base / "ensemble.json"))["pesos"]
     modelos = {
         "pesos": [ens["sazonal"], ens["lstnet"], ens["lgbm"], ens["dlres"]],
@@ -121,7 +125,11 @@ def carrega(var: str):
         pk_gz, pk = base / "lgbm_steps.pkl.gz", base / "lgbm_steps.pkl"
         pk = pk_gz if pk_gz.exists() else pk  # .pkl local (gitignored) como fallback
         if not pk.exists():
-            raise FileNotFoundError(f"checkpoint ausente: {pk_gz} (ou {pk})")
+            raise FileNotFoundError(
+                f"checkpoint ausente: {pk_gz} (ou {pk}) "
+                "(checkpoints vivem no GitHub Release `modelos-v1` — "
+                "rode: bash scripts/baixar_modelos.sh)"
+            )
         opener = gzip.open if pk.suffix == ".gz" else open
         with opener(pk, "rb") as f:
             modelos["lgbm"] = pickle.load(f)

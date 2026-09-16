@@ -192,8 +192,14 @@ curl -X POST "http://127.0.0.1:8000/prever?variavel=ph&horizonte_horas=24" \
 Envie um CSV CETESB (pH ou OD, ≥ ~8 dias a cada 5 min) e receba 12–288 valores do
 período seguinte com timestamps. O pipeline validado roda sempre 24 h e devolve o
 prefixo pedido; gaps > 2 h no fim da série retornam `422` em vez de prever no escuro.
-Modelos carregados no startup a partir de `resultados/` (o `.pkl` do LGBM é gitignored —
-para deploy, copie `resultados/0{6,7}-*/modelos/lgbm_steps.pkl` junto).
+Modelos carregados no startup a partir de `resultados/` — os checkpoints treinados
+vivem no GitHub Release [`modelos-v1`](https://github.com/marcos2872/temporal-model-prediction/releases/tag/modelos-v1)
+(não vão ao git; só `normalizacao.json`/`ensemble.json` ficam versionados). Para deploy ou
+uso local, baixe antes (extrai para `resultados/*/modelos/`):
+
+```bash
+bash scripts/baixar_modelos.sh
+```
 
 ## 8. Busca bibliográfica sistemática — modelos de predição temporal (2026-09-10)
 
