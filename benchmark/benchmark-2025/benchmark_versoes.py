@@ -7,9 +7,9 @@ de 10 dias em 2025, um por estação, só dias-âncora (23:55):
     P1 2025-03-08 → 2025-03-17   P2 2025-05-03 → 2025-05-12
     P3 2025-08-22 → 2025-08-31   P4 2025-10-01 → 2025-10-10
 
-Períodos escolhidos por busca (max cobertura conjunta pH+OD de âncoras com
-janela L+H limpa); P4 tem n=0 no pH (out–dez/2025 não tem 31 dias limpos —
-dado, não bug; registrado como n=0). Fixos daqui em diante p/ comparar v1×v2.
+Períodos escolhidos por busca (max cobertura conjunta pH+OD de âncoras); com a
+tolerância de 3 h todos os períodos têm ~10 origens (P4 pH preenche o furo de
+11 slots do gap 30/set). Fixos daqui em diante p/ comparar v1×v2.
 
 11 modelos por variável (fiel ao 08): persistencia, sazonal_naive_288,
 media_movel_288, sazonal_lag365 (+fallback saz-288), lstnet, patchtst,
@@ -78,6 +78,12 @@ HIST = OUTROOT / "historico.csv"
 
 # Protocolo travado (AGENTS.md): L=8640 (30 d), H=288 (1 d), passo 5 min.
 L, H, SEASON, INTERP_LIMIT, LN, HN = 8640, 288, 288, 24, 2016, 288
+
+# Tolerância do PROBE (só aqui; notebooks seguem descartando qualquer NaN):
+# janelas-âncora com até TOL_NAN slots faltantes (3 h) são aceitas e têm os
+# furos preenchidos por interpolação linear local. Gap de horas não invalida
+# 31 dias de contexto para fins de benchmark. Gaps maiores descartam a origem.
+TOL_NAN = 36
 
 PERIODOS = [
     ("P1", "2025-03-08", "2025-03-17"),
@@ -192,30 +198,37 @@ def ler(path: Path, col: str) -> pd.Series:
     return s
 
 
-# ---------- probe: origens-âncora com janela limpa, por período ----------
-def origens_probe(s: pd.Series) -> tuple[np.ndarray, np.ndarray, object, list[str]]:
+# ---------- probe: origens-âncora por período (tolera furo ≤ TOL_NAN) ----------
+def origens_probe(s: pd.Series) -> tuple[np.ndarray, np.ndarray, object, list[str], dict[str, int]]:
     v = s.to_numpy().astype(np.float32)
-    bad = s.isna().to_numpy()
-    cs = np.concatenate([[0], bad.cumsum()])
-    limpo = (cs[L + H:] - cs[:len(cs) - (L + H)] == 0)  # janela [e-L-H+1, e] sem NaN
     grade = s.index
-    ends_all = grade[L + H - 1:]
     Xs, Ys, pids, ends = [], [], [], []
+    maxfill: dict[str, int] = {}
     for pid, a, b in PERIODOS:
-        d0, d1 = pd.Timestamp(a).date(), pd.Timestamp(b).date()
-        for k, e in enumerate(ends_all):
-            if not (d0 <= e.date() <= d1):
-                continue
-            if e.time() != pd.Timestamp("23:55").time():
-                continue
-            if not limpo[k]:
+        d0 = pd.Timestamp(a).date()
+        mf = 0
+        for k in range(10):
+            e = pd.Timestamp(d0 + pd.Timedelta(days=k), hour=23, minute=55)
+            if e not in grade:
                 continue
             pos = grade.get_loc(e)
+            if pos < L + H - 1:
+                continue
             win = v[pos - (L + H) + 1: pos + 1]
+            n = int(np.isnan(win).sum())
+            if n > TOL_NAN:
+                continue  # gap grande: descarta a origem (não prevê no escuro)
+            if n:
+                win = pd.Series(win).interpolate(
+                    method="linear", limit_direction="both").to_numpy(dtype=np.float32)
+                if bool(np.isnan(win).any()):
+                    continue  # furo na borda sem vizinho: descarta
+                mf = max(mf, n)
             Xs.append(win[:L]); Ys.append(win[L:]); pids.append(pid); ends.append(e)
+        maxfill[pid] = mf
     X = np.stack(Xs).astype(np.float32) if Xs else np.empty((0, L), np.float32)
     Y = np.stack(Ys).astype(np.float32) if Ys else np.empty((0, H), np.float32)
-    return X, Y, pd.DatetimeIndex(ends), pids
+    return X, Y, pd.DatetimeIndex(ends), pids, maxfill
 
 
 # ---------- modelos baratos (fiel ao 08, cel 5) ----------
@@ -284,15 +297,14 @@ def roda_variavel(var: str, s24: pd.Series, s: pd.Series,
     t0 = time.time()
     preds = cheap_preds(X)
     preds["sazonal_lag365"], fb = lag365_preds(s24, X, Y, ends)
-    val5 = s.to_numpy().astype(np.float32)
-    SIN5 = np.sin(2 * np.pi * (s.index.hour.to_numpy() * 60
-                               + s.index.minute.to_numpy()) / 1440.0).astype(np.float32)
-    COS5 = np.cos(2 * np.pi * (s.index.hour.to_numpy() * 60
-                               + s.index.minute.to_numpy()) / 1440.0).astype(np.float32)
-    Wln = sliding_window_view(val5, LN)
-    Tln = sliding_window_view(np.stack([SIN5, COS5], axis=1), LN, axis=0
-                              ).transpose(0, 2, 1).astype(np.float32)
-    rowln = s.index.get_indexer(ends - pd.Timedelta(minutes=5 * H)) - LN + 1
+    # Janela LN a partir do PRÓPRIO X (já com furos ≤3h preenchidos) — nunca da
+    # série crua, senão o NaN original vaza p/ as redes. Xt == Wln do 08 em
+    # janelas limpas (mesmos valores, mesma ordem).
+    Xt = X[:, -LN:].astype(np.float32)
+    e_min = ends.values.astype("datetime64[m]").astype(np.int64)
+    mins = (e_min - H * 5)[:, None] - 5 * np.arange(LN - 1, -1, -1)[None, :]
+    ang = (2 * np.pi * (mins % 1440) / 1440.0).astype(np.float32)
+    T = np.stack([np.sin(ang), np.cos(ang)], axis=-1).astype(np.float32)
     C = CKPTS[var]
     lstnet = load_state(LSTNet1D, C["lstnet"])
     patch = load_state(PatchTST, C["patch"])
@@ -306,14 +318,14 @@ def roda_variavel(var: str, s24: pd.Series, s: pd.Series,
     def fwd1(model, tod=None, batch=64):
         outs = []
         for b in range(0, len(X), batch):
-            xb = torch.from_numpy(Wln[rowln[b:b + batch]])
+            xb = torch.from_numpy(Xt[b:b + batch])
             if tod is None:
                 outs.append(model(xb).numpy())
             else:
-                outs.append(model(xb, torch.from_numpy(tod[rowln[b:b + batch]])).numpy())
+                outs.append(model(xb, torch.from_numpy(tod[b:b + batch])).numpy())
         return np.concatenate(outs)
 
-    Pn = fwd1(lstnet, Tln)
+    Pn = fwd1(lstnet, T)
     Pt = fwd1(patch)
     Dl = fwd1(dlin)
     F, em = base_feats(X, ends)
@@ -324,6 +336,11 @@ def roda_variavel(var: str, s24: pd.Series, s: pd.Series,
         Gb[:, j] = S[:, j] + m.predict(np.column_stack([F, sh, ch]))
     Dr = S + fwd1(dlres)
     En = w[0] * S + w[1] * Pn + w[2] * Gb + w[3] * Dr
+    for m, P in (("lstnet", Pn), ("patchtst", Pt), ("dlinear", Dl),
+                 ("dlres", Dr), ("ens", En)):
+        n = int(np.isnan(np.asarray(P)).sum())
+        if n:
+            raise SystemExit(f"{var}/{m}: {n} NaN na predição — origem contaminada")
     preds.update({"lstnet": Pn, "patchtst": Pt, "dlinear": Dl,
                   "lgbm": Gb, "dlres": Dr, "ens": En})
     Pp = ROOT / "resultados" / C["prophet"]
@@ -387,16 +404,18 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
     dest.mkdir(parents=True)
     (dest / "vals").mkdir()
     cobertura: dict[str, dict[str, int]] = {}
+    preench: dict[str, dict[str, int]] = {}
     medias: dict[str, pd.DataFrame] = {}
     for var, (f24, f25, col) in FILES.items():
         print(f"[{tag}] {var}: carga 2024+2025...")
         s24, s25 = ler(TR / f24, col), ler(BM / f25, col)
-        X, Y, ends, pids = origens_probe(s25)
+        X, Y, ends, pids, maxfill = origens_probe(s25)
         if len(X) == 0:
             raise SystemExit(f"[{tag}] {var}: zero origens — revise PERIODOS")
         nper = {pid: int((np.array(pids) == pid).sum()) for pid, _, _ in PERIODOS}
         cobertura[var] = nper
-        print(f"[{tag}] {var}: {len(X)} origens {nper}")
+        preench[var] = maxfill
+        print(f"[{tag}] {var}: {len(X)} origens {nper} | máx preenchido {maxfill}")
         preds = roda_variavel(var, s24, s25, X, Y, ends)
         per, med = agrega(var, preds, Y, pids)
         per.to_csv(dest / f"metricas_periodos_{var}.csv")
@@ -421,10 +440,15 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
     sha = git_sha()
     (dest / "meta.json").write_text(json.dumps({
         "tag": tag, "timestamp_utc": ts, "git_sha": sha,
-        "metodologia": "probe-4-periodos-ancoras-23h55 (pipeline própria; 08 não lido)",
-        "protocolo": {"L": L, "H": H, "nota": "só inferência em 2025, sem tuning"},
+        "metodologia": "probe-4-periodos-ancoras-23h55 tolerancia-3h (pipeline própria; 08 não lido)",
+        "protocolo": {"L": L, "H": H, "nota": "só inferência em 2025, sem tuning",
+                      "tolerancia_nan_slots": TOL_NAN,
+                      "nota_tolerancia": "origens com furo ≤3h têm o furo interpolado localmente; gap maior descarta a origem"},
         "periodos": {pid: {"inicio": a, "fim": b, "n_ph": cobertura["ph"][pid],
-                           "n_od": cobertura["od"][pid]} for pid, a, b in PERIODOS},
+                           "n_od": cobertura["od"][pid],
+                           "preenchido_ph": preench["ph"][pid],
+                           "preenchido_od": preench["od"][pid]}
+                     for pid, a, b in PERIODOS},
         "runtime_s": round(time.time() - t00),
     }, indent=2, sort_keys=True) + "\n")
 
