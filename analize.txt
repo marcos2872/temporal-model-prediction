@@ -23,3 +23,5 @@ Multivariado CONCLUSAO.md:47-55 diz BLOQUEADO — discordo parcial
 - B/E. Chuva Open-Meteo/CEMADEN/ANA/montante + Chronos zero-shot: faça como spike leitura, não treino. Exige sincronizar 5min<>10min<>horário + garantir futuro sem leakage + manter dados/README.md:57 2025 intocado. Zero-shot é teste barato do teto CONCLUSAO.md:22-25.
 Não faria agora
 src/tmp/ completo, pyproject/CI/Dockerfile, split do README 27KB: contradiz AGENTS.md:3 e projeto está concluído CONCLUSAO.md:3-5. Extraia só data/windows/metrics + paridade se reabrir.
+---
+NOTA 2026-09-16 (decisão): v2 segue UNIVARIADO. Multivariado (A. 2-canais pH+OD, B/E chuva + Chronos zero-shot) + conformal/eventos (C+D) adiados p/ fase posterior a v2.

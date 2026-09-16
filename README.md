@@ -212,3 +212,7 @@ Pipeline `deep-research-br`, template `rigorous`, framework Decomposição (Prob
 - **Nota de honestidade:** os números de desempenho na §3 foram lidos nos textos integrais open-access linkados em cada entrada — exceto os 6 registros paywall/bot-wall, citados por metadados verificados. Regra permanente: número novo só entra com citação verificável (autor + tabela/página do artigo). As fórmulas da §3 são formulação canônica para estudo, não citação literal dos papers.
 
 > Todos os links da §3 são open-access (editoras OA, AAAI/IJCAI, arXiv) para estudo pessoal — verifique a licença de cada um antes de redistribuir. Registros paywall (Chen, Torres, Kontopoulou, Diagnosisformer, Pedestrian, Stock) vivem só como metadados em `busca_bibliografica/`.
+
+## 9. Licença
+
+MIT — ver [`LICENSE`](LICENSE). Dados CETESB citados conforme `dados/README.md` § Licença.
