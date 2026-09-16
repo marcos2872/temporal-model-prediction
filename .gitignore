@@ -29,5 +29,6 @@ resultados/*/modelos/*.pkl.gz
 resultados/*/modelos/*.pt
 resultados/*/modelos/prophet_*.json
 resultados/*/modelos/arima*.pkl
+resultados/*/modelos/lgbm_nativo/
 !resultados/*/modelos/normalizacao.json
 !resultados/*/modelos/ensemble.json

@@ -9,6 +9,10 @@ horizonte de 1–24 h. A API roda o pipeline validado de H=288 e devolve o
 prefixo pedido. Modelos carregados uma vez no startup (ver resultados/06, 07).
 Lógica de inferência espelha os notebooks 02/03 (LSTNet), 04/05 (DLinear-res),
 06/07 (LGBM + NNLS) e 08 (janelamento) — sem treino aqui.
+
+Nota de compatibilidade: L=8640 (30 d) é mantido por compatibilidade com o
+janelamento validado (cobertura, features LGBM end-relativas), mas a
+rede usa só a cauda ctx[-2016:] (LN=2016, ~7 d) — L é vestigial p/ torch/DL.
 """
 
 from contextlib import asynccontextmanager
@@ -16,12 +20,20 @@ from io import StringIO
 from pathlib import Path
 from typing import Literal
 
+import asyncio
+import logging
+
 import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
+
+CHECKPOINT_TAG = "modelos-v1"
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024  # 10 MB
 
 ROOT = Path(__file__).resolve().parent
 L, H_FULL, SEASON, LN = 8640, 288, 288, 2016
@@ -86,8 +98,23 @@ class DLinearLite(nn.Module):
 
 def _load_state(cls, path, **kw):
     m = cls(**kw)
-    m.load_state_dict(torch.load(path, map_location="cpu", weights_only=False)["state"])
+    # weights_only=True: checkpoints contêm só tensores + cfg simples;
+    # bloqueia deserialização de pickle arbitrário (hardening Fase 2).
+    # Verificado: os 4 .pt (02/03 lstnet + 06/07 dlres) carregam com True.
+    m.load_state_dict(torch.load(path, map_location="cpu", weights_only=True)["state"])
     return m.eval()
+
+
+def _sha12(caminhos) -> str:
+    """sha256 (12 chars) sobre o conteúdo concatenado dos checkpoints usados."""
+    import hashlib
+
+    h = hashlib.sha256()
+    for p in caminhos:
+        with open(p, "rb") as f:
+            for bloco in iter(lambda: f.read(1 << 20), b""):
+                h.update(bloco)
+    return h.hexdigest()[:12]
 
 
 MODELOS = {}
@@ -122,17 +149,45 @@ def carrega(var: str):
     if ens["lgbm"] != 0.0:  # pH tem peso 0 — nem carrega o LGBM
         import gzip
 
-        pk_gz, pk = base / "lgbm_steps.pkl.gz", base / "lgbm_steps.pkl"
-        pk = pk_gz if pk_gz.exists() else pk  # .pkl local (gitignored) como fallback
-        if not pk.exists():
-            raise FileNotFoundError(
-                f"checkpoint ausente: {pk_gz} (ou {pk}) "
-                "(checkpoints vivem no GitHub Release `modelos-v1` — "
-                "rode: bash scripts/baixar_modelos.sh)"
-            )
-        opener = gzip.open if pk.suffix == ".gz" else open
-        with opener(pk, "rb") as f:
-            modelos["lgbm"] = pickle.load(f)
+        import lightgbm as lgb
+
+        # Formato nativo (preferido): 288 boosters salvos via
+        # booster.save_model (scripts/migrar_lgbm_nativo.py), um .txt por
+        # horizonte em modelos/lgbm_nativo/. Evita pickle no caminho quente.
+        nat = base / "lgbm_nativo"
+        nativos = sorted(nat.glob("lgbm_h*.txt")) if nat.is_dir() else []
+        if len(nativos) == H_FULL:
+            modelos["lgbm"] = [lgb.Booster(model_file=str(p)) for p in nativos]
+            modelos["_lgbm_arquivos"] = nativos
+        else:
+            if nat.is_dir():
+                logger.warning(
+                    "lgbm_nativo incompleto (%d/288 .txt em %s) — "
+                    "caindo para o pickle",
+                    len(nativos), nat,
+                )
+            else:
+                logger.warning(
+                    "subdir nativo ausente (%s) — caindo para o pickle "
+                    "(rode: .venv/bin/python scripts/migrar_lgbm_nativo.py)",
+                    nat,
+                )
+            pk_gz, pk = base / "lgbm_steps.pkl.gz", base / "lgbm_steps.pkl"
+            pk = pk_gz if pk_gz.exists() else pk  # .pkl local (gitignored) como fallback
+            if not pk.exists():
+                raise FileNotFoundError(
+                    f"checkpoint ausente: {pk_gz} (ou {pk}) "
+                    "(checkpoints vivem no GitHub Release `modelos-v1` — "
+                    "rode: bash scripts/baixar_modelos.sh)"
+                )
+            opener = gzip.open if pk.suffix == ".gz" else open
+            with opener(pk, "rb") as f:
+                modelos["lgbm"] = pickle.load(f)
+            modelos["_lgbm_arquivos"] = [pk]
+    usados = [base / "ensemble.json", base / dlres_nome, ck02]
+    usados += list(modelos.get("_lgbm_arquivos", []))
+    modelos["checkpoint_tag"] = CHECKPOINT_TAG
+    modelos["checkpoint_sha"] = _sha12(usados)
     MODELOS[var] = modelos
 
 
@@ -170,6 +225,8 @@ class PrevisaoOut(BaseModel):
     fim_previsto: str
     cobertura_entrada: dict
     valores: list[Ponto]
+    checkpoint_tag: str = Field(default="modelos-v1", examples=["modelos-v1"])
+    checkpoint_sha: str = Field(default="", examples=["a1b2c3d4e5f6"])
 
 
 # ---------- pipeline ----------
@@ -252,8 +309,8 @@ def inferencia(var: str, ctx: np.ndarray, fim: pd.Timestamp) -> np.ndarray:
         [Xb[:, -k] for k in [1, 2, 3, 6, 12, 24, 36, 72, 144, 287, 288, 289, 576, 2016]]
         + [np.stack([Xb[:, n - 288 * k] for k in range(1, 8)], axis=1).mean(1)]
         + [np.stack([Xb[:, n - 288 * k] for k in range(1, 8)], axis=1).std(1)]
-        + [Xb[:, -w_:].mean(1) for w_ in (12, 36, 144, 288)]
-        + [Xb[:, -w_:].std(1) for w_ in (12, 36, 144, 288)]
+        + [c for w_ in (12, 36, 144, 288)
+           for c in (Xb[:, -w_:].mean(1), Xb[:, -w_:].std(1))]  # intercalado = base_feats (06/07/08)
         + [Xb[:, -2016:].mean(1)],
         axis=1,
     ).astype(np.float32)
@@ -269,7 +326,13 @@ def inferencia(var: str, ctx: np.ndarray, fim: pd.Timestamp) -> np.ndarray:
 # ---------- endpoints ----------
 @app.get("/saude", summary="Saúde da API e modelos carregados")
 def saude():
-    return {"status": "ok", "modelos": sorted(MODELOS), "horizonte_suportado_h": [1, 24]}
+    return {
+        "status": "ok",
+        "modelos": sorted(MODELOS),
+        "horizonte_suportado_h": [1, 24],
+        "checkpoint_tag": CHECKPOINT_TAG,
+        "checkpoint_sha": {v: MODELOS[v].get("checkpoint_sha", "") for v in sorted(MODELOS)},
+    }
 
 
 @app.get("/regras", summary="Réguas atuais (MAE no benchmark 2025)")
@@ -279,14 +342,23 @@ def regras():
 
 @app.post("/prever", response_model=PrevisaoOut, summary="Prevê as próximas horas a partir de um CSV CETESB")
 async def prever(
+    request: Request,
     arquivo: UploadFile = File(description="CSV CETESB: linha 1 cabeçalho da CETESB (opcional), depois `Data hora;<variável>` com `;` e vírgula decimal"),
     variavel: Literal["ph", "od"] = Query("ph", description="Variável a prever"),
     horizonte_horas: int = Query(24, ge=1, le=24, description="Horizonte: 1–24 h (o pipeline validado roda 24 h e devolve o prefixo)"),
 ):
     if variavel not in MODELOS:
         raise HTTPException(500, f"modelo '{variavel}' não carregado")
+    # Limite de upload (10 MB): checa o header antes de ler e o tamanho
+    # real após ler (chunked pode omitir o Content-Length).
+    cl = request.headers.get("content-length")
+    if cl is not None and cl.isdigit() and int(cl) > MAX_UPLOAD_BYTES:
+        raise HTTPException(413, "arquivo excede o limite de 10 MB")
+    conteudo = await arquivo.read()
+    if len(conteudo) > MAX_UPLOAD_BYTES:
+        raise HTTPException(413, "arquivo excede o limite de 10 MB")
     try:
-        df = ler_csv(await arquivo.read())
+        df = ler_csv(conteudo)
     except ValueError as e:
         raise HTTPException(400, str(e))
     try:
@@ -295,9 +367,15 @@ async def prever(
         raise HTTPException(422, str(e))
     fim = grade.max()
     try:
-        full = inferencia(variavel, ctx, fim)
-    except Exception as e:
-        raise HTTPException(500, f"falha na inferência: {type(e).__name__}: {e}")
+        # torch + LGBM são CPU-bound e bloqueantes: roda em thread separada
+        # para não travar o event loop do FastAPI (asyncio) enquanto a
+        # inferência de H=288 ocupa a CPU.
+        full = await asyncio.to_thread(inferencia, variavel, ctx, fim)
+    except Exception:
+        # Nunca vazar tipo/mensagem de exceção interna ao cliente (500
+        # genérico); o traceback completo vai para os logs.
+        logger.exception("falha na inferência (%s)", variavel)
+        raise HTTPException(500, "falha interna — ver logs")
     n = horizonte_horas * 12
     idx = pd.date_range(fim + pd.Timedelta(minutes=5), periods=n, freq="5min")
     valores = [Ponto(ds=str(t), y=round(float(v), 4)) for t, v in zip(idx, full[:n])]
@@ -310,4 +388,6 @@ async def prever(
         fim_previsto=str(idx[-1]),
         cobertura_entrada=cobertura,
         valores=valores,
+        checkpoint_tag=MODELOS[variavel].get("checkpoint_tag", CHECKPOINT_TAG),
+        checkpoint_sha=MODELOS[variavel].get("checkpoint_sha", ""),
     )
