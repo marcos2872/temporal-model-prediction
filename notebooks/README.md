@@ -11,6 +11,11 @@
 | [`06-ensemble-ph.ipynb`](06-ensemble-ph.ipynb) | Ensemble residual + LightGBM no pH (nova régua) | [`../resultados/06-ensemble-ph/`](../resultados/06-ensemble-ph/) |
 | [`07-ensemble-od.ipynb`](07-ensemble-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/07-ensemble-od/`](../resultados/07-ensemble-od/) |
 | [`08-benchmark-2025.ipynb`](08-benchmark-2025.ipynb) | Todos os campeões × 2025 intocado + lag-365 (só inferência) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
+| [`09-analises-pos-benchmark.ipynb`](09-analises-pos-benchmark.ipynb) | Análises pós-benchmark Fase 1: curva MAE(h)+MASE, Diebold-Mariano, climatologia (só inferência, sem treino; escreve em `../resultados/08-benchmark-2025/`) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
+
+> Exceção de nome: o `09-analises-pos-benchmark.ipynb` está fora do padrão
+> `NN-<modelo>-<variavel>` porque não é um experimento com treino — é a
+> consolidação versionada das três análises pós-benchmark (Fase 1).
 
 ## 1. Ambiente (uma vez)
 

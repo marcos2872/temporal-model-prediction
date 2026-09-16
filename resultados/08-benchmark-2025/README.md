@@ -77,6 +77,20 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ![Exemplos pH](figs/07-exemplos-ph.png)
 
+### `08-mae-por-horizonte-{ph,od}.png` — MAE por horizonte h=1..288 (Fase 1.1, âncoras diárias)
+
+![MAE por horizonte pH](figs/08-mae-por-horizonte-ph.png)
+
+![MAE por horizonte OD](figs/08-mae-por-horizonte-od.png)
+
+- Leitura: o erro cresce com h em todos; ensemble pH 0,0319→0,0693 (×2,2), OD 0,0415→0,3180 (×7,7). MASE médio (denominador 2024): pH ens 0,917 · lstnet 0,964 · saz 1,086; OD ens 0,942 · lstnet 0,955 · saz 1,243. Prophet fora da curva (exige refit por origem).
+
+### `08-climatologia-{ph,od}.png` — baseline climatologia vs real (Fase 1.3, descartado)
+
+![Climatologia pH](figs/08-climatologia-ph.png)
+
+![Climatologia OD](figs/08-climatologia-od.png)
+
 ## Arquivos
 
 | Arquivo | O quê |
@@ -85,7 +99,10 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 | `metricas_diaria_{ph,od}.csv` | Dias-âncora em CSV |
 | `metricas_por_dia_{ph,od}.csv` | MAE por dia em CSV |
 | `metricas_por_mes_{ph,od}.csv` | MAE médio por mês em CSV |
-| `figs/` | As 10 figuras explicadas acima |
+| `metricas_por_horizonte_{ph,od}.csv` | MAE(h) por modelo + MASE ens/lstnet/sazonal, h=1..288 (Fase 1.1) |
+| `metricas_dm_{ph,od}.csv` | Erro quadrático por origem p/ o teste DM (Fase 1.2) |
+| `metricas_climatologia_{ph,od}.csv` | MAE/RMSE por origem da climatologia (Fase 1.3) |
+| `figs/` | As 14 figuras explicadas acima |
 
 Sem pasta `modelos/` — nenhum treino aqui; todos os checkpoints são dos experimentos 00–07.
 
@@ -97,3 +114,25 @@ Sem pasta `modelos/` — nenhum treino aqui; todos os checkpoints são dos exper
 4. **Prophet explode (1,9 / 5,0):** extrapolação de tendência sem âncora, piorando ao longo do ano (ver mensal). Fora do jogo em qualquer regime.
 5. **PatchTST confirma o overfit no pH** (0,0688, perde do sazonal em dado novo) mas é razoável no OD (0,2213, 3º). DLinear é o oposto: seguro no pH (0,0600), mediano no OD.
 6. **LGBM sozinho perde do sazonal nas duas variáveis em 2025** (0,0671 / 0,2943) — como componente de ensemble tem valor, como modelo não.
+
+## Análises pós-benchmark (Fase 1, 16/09/2026 — sem retreino, só inferência)
+
+### Erro por horizonte + MASE (`notebooks/09-analises-pos-benchmark.ipynb`, Fase 1.1)
+
+MAE(h) por modelo em `metricas_por_horizonte_{ph,od}.csv`; MASE(h) = MAE(h)/média 2024 de |y_t−y_{t−288}| (0,0549 pH · 0,2199 OD). Validação: MAE médio do ensemble nas âncoras 0,0503/0,2072 vs headlines 0,0509/0,2107 (Δ<2%).
+
+| h | pH ens/lstnet/saz | OD ens/lstnet/saz |
+|---|---|---|
+| 1 | 0,0319 / 0,0285 / 0,0613 | 0,0415 / 0,0288 / 0,3260 |
+| 24 | 0,0350 / 0,0369 / 0,0591 | 0,0849 / 0,0860 / 0,2860 |
+| 288 | 0,0693 / 0,0699 / 0,0706 | 0,3180 / 0,3265 / 0,3347 |
+
+MASE médio — pH: ens 0,917 · lstnet 0,964 · saz 1,086 (ens vence 208/288 horizontes); OD: ens 0,942 · lstnet 0,955 · saz 1,243 (215/288). O LSTNet ainda abre h=1 nas duas — o ensemble ganha na sustentação do horizonte, não na largada.
+
+### Diebold-Mariano ens × lstnet (`notebooks/09-analises-pos-benchmark.ipynb`, Fase 1.2; séries em `metricas_dm_{ph,od}.csv`)
+
+d_t = se_ens − se_lstnet por âncora, HAC/Newey-West, bicaudal. **pH: DM −2,88, p=0,004 — o ganho de 4,9% é real** (ens vence 77,9% das origens). **OD: DM +0,73, p=0,46 — gap de 1,3% indistinguível de ruído** (em MSE o sinal até inverte p/ o LSTNet: RMSE âncoras 0,3178 × 0,3153). Tratar o ensemble-OD como vencedor exige outros argumentos (p.ex. MAE mensal consistente), não este teste.
+
+### Climatologia — baseline de custo zero, DESCARTADO (`notebooks/09-analises-pos-benchmark.ipynb`, Fase 1.3)
+
+Perfil horário médio por época calibrado só em 2024: pH 0,4627 / OD 0,8678 de MAE — perde do sazonal por ~8×/~3× e empata com o lag-365. A deriva interanual de nível que matou o lag-365 mata a climatologia do mesmo jeito; qualquer correção de nível exigiria dado de 2025 (quebra a regra dura) e redundaria em persistência/saz-288. Números por origem em `metricas_climatologia_{ph,od}.csv`.
