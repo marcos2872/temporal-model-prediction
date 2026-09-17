@@ -2,7 +2,8 @@
 
 Projeto para criar um modelo de IA que **recebe uma série temporal e gera predição futura**,
 aplicado a dados reais de qualidade da água (pH e oxigênio dissolvido, passo de 5 min).
-Trilha univariada concluída (v1 + v2 + API); multivariada é trabalho futuro.
+Trilha univariada concluída (v1 + v2 + API); trilha multivariável concluída
+(M1–M4 em `multivariavel/`, veredito: CI vence CD, solo multi não bate as réguas uni).
 
 ## Documentação
 
@@ -22,7 +23,7 @@ temporal-model/
 ├── COMO-RODAR.md          <- como rodar o projeto
 ├── METODOLOGIA.md         <- metodologias de predição + bibliografia
 ├── univariavel/             <- trilha univariada: dados/ (séries CETESB pH + OD, 5 min), app.py (API FastAPI, Swagger em /docs), notebooks/, resultados/ e benchmark-2025/
-├── multivariavel/           <- (futuro) experimentos multivariados (dados próprios em multivariavel/dados/)
+├── multivariavel/           <- experimentos multivariados: PLANO.md, notebooks/, resultados/ (M1–M4, treino 2022–2024 + benchmark 2025) (dados próprios em multivariavel/dados/)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
 ```
@@ -59,6 +60,7 @@ lag-365 e Prophet ficam para trás nos dois regimes.
 - [x] Cadeia v2: mesmo protocolo em L=2304 com purge/embargo e 5 seeds (notebooks 10–18)
 - [x] Probe versionado v1×v2 + API FastAPI (`POST /prever`, Swagger em `/docs`)
 - [x] Conclusão do projeto em `CONCLUSAO.md`
+- [x] Trilha multivariável M1–M4 (DLinear-multi → PatchTST CI×CD → benchmark 2025; ver `multivariavel/PLANO.md` e `multivariavel/resultados/`)
 - [ ] Saída probabilística (quantis) e teste de transferência para 2026 quando houver dado validado
 
 ## Licença
