@@ -9,7 +9,7 @@ Carrega UMA vez univariavel/resultados/07-ensemble-od/modelos/lgbm_steps.pkl.gz
 Uso:
     .venv/bin/python scripts/migrar_lgbm_nativo.py
 
-O loader (app.py) prefere o nativo (`lgb.Booster(model_file=)`) e cai para
+O loader (univariavel/app.py) prefere o nativo (`lgb.Booster(model_file=)`) e cai para
 o .pkl.gz com warning logado se o subdir estiver ausente/incompleto.
 O subdir é gitignored (ver .gitignore); publicação futura via Release
 `modelos-v2`. Idempotente: sobrescreve os .txt.

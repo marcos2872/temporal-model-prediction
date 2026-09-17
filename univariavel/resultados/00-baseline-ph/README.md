@@ -11,7 +11,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** pH 2024 (`dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`), 105.121 slots, 11,1% faltantes
+- **Série:** pH 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`), 105.121 slots, 11,1% faltantes
 - **Limpeza idêntica:** grade 5 min + interpolação limite 24; outages pós-interp: 16–18/jan (2,3 d) · 29/abr–02/mai (2,7 d) · **27/mai–13/jun (17 d)** + microrresíduos
 - **Janelas:** ~34 mil válidas (treino ~24 mil + val ~10 mil); dias-âncora (23:55) na val: 35
 - **Modelos:** persistência · sazonal-naive-288 · média-móvel-288 · ARIMA(2,1,2) em grade horária (stride 48 na val) · Prophet (ajuste só no treino, com as fatias de val removidas)

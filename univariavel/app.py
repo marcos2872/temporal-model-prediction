@@ -1,7 +1,7 @@
 """API FastAPI — serve os ensembles campeões (06 pH, 07 OD).
 
-Uso local:
-    .venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
+Uso local (a partir da raiz do repo):
+    .venv/bin/uvicorn univariavel.app:app --host 127.0.0.1 --port 8000
 Swagger UI: http://127.0.0.1:8000/docs
 
 Fluxo: POST /prever com CSV CETESB (pH ou OD, >= ~8 dias a cada 5 min) +
@@ -126,11 +126,11 @@ def carrega(var: str):
     import pickle
 
     if var == "ph":
-        base = ROOT / "univariavel" / "resultados" / "06-ensemble-ph" / "modelos"
-        ck02 = ROOT / "univariavel" / "resultados" / "02-lstnet-ph" / "modelos" / "lstnet_ph.pt"
+        base = ROOT / "resultados" / "06-ensemble-ph" / "modelos"
+        ck02 = ROOT / "resultados" / "02-lstnet-ph" / "modelos" / "lstnet_ph.pt"
     else:
-        base = ROOT / "univariavel" / "resultados" / "07-ensemble-od" / "modelos"
-        ck02 = ROOT / "univariavel" / "resultados" / "03-lstnet-od" / "modelos" / "lstnet_od.pt"
+        base = ROOT / "resultados" / "07-ensemble-od" / "modelos"
+        ck02 = ROOT / "resultados" / "03-lstnet-od" / "modelos" / "lstnet_od.pt"
     dlres_nome = "dlinear_res_ph.pt" if var == "ph" else "dlinear_res_od.pt"
     for p in (base / "ensemble.json", base / dlres_nome, ck02):
         if not p.exists():

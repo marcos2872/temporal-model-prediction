@@ -10,7 +10,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Benchmark:** `dados/benchmark/ef01-...-2025.csv` (pH + OD), limpeza idêntica, janelas `L=8640 → H=288`
+- **Benchmark:** `univariavel/dados/benchmark/ef01-...-2025.csv` (pH + OD), limpeza idêntica, janelas `L=8640 → H=288`
 - **Cobertura:** pH 24.589 janelas + 86 dias-âncora (31/jan → 29/set; outages matam out–dez) · OD 46.556 janelas + 163 dias-âncora (31/jan → 30/dez)
 - **Modelos (11 por variável):** 3 baratos + lag-365 + lstnet + patchtst + dlinear + lgbm + dlres + ens (pesos NNLS do 06/07, sem re-fit) + prophet (artefato do 00/01, só inferência)
 - **lag-365:** fallback em só 1,2% (pH) / 1,3% (OD) — o fracasso dele é real (deriva interanual), não falta de dado

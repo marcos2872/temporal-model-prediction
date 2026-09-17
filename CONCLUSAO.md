@@ -15,7 +15,7 @@ Vice em ambas: LSTNet puro (0,0529 / 0,2127). DLinear é o modelo "seguro"
 sazonal nas duas. lag-365 é inútil (deriva interanual: 0,46 / 0,93).
 Prophet explode (1,9 / 5,0). ARIMA ≈ persistência (fallback).
 
-Servidos em `app.py` (`POST /prever`, Swagger em `/docs`).
+Servidos em `univariavel/app.py` (`POST /prever`, Swagger em `/docs`).
 
 ## O que os experimentos provaram
 
@@ -28,7 +28,7 @@ Servidos em `app.py` (`POST /prever`, Swagger em `/docs`).
 4. **Sazonalidade anual climática ≠ repetição:** copiar o ano anterior falha porque
    o nível das séries deriva entre anos.
 
-## Auditoria de campo (12–13/09/2026, via `app.py` × dado real medido depois)
+## Auditoria de campo (12–13/09/2026, via `univariavel/app.py` × dado real medido depois)
 
 | Ponto | Observado | Referência | Regime |
 |---|---|---|---|
@@ -42,7 +42,7 @@ a subida do ciclo diário da manhã enquanto a realidade afundava: o retrato do 
 univariado. Nas horas estáveis antes da queda, ambas as variáveis pagaram o prometido
 (pH 0,06 nas 6 primeiras horas; OD 0,04 na hora calma). Conclusão: a referência é média
 sobre regimes mistos — **dia de evento custa ~3×, dia estável paga o prometido** (ou melhor).
-Ver `app.py` (resposta inclui `mae_referencia_24h` exatamente para calibrar a leitura).
+Ver `univariavel/app.py` (resposta inclui `mae_referencia_24h` exatamente para calibrar a leitura).
 
 ## Próximo passo natural: multivariados — BLOQUEADO por falta de covariáveis
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Teste de paridade notebook <-> app.py (Fase 1.4).
+"""Teste de paridade notebook <-> univariavel/app.py (Fase 1.4).
 
 Roda com (a partir da raiz do repo, sem rede, sem escrita no repo):
     .venv/bin/python scripts/test_paridade.py
@@ -33,8 +33,8 @@ import pandas as pd
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-import app as api  # noqa: E402  (app.py da raiz; so usamos carrega/ler_csv/prepara/inferencia/schemas)
+sys.path.insert(0, str(ROOT / "univariavel"))
+import app as api  # noqa: E402  (univariavel/app.py; so usamos carrega/ler_csv/prepara/inferencia/schemas)
 
 TOL_PARIDADE = 1e-5
 TOL_LGBM_COMP = 1e-4  # checagem isolada do termo LGBM amplia erro fp32 (~1/w_lgbm); ver (b)
@@ -52,8 +52,8 @@ def check(cond, msg):
 # ---------------------------------------------------------------- janelas 2024
 COL = {"ph": "pH", "od": "Oxigênio Dissolvido (mg/L)"}
 CSV_2024 = {
-    "ph": ROOT / "dados/treino/ef01-mogi-das-cruzes_ph_2024.csv",
-    "od": ROOT / "dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv",
+    "ph": ROOT / "univariavel/dados/treino/ef01-mogi-das-cruzes_ph_2024.csv",
+    "od": ROOT / "univariavel/dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv",
 }
 
 

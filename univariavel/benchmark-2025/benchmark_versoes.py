@@ -22,7 +22,7 @@ DLinear-res seed-mean ×5, LGBM 288 nativos (lgbm_h*/model_j*), ensemble via
 ensemble.json do 16/17 (sem refit), prophet do 10/11 (opcional).
 
 Fontes de código (não duplicar à toa):
-- LSTNet1D, DLinearLite: importadas de `app.py` (fonte única com a API).
+- LSTNet1D, DLinearLite: importadas de `univariavel/app.py` (fonte única com a API).
 - PatchTST, base_feats, hour_sincos, lag365, prophet: cópia fiel de
   `univariavel/notebooks/08-benchmark-2025.ipynb` cels 7/9/11 (pin: commit 97bceb0).
 
@@ -63,13 +63,13 @@ HERE = Path(__file__).resolve().parent
 
 def repo_root() -> Path:
     for p in (HERE, *HERE.parents):
-        if (p / "dados" / "treino").exists():
+        if (p / "univariavel" / "dados" / "treino").exists():
             return p
-    raise SystemExit("raiz do repo não encontrada (dados/treino ausente)")
+    raise SystemExit("raiz do repo não encontrada (univariavel/dados/treino ausente)")
 
 
 ROOT = repo_root()
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "univariavel"))
 from app import DLinearLite, LSTNet1D  # noqa: E402  (fonte única com a API)
 
 import numpy as np  # noqa: E402
@@ -160,7 +160,7 @@ HIST_FIELDS = [
 ]
 
 
-# ---------- cópia fiel do 08 (cel 9) — app.py não tem PatchTST ----------
+# ---------- cópia fiel do 08 (cel 9) — univariavel/app.py não tem PatchTST ----------
 class PatchTST(torch.nn.Module):
     def __init__(self):
         super().__init__()
@@ -639,7 +639,7 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
             if any(r.get("tag") == tag for r in csv.DictReader(f)) and not refazer:
                 raise SystemExit(f"tag '{tag}' já consta em {HIST} — use --refazer")
     t00 = time.time()
-    TR, BM = ROOT / "dados" / "treino", ROOT / "dados" / "benchmark"
+    TR, BM = ROOT / "univariavel" / "dados" / "treino", ROOT / "univariavel" / "dados" / "benchmark"
     v2 = (tag == "v2")
     CKD = CKPTS_V2 if v2 else CKPTS
     if v2:

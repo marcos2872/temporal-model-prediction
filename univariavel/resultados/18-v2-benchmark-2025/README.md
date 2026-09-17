@@ -12,7 +12,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Benchmark:** `dados/benchmark/ef01-...-2025.csv` (pH + OD), limpeza idêntica, janelas `L=2304 → H=288` (8 d → 1 d)
+- **Benchmark:** `univariavel/dados/benchmark/ef01-...-2025.csv` (pH + OD), limpeza idêntica, janelas `L=2304 → H=288` (8 d → 1 d)
 - **Cobertura:** pH 74.222 janelas + 259 dias-âncora (09/jan → 30/dez) · OD 86.567 janelas + 302 dias-âncora (09/jan → 30/dez)
 - **Modelos (11 por variável):** 3 baratos + lag-365 + lstnet + patchtst + dlinear + lgbm + dlres + ens (pesos NNLS do 16/17, sem re-fit) + prophet (artefato do 10/11, só inferência)
 - **lag-365:** fallback p/ saz-288 em 4,5% (pH) / 1,1% (OD) — o fracasso dele é real (deriva interanual), não falta de dado
@@ -140,5 +140,5 @@ mudança de protocolo, não só de método):
    interanual de nível não perdoa nem com `L` curto); Prophet explode (1,17 / 5,34) e piora
    mês a mês — extrapolação de tendência sem âncora, fora do jogo em qualquer regime.
 5. **Réguas (decisão pendente, NÃO atualizadas no app):** este benchmark coroa o patchtst-v2
-   nas duas variáveis, mas as réguas servidas (`app.py`, `/regras`: pH ens-v1 0,0509 ·
+   nas duas variáveis, mas as réguas servidas (`univariavel/app.py`, `/regras`: pH ens-v1 0,0509 ·
    OD ens-v1 0,2107) seguem intactas até decisão do usuário.

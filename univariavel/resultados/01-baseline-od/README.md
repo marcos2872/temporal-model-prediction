@@ -9,7 +9,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** OD 2024 (`dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv`), 105.121 slots, 0,6% faltantes, sem outages grandes
+- **Série:** OD 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv`), 105.121 slots, 0,6% faltantes, sem outages grandes
 - **Janelas:** treino 66.073 + val 7.857 (S1 parcial: origens OD só de 27/abr); dias-âncora na val: 28
 - **Modelos:** persistência · sazonal-naive-288 · média-móvel-288 · ARIMA(2,1,2) horário (stride 48) · Prophet (só treino)
 

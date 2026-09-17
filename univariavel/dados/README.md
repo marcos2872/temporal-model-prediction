@@ -2,8 +2,8 @@
 
 Séries temporais **univariadas** de qualidade da água usadas para treinar o modelo de predição (uma variável por vez: `y(t)` → `y(t+1..t+H)`).
 
-Regime anual: **treino = 2024** (`dados/treino/`, ano bissexto completo), **benchmark = 2025**
-(`dados/benchmark/`, ano completo, intocado até a avaliação final). Validação dentro de 2024:
+Regime anual: **treino = 2024** (`univariavel/dados/treino/`, ano bissexto completo), **benchmark = 2025**
+(`univariavel/dados/benchmark/`, ano completo, intocado até a avaliação final). Validação dentro de 2024:
 4 fatias de 10 dias, uma por estação (15–24 jan / 15–24 abr / 15–24 jul / 15–24 out,
 deslocáveis se caírem em outage — ver cada experimento); janelas cujo alvo termina numa
 fatia → val, o resto → treino.
@@ -43,7 +43,7 @@ o `reindex` da limpeza os trata como faltantes normais.
 ```python
 import pandas as pd
 df = pd.read_csv(
-    "dados/treino/ef01-mogi-das-cruzes_ph_2024.csv",
+    "univariavel/dados/treino/ef01-mogi-das-cruzes_ph_2024.csv",
     sep=";", decimal=",", encoding="windows-1252",
     skiprows=1, parse_dates=["Data hora"], dayfirst=True,
     na_values=[""],
@@ -53,7 +53,7 @@ df = df.rename(columns={"Data hora": "ds", "pH": "y"}).sort_values("ds")
 
 ## Notas para a modelagem univariada
 
-1. **Faltantes primeiro:** interpolação `limit=24` (2 h) + descarte de janelas com NaN, como no regime anterior — ver roteiro §4 da [METODOLOGIA](../METODOLOGIA.md).
+1. **Faltantes primeiro:** interpolação `limit=24` (2 h) + descarte de janelas com NaN, como no regime anterior — ver roteiro §4 da [METODOLOGIA](../../METODOLOGIA.md).
 2. **Corte temporal honesto:** treino/val dentro de 2024 por data de fim da janela (sem shuffle); 2025 só na avaliação final. Nada de 2025 no treino, na val, no early stopping ou no tuning.
 3. **Escala:** pH varia pouco (σ pequeno, faixa ~1 unidade) — normalize (z-score) e avalie com MAE/RMSE além de MAPE, que é instável perto de zero relativo.
 4. **Sazonalidade dupla:** passo de 5 min (288 pontos/dia) sugere ciclo diário forte — e com treino anual o baseline **sazonal lag-365** entra no jogo, mas só no benchmark 2025 (prevê 2025 copiando 2024; dentro de 2024 ele é incalculável, pois não há 2023). É a régua mais exigente do novo regime.

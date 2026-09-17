@@ -20,7 +20,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** pH 2024 (`dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`), 105.121 slots, 11,1% faltantes;
+- **Série:** pH 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`), 105.121 slots, 11,1% faltantes;
   limpeza idêntica ao 10/12/14 (NaN pós-interp 6.408 slots em 9 blocos, maior 27/mai–13/jun 412,2 h; ADF −1,79 / p 0,384)
 - **Janelas:** treino pós-purge 59.349 + val 12.960 (fit 10.080 + report 2.880);
   descartadas por NaN 26.910 · purge 3.311 · gap mín +289 · dias-âncora (23:55) na val: 45 ([10, 10, 10, 5, 10])

@@ -9,7 +9,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** OD 2024 (`dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv`); 0,6% faltantes, sem outages grandes
+- **Série:** OD 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_oxigenio-dissolvido_2024.csv`); 0,6% faltantes, sem outages grandes
 - **Janelas `L=8640 → H=288`:** treino 66.073 + val 7.857 (fatias 657/2880/2880/1440 — S1 parcial no OD, origens só de 27/abr em diante, conforme previsto); dias-âncora na val: 28
 - **Treino:** 137.506 params · Adam 1e-3, MSE · stride 8 (8.260 treino) / 4 (1.965 val) · early stopping patience 10 → parou na ep. 22, best val 0,0349 (ep. 12)
 

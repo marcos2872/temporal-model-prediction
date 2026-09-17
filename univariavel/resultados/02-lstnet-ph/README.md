@@ -10,7 +10,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** pH 2024 (`dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`); limpeza idêntica (interp limite 24)
+- **Série:** pH 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_ph_2024.csv`); limpeza idêntica (interp limite 24)
 - **Janelas `L=8640 → H=288`:** treino 24.659 + val 10.080 (fatias 19–28/abr, 20–29/jul, 15–24/set, 20–24/nov — 2880/2880/2880/1440); 61.455 descartadas (outages); dias-âncora na val: 35
 - **Treino:** 137.506 params · Adam 1e-3, MSE · stride 4 (6.165 treino / 2.520 val) · early stopping patience 10 → parou na ep. 17, best val 0,0028 (ep. 7); train 0,0043 vs val 0,0034 no fim — sem overfit relevante
 

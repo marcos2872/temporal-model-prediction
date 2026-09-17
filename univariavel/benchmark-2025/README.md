@@ -26,7 +26,7 @@ não prevê no escuro. Ex.: P4 pH preenche o furo de 11 slots do gap de 30/set; 
 persistencia, sazonal_naive_288, media_movel_288, sazonal_lag365 (+fallback saz-288),
 lstnet, patchtst, dlinear, lgbm (288), dlres, ens (pesos NNLS, **sem refit**),
 prophet (opcional — pulado se o artefato sumir). `LSTNet1D`/`DLinearLite` vêm de
-`app.py` (fonte única com a API); `PatchTST`/feats são cópia fiel do 08 com pin.
+`univariavel/app.py` (fonte única com a API); `PatchTST`/feats são cópia fiel do 08 com pin.
 
 ## Como rodar
 

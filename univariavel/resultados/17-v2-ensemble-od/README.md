@@ -19,7 +19,7 @@ Reproduzir: `.venv/bin/jupyter nbconvert --to notebook --execute --inplace --Exe
 
 ## Configuração do experimento
 
-- **Série:** OD 2024 (`dados/treino/ef01-mogi-das-cruzes_od_2024.csv`); só micro-outages
+- **Série:** OD 2024 (`univariavel/dados/treino/ef01-mogi-das-cruzes_od_2024.csv`); só micro-outages
   (336 slots NaN pós-interp) → 5 fatias cheias, asserts idênticos aos do 11/13
 - **Janelas:** treino pós-purge 77.141 + val 12.960 (fit 10.080 + report 2.880);
   descartadas por NaN 8.109 · purge 4.320 · gap mín +289 · dias-âncora (23:55) na val: 45 ([10, 10, 10, 5, 10])

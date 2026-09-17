@@ -15,9 +15,9 @@ O `requirements.txt` já deixa o Prophet funcionando — o CmdStan compila na
 primeira execução (~5 min, só na primeira vez; precisa de `g++`/`make`).
 Use sempre `.venv/bin/python` ou `.venv/bin/jupyter` (o `.venv/` é gitignored).
 
-Dados: séries CETESB EF01 Mogi das Cruzes (pH + OD, passo 5 min) em `dados/`
+Dados: séries CETESB EF01 Mogi das Cruzes (pH + OD, passo 5 min) em `univariavel/dados/`
 — treino = 2024, benchmark = 2025 (intocado até a avaliação final). Formato e
-como ler em [`dados/README.md`](dados/README.md).
+como ler em [`univariavel/dados/README.md`](univariavel/dados/README.md).
 
 ## 2. Notebooks (trilha univariada)
 
@@ -88,7 +88,7 @@ Os checkpoints vivem no GitHub Release
 ## 4. API de previsão (local)
 
 ```bash
-.venv/bin/uvicorn app:app --host 127.0.0.1 --port 8000
+.venv/bin/uvicorn univariavel.app:app --host 127.0.0.1 --port 8000
 # Swagger UI: http://127.0.0.1:8000/docs  (botão "Try it out" no POST /prever)
 curl -X POST "http://127.0.0.1:8000/prever?variavel=ph&horizonte_horas=24" \
   -F "arquivo=@teste_api_ph.csv"

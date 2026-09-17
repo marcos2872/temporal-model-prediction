@@ -18,7 +18,7 @@ prophet==1.4.0
 torch==2.14.0+cpu
 # LightGBM para o notebook 04-ensemble-ph (288 regressores, um por passo do horizonte).
 lightgbm==4.7.0
-# API (app.py): Swagger em /docs.
+# API (univariavel/app.py): Swagger em /docs.
 fastapi==0.129.0
 uvicorn==0.52.4
 python-multipart==0.0.20

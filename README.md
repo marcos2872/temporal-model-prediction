@@ -12,7 +12,7 @@ Trilha univariada concluída (v1 + v2 + API); multivariada é trabalho futuro.
 | [`COMO-RODAR.md`](COMO-RODAR.md) | Como rodar: ambiente, notebooks, API, checkpoints, probe |
 | [`METODOLOGIA.md`](METODOLOGIA.md) | Metodologia: taxonomia, matemática das famílias, roteiro, busca bibliográfica |
 
-Detalhes por área: [`dados/`](dados/README.md) · [`univariavel/notebooks/`](univariavel/notebooks/README.md) · [`univariavel/resultados/`](univariavel/resultados/README.md) · [`univariavel/benchmark-2025/`](univariavel/benchmark-2025/README.md) · [`busca_bibliografica/`](busca_bibliografica/busca-bibliografica-modelos-predicao-temporal.md) · [`CONCLUSAO.md`](CONCLUSAO.md)
+Detalhes por área: [`univariavel/dados/`](univariavel/dados/README.md) · [`univariavel/notebooks/`](univariavel/notebooks/README.md) · [`univariavel/resultados/`](univariavel/resultados/README.md) · [`univariavel/benchmark-2025/`](univariavel/benchmark-2025/README.md) · [`busca_bibliografica/`](busca_bibliografica/busca-bibliografica-modelos-predicao-temporal.md) · [`CONCLUSAO.md`](CONCLUSAO.md)
 
 ## Estrutura
 
@@ -21,10 +21,8 @@ temporal-model/
 ├── README.md              <- este arquivo (apresentação)
 ├── COMO-RODAR.md          <- como rodar o projeto
 ├── METODOLOGIA.md         <- metodologias de predição + bibliografia
-├── dados/                   <- séries CETESB EF01 Mogi das Cruzes (pH + OD, 5 min) + README (na raiz, compartilhado)
-├── univariavel/             <- experimentos univariados: notebooks/, resultados/ e benchmark-2025/ (executados em servidor remoto)
-├── multivariavel/           <- (futuro) experimentos multivariados
-├── app.py                   <- API FastAPI (ensembles 06/07, Swagger em /docs)
+├── univariavel/             <- trilha univariada: dados/ (séries CETESB pH + OD, 5 min), app.py (API FastAPI, Swagger em /docs), notebooks/, resultados/ e benchmark-2025/
+├── multivariavel/           <- (futuro) experimentos multivariados (dados próprios em multivariavel/dados/)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
 ```
@@ -33,10 +31,10 @@ temporal-model/
 
 Séries **univariadas** da CETESB (estação EF01 – Mogi das Cruzes, dados públicos):
 pH e oxigênio dissolvido a cada 5 min. Regime anual — **treino = 2024**
-(`dados/treino/`), **benchmark = 2025** (`dados/benchmark/`, intocado até a
+(`univariavel/dados/treino/`), **benchmark = 2025** (`univariavel/dados/benchmark/`, intocado até a
 avaliação final); validação em 4 fatias de 10 dias dentro de 2024, uma por estação.
 Formato (encoding `windows-1252`, `;`, vírgula decimal) e estatísticas em
-[`dados/README.md`](dados/README.md).
+[`univariavel/dados/README.md`](univariavel/dados/README.md).
 
 ## Resultados (réguas — MAE)
 
@@ -65,4 +63,4 @@ lag-365 e Prophet ficam para trás nos dois regimes.
 
 ## Licença
 
-MIT — ver [`LICENSE`](LICENSE). Dados CETESB citados conforme `dados/README.md` § Licença.
+MIT — ver [`LICENSE`](LICENSE). Dados CETESB citados conforme `univariavel/dados/README.md` § Licença.
