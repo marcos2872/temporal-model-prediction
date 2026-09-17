@@ -1,0 +1,11 @@
+zona,modelo,MAE,RMSE,MAPE,sMAPE
+fit14_in_sample,sazonal_naive_288,0.1518,0.2148,2.9783,3.015
+fit14_in_sample,lstnet_mean13,0.1262,0.1715,2.4937,2.5011
+fit14_in_sample,lgbm,0.1795,0.2458,3.407,3.4849
+fit14_in_sample,dlres_mean,0.1336,0.1832,2.5757,2.5985
+fit14_in_sample,ens,0.1234,0.1688,2.4242,2.4301
+holdout5_dez_honesto,sazonal_naive_288,0.2499,0.3616,4.717,4.5526
+holdout5_dez_honesto,lstnet_mean13,0.1848,0.2447,3.3859,3.3616
+holdout5_dez_honesto,lgbm,0.2636,0.327,4.8478,4.8806
+holdout5_dez_honesto,dlres_mean,0.1842,0.2677,3.4537,3.3679
+holdout5_dez_honesto,ens,0.1733,0.2383,3.2189,3.1697

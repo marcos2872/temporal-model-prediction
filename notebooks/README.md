@@ -14,6 +14,13 @@
 | [`09-analises-pos-benchmark.ipynb`](09-analises-pos-benchmark.ipynb) | Análises pós-benchmark Fase 1: curva MAE(h)+MASE, Diebold-Mariano, climatologia (só inferência, sem treino; escreve em `../resultados/08-benchmark-2025/`) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
 | [`10-v2-baseline-ph.ipynb`](10-v2-baseline-ph.ipynb) | Baselines no pH 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) | [`../resultados/10-v2-baseline-ph/`](../resultados/10-v2-baseline-ph/) |
 | [`11-v2-baseline-od.ipynb`](11-v2-baseline-od.ipynb) | Baselines no OD 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) | [`../resultados/11-v2-baseline-od/`](../resultados/11-v2-baseline-od/) |
+| [`12-v2-lstnet-ph.ipynb`](12-v2-lstnet-ph.ipynb) | LSTNet no pH 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias, conv 3→8, 5 seeds) | [`../resultados/12-v2-lstnet-ph/`](../resultados/12-v2-lstnet-ph/) |
+| [`13-v2-lstnet-od.ipynb`](13-v2-lstnet-od.ipynb) | LSTNet no OD 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias, conv 3→8, 5 seeds) | [`../resultados/13-v2-lstnet-od/`](../resultados/13-v2-lstnet-od/) |
+| [`14-v2-patchtst-ph.ipynb`](14-v2-patchtst-ph.ipynb) | PatchTST + DLinear no pH 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias, 5 seeds por modelo) | [`../resultados/14-v2-patchtst-ph/`](../resultados/14-v2-patchtst-ph/) |
+| [`15-v2-patchtst-od.ipynb`](15-v2-patchtst-od.ipynb) | PatchTST + DLinear no OD 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias, 5 seeds por modelo) | [`../resultados/15-v2-patchtst-od/`](../resultados/15-v2-patchtst-od/) |
+| [`16-v2-ensemble-ph.ipynb`](16-v2-ensemble-ph.ipynb) | Ensemble v2 no pH 2024 em protocolo v2 (sazonal + LSTNet-12 + LGBM-nativo + DLinear-res + NNLS fit/report) | [`../resultados/16-v2-ensemble-ph/`](../resultados/16-v2-ensemble-ph/) |
+| [`17-v2-ensemble-od.ipynb`](17-v2-ensemble-od.ipynb) | Ensemble v2 no OD 2024 em protocolo v2 (sazonal + LSTNet-13 + LGBM-nativo + DLinear-res + NNLS fit/report) | [`../resultados/17-v2-ensemble-od/`](../resultados/17-v2-ensemble-od/) |
+| [`18-v2-benchmark-2025.ipynb`](18-v2-benchmark-2025.ipynb) | Campeões v2 × 2025 intocado + lag-365 em protocolo v2 (só inferência) | [`../resultados/18-v2-benchmark-2025/`](../resultados/18-v2-benchmark-2025/) |
 
 > Exceção de nome: o `09-analises-pos-benchmark.ipynb` está fora do padrão
 > `NN-<modelo>-<variavel>` porque não é um experimento com treino — é a

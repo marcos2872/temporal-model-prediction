@@ -1,0 +1,3 @@
+modelo,MAE_media,MAE_dp,RMSE_media,RMSE_dp,MAPE_media,MAPE_dp,sMAPE_media,sMAPE_dp
+patchtst,0.1556,0.0028,0.2127,0.0031,2.9663,0.0496,2.967,0.0463
+dlinear,0.1482,0.0027,0.2089,0.0028,2.8332,0.0524,2.8319,0.054
