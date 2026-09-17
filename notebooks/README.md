@@ -12,6 +12,8 @@
 | [`07-ensemble-od.ipynb`](07-ensemble-od.ipynb) | Mesmo método no OD (nova régua) | [`../resultados/07-ensemble-od/`](../resultados/07-ensemble-od/) |
 | [`08-benchmark-2025.ipynb`](08-benchmark-2025.ipynb) | Todos os campeões × 2025 intocado + lag-365 (só inferência) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
 | [`09-analises-pos-benchmark.ipynb`](09-analises-pos-benchmark.ipynb) | Análises pós-benchmark Fase 1: curva MAE(h)+MASE, Diebold-Mariano, climatologia (só inferência, sem treino; escreve em `../resultados/08-benchmark-2025/`) | [`../resultados/08-benchmark-2025/`](../resultados/08-benchmark-2025/) |
+| [`10-v2-baseline-ph.ipynb`](10-v2-baseline-ph.ipynb) | Baselines no pH 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) | [`../resultados/10-v2-baseline-ph/`](../resultados/10-v2-baseline-ph/) |
+| [`11-v2-baseline-od.ipynb`](11-v2-baseline-od.ipynb) | Baselines no OD 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) | [`../resultados/11-v2-baseline-od/`](../resultados/11-v2-baseline-od/) |
 
 > Exceção de nome: o `09-analises-pos-benchmark.ipynb` está fora do padrão
 > `NN-<modelo>-<variavel>` porque não é um experimento com treino — é a

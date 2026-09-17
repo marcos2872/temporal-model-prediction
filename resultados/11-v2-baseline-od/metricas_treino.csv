@@ -1,0 +1,4 @@
+,MAE,RMSE,MAPE,sMAPE
+persistencia,0.3812,0.5694,8.6819,8.6028
+sazonal_naive_288,0.2356,0.365,6.1279,6.0964
+media_movel_288,0.3539,0.4763,8.3817,8.3034

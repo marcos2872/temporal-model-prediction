@@ -22,5 +22,7 @@ Números abaixo = MAE na val, salvo indicação.
 | [`06-ensemble-ph/`](06-ensemble-ph/) | Ensemble (piso + 288 LGBM + DLinear-res + NNLS) no pH — **NOVA RÉGUA pH** | **ens 0,0357** (−4,3% sobre lstnet); NNLS zera o LGBM |
 | [`07-ensemble-od/`](07-ensemble-od/) | Mesmo método no OD — **NOVA RÉGUA OD** | **ens 0,1325** (−4,0% sobre lstnet); dlres com peso 0,30 |
 | [`08-benchmark-2025/`](08-benchmark-2025/) | Todos os campeões × 2025 intocado (+ lag-365) — **veredito final** | pH: ens 0,0509, lstnet 0,0529, saz 0,0597, lag365 0,464, prophet 1,90 · OD: ens 0,2107, lstnet 0,2127, saz 0,2714, lag365 0,925, prophet 5,04 |
+| [`10-v2-baseline-ph/`](10-v2-baseline-ph/) | Baselines no pH 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) — **RÉGUA v2 pH** | **sazonal 0,0406**; MM 0,0497; ARIMA 0,0602 (fallback total nos dias-âncora); Prophet 0,1463 (rodou, colapsa) |
+| [`11-v2-baseline-od/`](11-v2-baseline-od/) | Baselines no OD 2024 em protocolo v2 (L=2304, purge/embargo, 5 fatias incl. dez) — **RÉGUA v2 OD** | **sazonal 0,1736**; MM 0,3631; ARIMA 0,4282 (fallback total nos dias-âncora); Prophet 0,5243 (rodou, colapsa) |
 
 Quadro das réguas (benchmark 2025, critério principal): **pH → ensemble 0,0509** · **OD → ensemble 0,2107**.
