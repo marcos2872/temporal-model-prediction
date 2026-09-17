@@ -6,7 +6,7 @@ Swagger UI: http://127.0.0.1:8000/docs
 
 Fluxo: POST /prever com CSV CETESB (pH ou OD, >= ~8 dias a cada 5 min) +
 horizonte de 1–24 h. A API roda o pipeline validado de H=288 e devolve o
-prefixo pedido. Modelos carregados uma vez no startup (ver resultados/06, 07).
+prefixo pedido. Modelos carregados uma vez no startup (ver univariavel/resultados/06, 07).
 Lógica de inferência espelha os notebooks 02/03 (LSTNet), 04/05 (DLinear-res),
 06/07 (LGBM + NNLS) e 08 (janelamento) — sem treino aqui.
 
@@ -126,11 +126,11 @@ def carrega(var: str):
     import pickle
 
     if var == "ph":
-        base = ROOT / "resultados" / "06-ensemble-ph" / "modelos"
-        ck02 = ROOT / "resultados" / "02-lstnet-ph" / "modelos" / "lstnet_ph.pt"
+        base = ROOT / "univariavel" / "resultados" / "06-ensemble-ph" / "modelos"
+        ck02 = ROOT / "univariavel" / "resultados" / "02-lstnet-ph" / "modelos" / "lstnet_ph.pt"
     else:
-        base = ROOT / "resultados" / "07-ensemble-od" / "modelos"
-        ck02 = ROOT / "resultados" / "03-lstnet-od" / "modelos" / "lstnet_od.pt"
+        base = ROOT / "univariavel" / "resultados" / "07-ensemble-od" / "modelos"
+        ck02 = ROOT / "univariavel" / "resultados" / "03-lstnet-od" / "modelos" / "lstnet_od.pt"
     dlres_nome = "dlinear_res_ph.pt" if var == "ph" else "dlinear_res_od.pt"
     for p in (base / "ensemble.json", base / dlres_nome, ck02):
         if not p.exists():

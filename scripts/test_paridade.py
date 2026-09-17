@@ -93,9 +93,9 @@ def _sd(var, nome):
     base = {"ph": ("02-lstnet-ph", "lstnet_ph.pt", "06-ensemble-ph", "dlinear_res_ph.pt"),
             "od": ("03-lstnet-od", "lstnet_od.pt", "07-ensemble-od", "dlinear_res_od.pt")}[var]
     if nome == "lstnet":
-        p = ROOT / "resultados" / base[0] / "modelos" / base[1]
+        p = ROOT / "univariavel" / "resultados" / base[0] / "modelos" / base[1]
     else:
-        p = ROOT / "resultados" / base[2] / "modelos" / base[3]
+        p = ROOT / "univariavel" / "resultados" / base[2] / "modelos" / base[3]
     return torch.load(p, map_location="cpu", weights_only=False)["state"]
 
 
@@ -210,7 +210,7 @@ def ensemble_indep(var, ctx, fim, states, pesos_json, modelos_lgbm):
 
 
 def carrega_pkl_direto(var, compactado):
-    base = ROOT / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od") / "modelos"
+    base = ROOT / "univariavel" / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od") / "modelos"
     p = base / ("lgbm_steps.pkl.gz" if compactado else "lgbm_steps.pkl")
     opener = gzip.open if compactado else open
     with opener(p, "rb") as f:
@@ -233,7 +233,7 @@ def item_a():
 def item_b():
     pesos_json, states = {}, {}
     for var in ("ph", "od"):
-        base = ROOT / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od")
+        base = ROOT / "univariavel" / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od")
         pesos_json[var] = json.load(open(base / "modelos/ensemble.json"))["pesos"]
         states[var] = {"lstnet": _sd(var, "lstnet"), "dlres": _sd(var, "dlres")}
     lgbm_od = carrega_pkl_direto("od", compactado=True)  # via pickle direto, sem app.MODELOS
@@ -265,7 +265,7 @@ def item_c():
     esperados = {"ph": {"sazonal": 0.2701, "lstnet": 0.7247, "lgbm": 0.0, "dlres": 0.0045},
                  "od": {"sazonal": 0.0543, "lstnet": 0.6223, "lgbm": 0.0255, "dlres": 0.303}}
     for var in ("ph", "od"):
-        base = ROOT / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od")
+        base = ROOT / "univariavel" / "resultados" / ("06-ensemble-ph" if var == "ph" else "07-ensemble-od")
         ens = json.load(open(base / "modelos/ensemble.json"))["pesos"]
         w_app = list(api.MODELOS[var]["pesos"])
         check(w_app == [ens["sazonal"], ens["lstnet"], ens["lgbm"], ens["dlres"]],

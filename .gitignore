@@ -24,11 +24,11 @@ pdfs_texto/
 # Checkpoints treinados → GitHub Release `modelos-v1` (baixar com
 # scripts/baixar_modelos.sh; regeneráveis via notebooks 00–07).
 # Só JSONs minúsculos (normalizacao.json, ensemble.json) ficam no git.
-resultados/*/modelos/*.pkl
-resultados/*/modelos/*.pkl.gz
-resultados/*/modelos/*.pt
-resultados/*/modelos/prophet_*.json
-resultados/*/modelos/arima*.pkl
-resultados/*/modelos/lgbm_nativo/
-!resultados/*/modelos/normalizacao.json
-!resultados/*/modelos/ensemble.json
+univariavel/resultados/*/modelos/*.pkl
+univariavel/resultados/*/modelos/*.pkl.gz
+univariavel/resultados/*/modelos/*.pt
+univariavel/resultados/*/modelos/prophet_*.json
+univariavel/resultados/*/modelos/arima*.pkl
+univariavel/resultados/*/modelos/lgbm_nativo/
+!univariavel/resultados/*/modelos/normalizacao.json
+!univariavel/resultados/*/modelos/ensemble.json

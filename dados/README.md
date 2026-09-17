@@ -53,7 +53,7 @@ df = df.rename(columns={"Data hora": "ds", "pH": "y"}).sort_values("ds")
 
 ## Notas para a modelagem univariada
 
-1. **Faltantes primeiro:** interpolação `limit=24` (2 h) + descarte de janelas com NaN, como no regime anterior — ver roteiro §4 do [README principal](../README.md).
+1. **Faltantes primeiro:** interpolação `limit=24` (2 h) + descarte de janelas com NaN, como no regime anterior — ver roteiro §4 da [METODOLOGIA](../METODOLOGIA.md).
 2. **Corte temporal honesto:** treino/val dentro de 2024 por data de fim da janela (sem shuffle); 2025 só na avaliação final. Nada de 2025 no treino, na val, no early stopping ou no tuning.
 3. **Escala:** pH varia pouco (σ pequeno, faixa ~1 unidade) — normalize (z-score) e avalie com MAE/RMSE além de MAPE, que é instável perto de zero relativo.
 4. **Sazonalidade dupla:** passo de 5 min (288 pontos/dia) sugere ciclo diário forte — e com treino anual o baseline **sazonal lag-365** entra no jogo, mas só no benchmark 2025 (prevê 2025 copiando 2024; dentro de 2024 ele é incalculável, pois não há 2023). É a régua mais exigente do novo regime.

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Migração one-shot: LGBM pickle -> formato nativo (Fase 2, passo 1).
 
-Carrega UMA vez resultados/07-ensemble-od/modelos/lgbm_steps.pkl.gz
+Carrega UMA vez univariavel/resultados/07-ensemble-od/modelos/lgbm_steps.pkl.gz
 (fallback .pkl) e ressalva os 288 boosters em formato nativo
-(`booster.save_model`) sob resultados/07-ensemble-od/modelos/lgbm_nativo/
+(`booster.save_model`) sob univariavel/resultados/07-ensemble-od/modelos/lgbm_nativo/
 (um arquivo por horizonte: lgbm_h000.txt ... lgbm_h287.txt).
 
 Uso:
@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = ROOT / "resultados" / "07-ensemble-od" / "modelos"
+BASE = ROOT / "univariavel" / "resultados" / "07-ensemble-od" / "modelos"
 DEST = BASE / "lgbm_nativo"
 N = 288
 

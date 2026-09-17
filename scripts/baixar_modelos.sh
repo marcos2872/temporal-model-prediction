@@ -33,4 +33,4 @@ fi
 for f in "$DEST"/*-modelos.tar.gz; do
   tar -xzf "$f" -C "$ROOT"
 done
-echo "OK: checkpoints extraídos em resultados/*/modelos/ (confira com: ls resultados/*/modelos/)"
+echo "OK: checkpoints extraídos em univariavel/resultados/*/modelos/ (confira com: ls univariavel/resultados/*/modelos/)"

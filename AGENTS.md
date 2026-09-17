@@ -1,13 +1,13 @@
 # AGENTS.md — temporal-model
 
-Time-series forecasting repo: CETESB water-quality data → baseline notebooks → per-experiment results. No `src/`, no tests, no CI. Notebooks + `resultados/` are the codebase.
+Time-series forecasting repo: CETESB water-quality data → baseline notebooks → per-experiment results. No `src/`, no tests, no CI. `univariavel/notebooks/` + `univariavel/resultados/` are the codebase; `dados/` stays at the repo root (shared by present and future tracks).
 
 ## Environment
 
 - `uv venv .venv --python 3.12 && uv pip install --python .venv/bin/python -r requirements.txt`
 - Run things with `.venv/bin/python` or `.venv/bin/jupyter` (venv is gitignored; never commit it).
 - Prophet needs CmdStan (~200 MB, auto-downloads on first fit, needs `g++`/`make`). Notebooks treat Prophet as **optional**: if CmdStan is missing they skip it and continue — preserve that behavior.
-- How-to-run lives in `notebooks/README.md`; experiment protocol details in each `resultados/<exp>/README.md`.
+- How-to-run lives in `COMO-RODAR.md` (entry point) and `univariavel/notebooks/README.md`; experiment protocol details in each `univariavel/resultados/<exp>/README.md`. Versioned probe in `univariavel/benchmark-2025/` (see its README). Theory and references in `METODOLOGIA.md`.
 
 ## Data (`dados/`, see `dados/README.md`)
 
@@ -25,15 +25,15 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 
 ## Naming and layout
 
-- Notebooks: `notebooks/NN-<modelo>-<variavel>.ipynb`. Results: `resultados/NN-<modelo>-<variavel>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`. Index in `resultados/README.md`. Binaries under `modelos/` are NOT committed — see "Model checkpoints" below.
-- New experiments reuse the same split/protocol; add their row to `resultados/README.md` and checkbox to main README §7.
-- Rename notebooks only with `git mv`; update the tree + checklist in main README, the experiment README reproduce command, and the `resultados/README.md` row.
-- Re-running a notebook with `nbconvert --inplace` **overwrites** its `resultados/<exp>/` artifacts — back the folder up first if the old run matters. Typical runtime 5–10 min.
+- Layout: `dados/` stays at the repo root (treino 2024 + benchmark 2025, shared). Univariate track lives in `univariavel/`: notebooks `univariavel/notebooks/NN-<modelo>-<variavel>.ipynb`, results `univariavel/resultados/NN-<modelo>-<variavel>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`, plus the versioned probe `univariavel/benchmark-2025/`. Index in `univariavel/resultados/README.md`. Binaries under `modelos/` are NOT committed — see "Model checkpoints" below.
+- New experiments reuse the same split/protocol; add their row to `univariavel/resultados/README.md` and update the status/rulers table in the main README.
+- Rename notebooks only with `git mv`; update the tree + status in main README, the experiment README reproduce command, and the `univariavel/resultados/README.md` row.
+- Re-running a notebook with `nbconvert --inplace` **overwrites** its `univariavel/resultados/<exp>/` artifacts — back the folder up first if the old run matters. Typical runtime 5–10 min.
 
 ## Model checkpoints (GitHub Release — never in git)
 
-- `resultados/*/modelos/` binaries (`.pt`, `.pkl`, `.pkl.gz`, `prophet_*.json`, `arima*.pkl`) are gitignored; only the tiny `normalizacao.json` / `ensemble.json` stay tracked. Checkpoints are regenerable via notebooks 00–07 and downloadable with `bash scripts/baixar_modelos.sh [--dir DIR] [--tag TAG]` (uses `gh`, falls back to `curl`; verifies `SHA256SUMS.txt` and extracts at the repo root, preserving `resultados/<exp>/modelos/` paths).
-- Upload (new/updated checkpoints): one asset per experiment (`00-baseline-ph-modelos.tar.gz` … `07-ensemble-od-modelos.tar.gz`), each containing ONLY the gitignored binaries with relative paths (e.g. `resultados/06-ensemble-ph/modelos/{dlinear_res_ph.pt,lgbm_steps.pkl.gz}`); the 120+ MB `.pkl` are excluded — the API reads the `.pkl.gz`. Generate `SHA256SUMS.txt` with **basenames** (`cd` into the asset dir before `sha256sum *.tar.gz > SHA256SUMS.txt` — absolute paths break `sha256sum -c` after download). Then `gh release create <tag> --title "..." --notes-file notes.md <assets> SHA256SUMS.txt`, or `gh release upload <tag> --clobber` for fixes. Biggest asset ~50 MB; GitHub per-file limit is 2 GB.
+- `univariavel/resultados/*/modelos/` binaries (`.pt`, `.pkl`, `.pkl.gz`, `prophet_*.json`, `arima*.pkl`) are gitignored; only the tiny `normalizacao.json` / `ensemble.json` stay tracked. Checkpoints are regenerable via notebooks 00–07 and downloadable with `bash scripts/baixar_modelos.sh [--dir DIR] [--tag TAG]` (uses `gh`, falls back to `curl`; verifies `SHA256SUMS.txt` and extracts at the repo root, preserving `univariavel/resultados/<exp>/modelos/` paths). NOTE: the `modelos-v1` Release predates the `univariavel/` move — its tarballs still carry `resultados/<exp>/modelos/` paths; re-tar with the new prefix (or move after extract) before use.
+- Upload (new/updated checkpoints): one asset per experiment (`00-baseline-ph-modelos.tar.gz` … `07-ensemble-od-modelos.tar.gz`), each containing ONLY the gitignored binaries with relative paths (e.g. `univariavel/resultados/06-ensemble-ph/modelos/{dlinear_res_ph.pt,lgbm_steps.pkl.gz}`); the 120+ MB `.pkl` are excluded — the API reads the `.pkl.gz`. Generate `SHA256SUMS.txt` with **basenames** (`cd` into the asset dir before `sha256sum *.tar.gz > SHA256SUMS.txt` — absolute paths break `sha256sum -c` after download). Then `gh release create <tag> --title "..." --notes-file notes.md <assets> SHA256SUMS.txt`, or `gh release upload <tag> --clobber` for fixes. Biggest asset ~50 MB; GitHub per-file limit is 2 GB.
 - Release notes must contain: provenance (HEAD SHA the checkpoints came from), rulers (benchmark 2025 pH ens 0.0509 · OD ens 0.2107; val pH 0.0357 · OD 0.1325), an asset→experiment→files table, `SHA256SUMS.txt` mention, the download command, and the note that `.pkl` >100 MB are excluded while small JSONs stay in git.
 - Before committing any removal/upload: fresh `gh release download` into an empty dir + `sha256sum -c SHA256SUMS.txt` + extract + checksum-compare vs local + `.venv/bin/python -c "from app import carrega; carrega('ph'); carrega('od')"` + end-to-end `bash scripts/baixar_modelos.sh --dir /tmp/...`.
 
@@ -47,7 +47,7 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - Detect: `sshmcp_list_servers` shows a configured server (e.g. `temporal-remote`).
   If no server / MCP unavailable → ignore this section, run locally with `.venv`.
 - Flow when active (code local, compute remote, transfer via MCP — no git on remote):
-  1. Local: create/edit `notebooks/NN-*.ipynb`; checkpoints never go to git (see "Model checkpoints") — no `.gitignore` change needed for new exps unless new binary extensions appear.
+  1. Local: create/edit `univariavel/notebooks/NN-*.ipynb`; checkpoints never go to git (see "Model checkpoints") — no `.gitignore` change needed for new exps unless new binary extensions appear.
   2. Remote prep via sshmcp (no git commands on remote): check work dir, venv
      (`uv venv` / `pip install -r requirements.txt` if needed) and deps (`dados/`,
      checkpoints). Missing files → `sshmcp_upload_file` / `sshmcp_upload_directory`.
@@ -55,11 +55,11 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
      `nbconvert --execute --inplace` in background (`nohup ... &`, poll with short
      `ps`/`tail` calls — the MCP channel times out on long runs).
   4. Local: `sshmcp_download_file` (executed notebook) + `sshmcp_download_directory`
-     (`resultados/<exp>/`) → verify no nested dupes, metrics/figs complete,
-     0 error outputs → evaluate → write `resultados/<exp>/README.md` (record remote
+     (`univariavel/resultados/<exp>/`) → verify no nested dupes, metrics/figs complete,
+     0 error outputs → evaluate → write `univariavel/resultados/<exp>/README.md` (record remote
      host + work dir as provenance) + index rows → `feat(model):` + `docs:` commits
      + push (all git happens locally).
-- Never run heavy training locally when remote is available; never commit `.venv/` nor `resultados/*/modelos/` binaries (only `normalizacao.json` / `ensemble.json` stay tracked).
+- Never run heavy training locally when remote is available; never commit `.venv/` nor `univariavel/resultados/*/modelos/` binaries (only `normalizacao.json` / `ensemble.json` stay tracked).
 
 ## Git
 
