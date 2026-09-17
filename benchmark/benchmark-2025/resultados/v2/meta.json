@@ -1,0 +1,68 @@
+{
+  "git_sha": "e152258",
+  "metodologia": "probe-4-periodos-ancoras-23h55 tolerancia-3h (pipeline pr\u00f3pria; 08 n\u00e3o lido)",
+  "periodos": {
+    "P1": {
+      "fim": "2025-03-17",
+      "inicio": "2025-03-08",
+      "n_od": 10,
+      "n_ph": 10,
+      "preenchido_od": 14,
+      "preenchido_ph": 15
+    },
+    "P2": {
+      "fim": "2025-05-12",
+      "inicio": "2025-05-03",
+      "n_od": 9,
+      "n_ph": 10,
+      "preenchido_od": 0,
+      "preenchido_ph": 28
+    },
+    "P3": {
+      "fim": "2025-08-31",
+      "inicio": "2025-08-22",
+      "n_od": 9,
+      "n_ph": 9,
+      "preenchido_od": 0,
+      "preenchido_ph": 0
+    },
+    "P4": {
+      "fim": "2025-10-10",
+      "inicio": "2025-10-01",
+      "n_od": 10,
+      "n_ph": 10,
+      "preenchido_od": 0,
+      "preenchido_ph": 11
+    }
+  },
+  "protocolo": {
+    "H": 288,
+    "L": 8640,
+    "L_treino": 2304,
+    "covariaveis": [
+      "tod_sin",
+      "tod_cos",
+      "solar Elev/90",
+      "f1_sinA",
+      "f1_cosA",
+      "f2_sinS",
+      "f2_cosS"
+    ],
+    "ensemble": "pesos ensemble.json do 16/17 (sem refit)",
+    "lgbm": "288 nativos/horizonte (lgbm_h* ph / model_j* od), 32 feats",
+    "modelos_LN": 2016,
+    "nota": "s\u00f3 infer\u00eancia em 2025, sem tuning",
+    "nota_tolerancia": "origens com furo \u22643h t\u00eam o furo interpolado localmente; gap maior descarta a origem",
+    "seeds": [
+      42,
+      7,
+      123,
+      2024,
+      999
+    ],
+    "tolerancia_nan_slots": 36
+  },
+  "runtime_s": 80,
+  "tag": "v2",
+  "timestamp_utc": "2026-09-17T20:05:12Z"
+}

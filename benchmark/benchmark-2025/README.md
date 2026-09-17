@@ -52,3 +52,38 @@ prophet (opcional — pulado se o artefato sumir). `LSTNet1D`/`DLinearLite` vêm
 pH (39 origens): **ens 0,0512** · lstnet 0,0524 · saz-288 0,0605 · lag-365 0,4367 · prophet 2,07.
 OD (38 origens): **ens 0,1996** · lstnet 0,2119 · saz-288 0,2519 · lag-365 1,27 · prophet 3,81.
 Mesma hierarquia do 08 (ens vence nas duas, lag-365 inútil, prophet explode).
+
+## v2 (probe, 17/09/2026 — checkpoints 10–17, mesmo probe)
+
+Mesmos 4 períodos, mesmas 39/38 origens, mesma tolerância 3 h (baratos e
+lag-365 dão Δ = 0,0000 no `--diff`, o que confirma o janelamento idêntico).
+Só os checkpoints mudam: LSTNet 8 canais seed-mean ×5, PatchTST/DLinear
+seed-mean ×5, DLinear-res seed-mean ×5, LGBM 288 nativos
+(`lgbm_h*` ph / `model_j*` od, 32 feats), ensemble via `ensemble.json` do
+16/17 sem refit, prophet do 10/11. `meta.json` registra `L_treino 2304`,
+`seeds`, `covariaveis` e o setup LGBM/ensemble (é o que distingue do v1);
+`vals/` guarda a ref val-2024 de cada exp v2 (10/11/17 via `metricas_val.csv`;
+12/13 via `metricas_val_media_dp.csv` pooled 5 seeds; 14/15 via
+`metricas_val_media_dp.csv` por modelo; 16 via `metricas_zonas.csv` zona
+report/honesta — só o 10/11/17 têm `metricas_val.csv`).
+
+pH (39 origens): **ens 0,0497** · patchtst 0,0499 · dlinear 0,0499 · dlres 0,0506 ·
+lstnet 0,0518 · saz-288 0,0605 · lgbm 0,0821 · prophet 1,17.
+OD (38 origens): **patchtst 0,2065** · ens 0,2132 · dlres 0,2294 · lstnet 0,2289 ·
+dlinear 0,2309 · saz-288 0,2519 · lgbm 0,3558 · prophet 4,96.
+
+Leitura: pH melhora em quase tudo (patchtst −21 %, dlres −12 %, ens −3 % e segue
+campeão); OD é misto (patchtst −4 % e vira campeão isolado, dlinear/dlres/lgbm
+melhoram, mas lstnet +8 % puxa o ens para +7 % — peso lstnet 0,68 no 17).
+Hierarquia igual à do rolante do 18 (`metricas_benchmark_{ph,od}.csv`:
+ph patchtst 0,0465 ≈ ens 0,0470; od patchtst 0,2056 < ens 0,2133): patchtst no
+topo nas duas, ens empata (pH, −0,0002 no probe) ou perde (OD) para o patchtst.
+lag-365/prophet seguem inúteis. Pesos ens: ph
+`{saz 0,0694 · lstnet 0,7048 · lgbm 0,0889 · dlres 0,1366}`;
+od `{saz 0,0038 · lstnet 0,6771 · lgbm 0,0 · dlres 0,3216}`.
+
+```bash
+OMP/MKL/OpenBLAS_NUM_THREADS=4 .venv/bin/python benchmark/benchmark-2025/benchmark_versoes.py --tag v2 --refazer  # ~80 s CPU
+.venv/bin/python benchmark/benchmark-2025/benchmark_versoes.py --diff v1 v2        # ΔMAE/Δ% no terminal
+.venv/bin/python benchmark/benchmark-2025/benchmark_versoes.py --plot v1 v2        # evolução → v2/01-mae-benchmark-v1-vs-v2.png
+```

@@ -15,6 +15,12 @@ tolerância de 3 h todos os períodos têm ~10 origens (P4 pH preenche o furo de
 media_movel_288, sazonal_lag365 (+fallback saz-288), lstnet, patchtst,
 dlinear, lgbm (288), dlres, ens (pesos NNLS, sem refit) + prophet (opcional).
 
+--tag v1 usa os checkpoints 00–07 (LSTNet 3 canais, LGBM pickle por passo).
+--tag v2 usa os checkpoints 10–17 com o MESMO probe (mesmos períodos,
+L/H/TOL_NAN): LSTNet 8 canais seed-mean ×5, PatchTST/DLinear seed-mean ×5,
+DLinear-res seed-mean ×5, LGBM 288 nativos (lgbm_h*/model_j*), ensemble via
+ensemble.json do 16/17 (sem refit), prophet do 10/11 (opcional).
+
 Fontes de código (não duplicar à toa):
 - LSTNet1D, DLinearLite: importadas de `app.py` (fonte única com a API).
 - PatchTST, base_feats, hour_sincos, lag365, prophet: cópia fiel de
@@ -118,6 +124,34 @@ CKPTS = {
 VAL_EXPS = {
     "ph": ["00-baseline-ph", "02-lstnet-ph", "04-patchtst-ph", "06-ensemble-ph"],
     "od": ["01-baseline-od", "03-lstnet-od", "05-patchtst-od", "07-ensemble-od"],
+}
+
+# ---------- protocolo v2 (exps 10–17; o probe NÃO muda — só os checkpoints) ----------
+# LSTNet 8 canais (valor + 7 cov), PatchTST/DLinear seed-mean ×5, DLinear-res
+# seed-mean ×5, LGBM 288 nativos, ensemble via ensemble.json do 16/17 (sem refit).
+# Redes v2 treinadas com L=2304 mas nativas em LN=2016: no probe (L=8640) elas
+# leem Xt=X[:,-LN:] + covariáveis computadas dos timestamps (como o 18 fez).
+SEEDS_V2 = [42, 7, 123, 2024, 999]
+L_TREINO_V2 = 2304  # L de treino v2 (8 d); o probe segue L=8640 (comparável v1×v2)
+CKPTS_V2 = {
+    "ph": {"lstnet_dir": "12-v2-lstnet-ph/modelos", "lstnet_pat": "lstnet_ph_s{seed}.pt",
+           "td_dir": "14-v2-patchtst-ph/modelos", "patch_pat": "patchtst_ph_s{seed}.pt",
+           "dlin_pat": "dlinear_ph_s{seed}.pt",
+           "lgbm_dir": "16-v2-ensemble-ph/modelos/lgbm_nativo",
+           "dlres_pat": "dlinear_res_ph_s{seed}.pt",  # sob lgbm_dir.parent
+           "ens": "16-v2-ensemble-ph/modelos/ensemble.json",
+           "prophet": "10-v2-baseline-ph/modelos/prophet_ph.json"},
+    "od": {"lstnet_dir": "13-v2-lstnet-od/modelos", "lstnet_pat": "lstnet_od_s{seed}.pt",
+           "td_dir": "15-v2-patchtst-od/modelos", "patch_pat": "patchtst_od_s{seed}.pt",
+           "dlin_pat": "dlinear_od_s{seed}.pt",
+           "lgbm_dir": "17-v2-ensemble-od/modelos/lgbm_nativo",
+           "dlres_pat": "dlinear_res_od_s{seed}.pt",  # sob lgbm_dir.parent
+           "ens": "17-v2-ensemble-od/modelos/ensemble.json",
+           "prophet": "11-v2-baseline-od/modelos/prophet_od.json"},
+}
+VAL_EXPS_V2 = {
+    "ph": ["10-v2-baseline-ph", "12-v2-lstnet-ph", "14-v2-patchtst-ph", "16-v2-ensemble-ph"],
+    "od": ["11-v2-baseline-od", "13-v2-lstnet-od", "15-v2-patchtst-od", "17-v2-ensemble-od"],
 }
 
 HIST_FIELDS = [
@@ -290,10 +324,216 @@ def load_lgbm(var: str):
         return pickle.load(f)
 
 
+# ---------- v2: covariáveis + LSTNet 8 canais (verbatim 12 §cov / 18 §9) ----------
+LAT, LON, TZ = -23.52, -46.19, -3  # Mogi das Cruzes; ts locais (UTC-3, sem DST)
+N_COV, N_CH = 7, 8  # tod_sin/cos + solar + f1..f4 = 7; + valor = 8
+CONV_CH, CONV_K, CONV_S = 32, 12, 6
+GRU_H, SKIP_H, SKIP_P = 64, 32, 48
+AR_Q = 288
+DROPOUT = 0.1
+
+
+def elevacao_solar(ts, lat=LAT, lon=LON, tz=TZ):
+    ts = pd.DatetimeIndex(ts)
+    doy = ts.dayofyear.to_numpy() + (ts.hour.to_numpy() + ts.minute.to_numpy() / 60) / 24
+    g = 2 * np.pi / 365 * (doy - 1 + (ts.hour.to_numpy() - 12) / 24)
+    eq = 229.18 * (0.000075 + 0.001868 * np.cos(g) - 0.032077 * np.sin(g)
+                   - 0.014615 * np.cos(2 * g) - 0.040849 * np.sin(2 * g))
+    decl = (0.006918 - 0.399912 * np.cos(g) + 0.070257 * np.sin(g) - 0.006758 * np.cos(2 * g)
+            + 0.000907 * np.sin(2 * g) - 0.002697 * np.cos(3 * g) + 0.00148 * np.sin(3 * g))
+    tst = (ts.hour.to_numpy() * 60 + ts.minute.to_numpy()) + eq + 4 * lon - 60 * tz
+    ha = np.radians(tst / 4 - 180)
+    cosz = np.sin(np.radians(lat)) * np.sin(decl) + np.cos(np.radians(lat)) * np.cos(decl) * np.cos(ha)
+    return 90 - np.degrees(np.arccos(np.clip(cosz, -1, 1)))
+
+
+def fourier_doy(ts, n=366):
+    d = pd.DatetimeIndex(ts).dayofyear.to_numpy()
+    return (np.sin(2 * np.pi * d / n), np.cos(2 * np.pi * d / n),
+            np.sin(4 * np.pi * d / n), np.cos(4 * np.pi * d / n))
+
+
+class LSTNetV2(torch.nn.Module):  # = LSTNet1D do 12/18; nome difere p/ não colidir com app.LSTNet1D (v1)
+    def __init__(self):
+        super().__init__()
+        self.conv = torch.nn.Conv1d(N_CH, CONV_CH, kernel_size=CONV_K, stride=CONV_S)
+        self.gru = torch.nn.GRU(CONV_CH, GRU_H, batch_first=True)
+        self.skipcell = torch.nn.GRUCell(CONV_CH, SKIP_H)
+        self.head = torch.nn.Linear(GRU_H + SKIP_H, HN)
+        self.ar = torch.nn.Linear(AR_Q, HN)
+        self.drop = torch.nn.Dropout(DROPOUT)
+        self.gamma = torch.nn.Parameter(torch.ones(1))
+        self.beta = torch.nn.Parameter(torch.zeros(1))
+
+    def forward(self, xv, tod):
+        mu = xv.mean(dim=1, keepdim=True); sg = xv.std(dim=1, keepdim=True).clamp_min(1e-3)
+        vn = self.gamma * (xv - mu) / sg + self.beta
+        f = self.drop(torch.relu(self.conv(torch.cat([vn.unsqueeze(1), tod.transpose(1, 2)], dim=1))))
+        f = f.transpose(1, 2)
+        _, h = self.gru(f)
+        B, T, _ = f.shape
+        hs = torch.zeros(B, SKIP_H, device=f.device)
+        states = [hs]
+        for t in range(T):
+            prev = states[t - SKIP_P] if t - SKIP_P >= 0 else states[0]
+            hs = self.skipcell(f[:, t, :], prev)
+            states.append(hs)
+        g = self.gamma.clamp_min(1e-3)
+        yn = self.head(self.drop(torch.cat([h.squeeze(0), hs], dim=1)))
+        ya = self.ar(vn[:, -AR_Q:])
+        return (yn + ya - self.beta) / g * sg + mu
+
+
+def solar_passo(E: pd.DatetimeIndex, j: int):  # verbatim 18 §11
+    return (elevacao_solar(E - pd.to_timedelta((H - 1 - j) * 5, unit="min")) / 90.0).astype(np.float32)
+
+
+def carrega_lgbm_v2(nat_dir: Path, ens_path: Path):
+    """Loader tolerante verbatim do 18 §11: aceita lgbm_h*.txt (16) e
+    model_j*.txt (17). Convenção Fourier decidida pela lista de nomes
+    (normalizacao/ensemble) ou pelo glob; trava se nomes×arquivos divergirem."""
+    import lightgbm as lgb
+
+    h = sorted(nat_dir.glob("lgbm_h*.txt"))
+    j = sorted(nat_dir.glob("model_j*.txt"))
+    assert (len(h) == H) ^ (len(j) == H), (f"esperado 288 boosters de UM padrão em {nat_dir}: "
+                                           f"lgbm_h*={len(h)} model_j*={len(j)}")
+    paths, glob_flavor = (h, "fim") if len(h) == H else (j, "ctx")
+    flavor = glob_flavor
+    for key in ("lgbm_features", "features"):
+        for src in (nat_dir.parent / "normalizacao.json", ens_path):
+            try:
+                meta = json.load(open(src))
+            except (FileNotFoundError, json.JSONDecodeError):
+                continue
+            nomes = meta.get(key) or (meta.get("lgbm") or {}).get(key)
+            if nomes:
+                if "orig_f1sin" in nomes:
+                    flavor = "fim"  # 16: fourier do fim do alvo (E)
+                elif "f1_sin_orig" in nomes:
+                    flavor = "ctx"  # 17: fourier da origem (E − H)
+                break
+    assert flavor == glob_flavor, f"nomes × arquivos divergem em {nat_dir}: {flavor} vs {glob_flavor}"
+    boosters = [lgb.Booster(model_file=str(p)) for p in paths]
+    print(f"  lgbm: {len(boosters)} boosters ({paths[0].name}…{paths[-1].name}, fourier={flavor})")
+    return boosters, flavor
+
+
+def preve_lgbm_v2(boosters, flavor: str, Xb: np.ndarray, E: pd.DatetimeIndex) -> np.ndarray:
+    """Inferência LGBM nativa verbatim do 18 §11 (32 feats = base 25 + fourier 4 + hora 2 + solar 1)."""
+    F, em = base_feats(Xb, E)
+    if flavor == "fim":
+        Ff = np.column_stack([a.astype(np.float32) for a in fourier_doy(E)])
+    else:
+        Ff = np.column_stack([a.astype(np.float32) for a in fourier_doy(E - pd.Timedelta(minutes=5 * H))])
+    S = np.stack([Xb[:, L - SEASON + h] for h in range(H)], axis=1)
+    P = np.empty((len(Xb), H), dtype=np.float32)
+    for j, bst in enumerate(boosters):
+        sh, ch = hour_sincos(em, j)
+        P[:, j] = S[:, j] + bst.predict(np.column_stack([F, Ff, sh, ch, solar_passo(E, j)]))
+    return P
+
+
+@torch.no_grad()
+def _fwd_seed_mean(modelos, Xt_t: torch.Tensor,
+                   Tln_t: torch.Tensor | None = None, batch: int = 64) -> np.ndarray:
+    acc = None
+    for m in modelos:
+        m.eval()
+        outs = []
+        for b in range(0, len(Xt_t), batch):
+            xb = Xt_t[b:b + batch]
+            if Tln_t is None:
+                outs.append(m(xb).numpy())
+            else:
+                outs.append(m(xb, Tln_t[b:b + batch]).numpy())
+        P = np.concatenate(outs)
+        acc = P if acc is None else acc + P
+    return (acc / len(modelos)).astype(np.float32)
+
+
+def _load_seed(cls, pattern: str, seed: int, **kw):
+    m = cls(**kw).to("cpu")
+    m.load_state_dict(torch.load(ROOT / "resultados" / pattern.format(seed=seed),
+                                 map_location="cpu", weights_only=False)["state"])
+    return m.eval()
+
+
+def infer_v2(var: str, C: dict, X: np.ndarray, Xt: np.ndarray,
+             ends: pd.DatetimeIndex, S: np.ndarray) -> dict[str, np.ndarray]:
+    """Redes v2 seed-mean ×5 + LGBM nativo + ensemble NNLS (pesos do 16/17, sem refit)."""
+    t0 = time.time()
+    # Covariáveis dos slots de contexto (determinísticas; p/ mesmos timestamps == Tln do 18)
+    e_min = ends.values.astype("datetime64[m]").astype(np.int64)
+    ts = pd.DatetimeIndex(pd.to_datetime(
+        ((e_min - H * 5)[:, None] - 5 * np.arange(LN - 1, -1, -1)[None, :]).ravel(), unit="m"))
+    tod = (ts.hour.to_numpy() * 60 + ts.minute.to_numpy()).astype(np.float32)
+    F1, F2, F3, F4 = [a.astype(np.float32) for a in fourier_doy(ts)]
+    Tln = np.stack([np.sin(2 * np.pi * tod / 1440).astype(np.float32),
+                    np.cos(2 * np.pi * tod / 1440).astype(np.float32),
+                    (elevacao_solar(ts) / 90.0).astype(np.float32),
+                    F1, F2, F3, F4], axis=1).reshape(len(X), LN, N_COV).astype(np.float32)
+    Xt_t, Tln_t = torch.from_numpy(Xt), torch.from_numpy(Tln)
+    Pn = _fwd_seed_mean([_load_seed(LSTNetV2, C["lstnet_dir"] + "/" + C["lstnet_pat"], sd)
+                         for sd in SEEDS_V2], Xt_t, Tln_t)
+    Pt = _fwd_seed_mean([_load_seed(PatchTST, C["td_dir"] + "/" + C["patch_pat"], sd)
+                         for sd in SEEDS_V2], Xt_t)
+    Dl = _fwd_seed_mean([_load_seed(DLinearLite, C["td_dir"] + "/" + C["dlin_pat"], sd)
+                         for sd in SEEDS_V2], Xt_t)
+    nat = ROOT / "resultados" / C["lgbm_dir"]
+    boosters, flavor = carrega_lgbm_v2(nat, ROOT / "resultados" / C["ens"])
+    Gb = preve_lgbm_v2(boosters, flavor, X, ends)
+    del boosters
+    Dr = S + _fwd_seed_mean([_load_seed(DLinearLite, str(Path(C["lgbm_dir"]).parent / C["dlres_pat"]), sd,
+                                       residual=True) for sd in SEEDS_V2], Xt_t)
+    ens = json.load(open(ROOT / "resultados" / C["ens"]))["pesos"]
+    En = (ens["sazonal"] * S + ens["lstnet"] * Pn
+          + ens["lgbm"] * Gb + ens["dlres"] * Dr).astype(np.float32)
+    print(f"  {var}: pesos ensemble {ens} | redes seed-mean em {time.time() - t0:.0f}s")
+    return {"lstnet": Pn, "patchtst": Pt, "dlinear": Dl,
+            "lgbm": Gb, "dlres": Dr, "ens": En}
+
+
+def read_val_v2(exp: str) -> tuple[str, dict[str, dict[str, str]]]:
+    """Referência val-2024 de um experimento v2 → (arquivo copiado p/ vals/, {modelo: {MAE, RMSE}}).
+
+    Só o 10/11/17 têm metricas_val.csv no formato índice-0 (o 17 com linhas
+    extras — read_val_index0/norm dão conta); os demais usam o melhor
+    equivalente disponível: 12/13 pooled 5 seeds (métrica × media/dp),
+    14/15 pooled por modelo (modelo × MAE_media/...) e 16 zona report (honesta, dez).
+    """
+    base = ROOT / "resultados" / exp
+    p = base / "metricas_val.csv"
+    if p.exists():
+        return p.name, read_val_index0(p)
+    p = base / "metricas_val_media_dp.csv"
+    if p.exists():
+        with open(p, newline="") as f:
+            rows = list(csv.reader(f))
+        header, body = rows[0], rows[1:]
+        if header[1] == "media":  # 12/13: métrica × (media, dp)
+            d = {r[0]: r[1] for r in body}
+            return p.name, {"lstnet": {"MAE": d.get("MAE", ""), "RMSE": d.get("RMSE", "")}}
+        out = {}  # 14/15: modelo × (MAE_media, RMSE_media, ...)
+        for r in body:
+            m = dict(zip(header[1:], r[1:]))
+            out[norm(r[0])] = {"MAE": m.get("MAE_media", ""), "RMSE": m.get("RMSE_media", "")}
+        return p.name, out
+    p = base / "metricas_zonas.csv"  # 16: zona,modelo,MAE,... → report (honesta)
+    if p.exists():
+        out = {}
+        with open(p, newline="") as f:
+            for r in csv.DictReader(f):
+                if r["zona"] == "report":
+                    out[norm(r["modelo"])] = {"MAE": r["MAE"], "RMSE": r["RMSE"]}
+        return p.name, out
+    raise SystemExit(f"val ausente: {base}")
+
+
 # ---------- inferência completa de uma variável ----------
 def roda_variavel(var: str, s24: pd.Series, s: pd.Series,
                   X: np.ndarray, Y: np.ndarray,
-                  ends: pd.DatetimeIndex) -> dict[str, np.ndarray]:
+                  ends: pd.DatetimeIndex, v2: bool = False) -> dict[str, np.ndarray]:
     t0 = time.time()
     preds = cheap_preds(X)
     preds["sazonal_lag365"], fb = lag365_preds(s24, X, Y, ends)
@@ -301,41 +541,49 @@ def roda_variavel(var: str, s24: pd.Series, s: pd.Series,
     # série crua, senão o NaN original vaza p/ as redes. Xt == Wln do 08 em
     # janelas limpas (mesmos valores, mesma ordem).
     Xt = X[:, -LN:].astype(np.float32)
-    e_min = ends.values.astype("datetime64[m]").astype(np.int64)
-    mins = (e_min - H * 5)[:, None] - 5 * np.arange(LN - 1, -1, -1)[None, :]
-    ang = (2 * np.pi * (mins % 1440) / 1440.0).astype(np.float32)
-    T = np.stack([np.sin(ang), np.cos(ang)], axis=-1).astype(np.float32)
-    C = CKPTS[var]
-    lstnet = load_state(LSTNet1D, C["lstnet"])
-    patch = load_state(PatchTST, C["patch"])
-    dlin = load_state(DLinearLite, C["dlin"])
-    dlres = load_state(DLinearLite, C["dlres"], residual=True)
-    lgbms = load_lgbm(var)
-    ens = json.load(open(ROOT / "resultados" / C["ens"]))["pesos"]
-    w = [ens["sazonal"], ens["lstnet"], ens["lgbm"], ens["dlres"]]
+    C = (CKPTS_V2 if v2 else CKPTS)[var]
+    if v2:
+        # Redes v2 (treino L=2304) leem a cauda LN + covariáveis dos timestamps.
+        preds.update(infer_v2(var, C, X, Xt, ends, preds["sazonal_naive_288"]))
+        Pn, Pt, Dl = (preds["lstnet"], preds["patchtst"], preds["dlinear"])
+        Gb, Dr, En = preds["lgbm"], preds["dlres"], preds["ens"]
+    else:
+        e_min = ends.values.astype("datetime64[m]").astype(np.int64)
+        mins = (e_min - H * 5)[:, None] - 5 * np.arange(LN - 1, -1, -1)[None, :]
+        ang = (2 * np.pi * (mins % 1440) / 1440.0).astype(np.float32)
+        T = np.stack([np.sin(ang), np.cos(ang)], axis=-1).astype(np.float32)
+        lstnet = load_state(LSTNet1D, C["lstnet"])
+        patch = load_state(PatchTST, C["patch"])
+        dlin = load_state(DLinearLite, C["dlin"])
+        dlres = load_state(DLinearLite, C["dlres"], residual=True)
+        lgbms = load_lgbm(var)
+        ens = json.load(open(ROOT / "resultados" / C["ens"]))["pesos"]
+        w = [ens["sazonal"], ens["lstnet"], ens["lgbm"], ens["dlres"]]
 
-    @torch.no_grad()
-    def fwd1(model, tod=None, batch=64):
-        outs = []
-        for b in range(0, len(X), batch):
-            xb = torch.from_numpy(Xt[b:b + batch])
-            if tod is None:
-                outs.append(model(xb).numpy())
-            else:
-                outs.append(model(xb, torch.from_numpy(tod[b:b + batch])).numpy())
-        return np.concatenate(outs)
+        @torch.no_grad()
+        def fwd1(model, tod=None, batch=64):
+            outs = []
+            for b in range(0, len(X), batch):
+                xb = torch.from_numpy(Xt[b:b + batch])
+                if tod is None:
+                    outs.append(model(xb).numpy())
+                else:
+                    outs.append(model(xb, torch.from_numpy(tod[b:b + batch])).numpy())
+            return np.concatenate(outs)
 
-    Pn = fwd1(lstnet, T)
-    Pt = fwd1(patch)
-    Dl = fwd1(dlin)
-    F, em = base_feats(X, ends)
-    S = preds["sazonal_naive_288"]
-    Gb = np.empty((len(X), H), dtype=np.float32)
-    for j, m in enumerate(lgbms):
-        sh, ch = hour_sincos(em, j)
-        Gb[:, j] = S[:, j] + m.predict(np.column_stack([F, sh, ch]))
-    Dr = S + fwd1(dlres)
-    En = w[0] * S + w[1] * Pn + w[2] * Gb + w[3] * Dr
+        Pn = fwd1(lstnet, T)
+        Pt = fwd1(patch)
+        Dl = fwd1(dlin)
+        F, em = base_feats(X, ends)
+        S = preds["sazonal_naive_288"]
+        Gb = np.empty((len(X), H), dtype=np.float32)
+        for j, m in enumerate(lgbms):
+            sh, ch = hour_sincos(em, j)
+            Gb[:, j] = S[:, j] + m.predict(np.column_stack([F, sh, ch]))
+        Dr = S + fwd1(dlres)
+        En = w[0] * S + w[1] * Pn + w[2] * Gb + w[3] * Dr
+        preds.update({"lstnet": Pn, "patchtst": Pt, "dlinear": Dl,
+                      "lgbm": Gb, "dlres": Dr, "ens": En})
     for m, P in (("lstnet", Pn), ("patchtst", Pt), ("dlinear", Dl),
                  ("dlres", Dr), ("ens", En)):
         n = int(np.isnan(np.asarray(P)).sum())
@@ -392,14 +640,35 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
                 raise SystemExit(f"tag '{tag}' já consta em {HIST} — use --refazer")
     t00 = time.time()
     TR, BM = ROOT / "dados" / "treino", ROOT / "dados" / "benchmark"
-    for var, d in CKPTS.items():
-        for k in ("lstnet", "patch", "dlin", "dlres", "ens"):
-            p = ROOT / "resultados" / d[k]
-            if not p.exists():
-                raise SystemExit(f"checkpoint ausente: {p}")
-        if not ((ROOT / "resultados" / d["lgbm"]).exists()
-                or (ROOT / "resultados" / d["lgbm_fb"]).exists()):
-            raise SystemExit(f"LGBM ausente p/ {var}")
+    v2 = (tag == "v2")
+    CKD = CKPTS_V2 if v2 else CKPTS
+    if v2:
+        for var, d in CKD.items():
+            for sd in SEEDS_V2:
+                pl = ROOT / "resultados" / d["lstnet_dir"] / d["lstnet_pat"].format(seed=sd)
+                pp = ROOT / "resultados" / d["td_dir"] / d["patch_pat"].format(seed=sd)
+                pd_ = ROOT / "resultados" / d["td_dir"] / d["dlin_pat"].format(seed=sd)
+                pr = ROOT / "resultados" / Path(d["lgbm_dir"]).parent / d["dlres_pat"].format(seed=sd)
+                for p in (pl, pp, pd_, pr):
+                    if not p.exists():
+                        raise SystemExit(f"checkpoint ausente: {p}")
+            nat = ROOT / "resultados" / d["lgbm_dir"]
+            nh = len(list(nat.glob("lgbm_h*.txt")))
+            nj = len(list(nat.glob("model_j*.txt")))
+            if not ((nh == H) ^ (nj == H)):
+                raise SystemExit(f"LGBM ausente p/ {var}: {nat} (lgbm_h*={nh} model_j*={nj})")
+            if not (ROOT / "resultados" / d["ens"]).exists():
+                raise SystemExit(f"checkpoint ausente: {ROOT / 'resultados' / d['ens']}")
+            # prophet do 10/11 é opcional (pulado na inferência se ausente)
+    else:
+        for var, d in CKD.items():
+            for k in ("lstnet", "patch", "dlin", "dlres", "ens"):
+                p = ROOT / "resultados" / d[k]
+                if not p.exists():
+                    raise SystemExit(f"checkpoint ausente: {p}")
+            if not ((ROOT / "resultados" / d["lgbm"]).exists()
+                    or (ROOT / "resultados" / d["lgbm_fb"]).exists()):
+                raise SystemExit(f"LGBM ausente p/ {var}")
 
     dest.mkdir(parents=True)
     (dest / "vals").mkdir()
@@ -416,7 +685,7 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
         cobertura[var] = nper
         preench[var] = maxfill
         print(f"[{tag}] {var}: {len(X)} origens {nper} | máx preenchido {maxfill}")
-        preds = roda_variavel(var, s24, s25, X, Y, ends)
+        preds = roda_variavel(var, s24, s25, X, Y, ends, v2=v2)
         per, med = agrega(var, preds, Y, pids)
         per.to_csv(dest / f"metricas_periodos_{var}.csv")
         med.to_csv(dest / f"metricas_media_{var}.csv")
@@ -426,24 +695,36 @@ def cmd_snapshot(tag: str, refazer: bool = False) -> None:
 
     # val 2024 (referência; sem 2025 aqui)
     val: dict[str, dict[str, dict[str, str]]] = {}
-    for var, exps in VAL_EXPS.items():
+    for var, exps in (VAL_EXPS_V2 if v2 else VAL_EXPS).items():
         val[var] = {}
         for exp in exps:
-            p = ROOT / "resultados" / exp / "metricas_val.csv"
-            if not p.exists():
-                raise SystemExit(f"val ausente: {p}")
-            shutil.copy2(p, dest / "vals" / f"{exp}-metricas_val.csv")
-            for modelo, m in read_val_index0(p).items():
+            if v2:
+                fname, d = read_val_v2(exp)
+                shutil.copy2(ROOT / "resultados" / exp / fname, dest / "vals" / f"{exp}-{fname}")
+            else:
+                p = ROOT / "resultados" / exp / "metricas_val.csv"
+                if not p.exists():
+                    raise SystemExit(f"val ausente: {p}")
+                shutil.copy2(p, dest / "vals" / f"{exp}-metricas_val.csv")
+                d = read_val_index0(p)
+            for modelo, m in d.items():
                 val[var][modelo] = m  # última fonte canônica vence
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     sha = git_sha()
+    protocolo = {"L": L, "H": H, "nota": "só inferência em 2025, sem tuning",
+                 "tolerancia_nan_slots": TOL_NAN,
+                 "nota_tolerancia": "origens com furo ≤3h têm o furo interpolado localmente; gap maior descarta a origem"}
+    if v2:
+        protocolo.update({"L_treino": L_TREINO_V2, "modelos_LN": LN, "seeds": SEEDS_V2,
+                          "covariaveis": ["tod_sin", "tod_cos", "solar Elev/90",
+                                          "f1_sinA", "f1_cosA", "f2_sinS", "f2_cosS"],
+                          "lgbm": "288 nativos/horizonte (lgbm_h* ph / model_j* od), 32 feats",
+                          "ensemble": "pesos ensemble.json do 16/17 (sem refit)"})
     (dest / "meta.json").write_text(json.dumps({
         "tag": tag, "timestamp_utc": ts, "git_sha": sha,
         "metodologia": "probe-4-periodos-ancoras-23h55 tolerancia-3h (pipeline própria; 08 não lido)",
-        "protocolo": {"L": L, "H": H, "nota": "só inferência em 2025, sem tuning",
-                      "tolerancia_nan_slots": TOL_NAN,
-                      "nota_tolerancia": "origens com furo ≤3h têm o furo interpolado localmente; gap maior descarta a origem"},
+        "protocolo": protocolo,
         "periodos": {pid: {"inicio": a, "fim": b, "n_ph": cobertura["ph"][pid],
                            "n_od": cobertura["od"][pid],
                            "preenchido_ph": preench["ph"][pid],
