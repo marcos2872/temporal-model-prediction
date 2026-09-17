@@ -30,5 +30,10 @@ univariavel/resultados/*/modelos/*.pt
 univariavel/resultados/*/modelos/prophet_*.json
 univariavel/resultados/*/modelos/arima*.pkl
 univariavel/resultados/*/modelos/lgbm_nativo/
+multivariavel/resultados/*/modelos/*.pkl
+multivariavel/resultados/*/modelos/*.pkl.gz
+multivariavel/resultados/*/modelos/*.pt
+!multivariavel/resultados/*/modelos/normalizacao.json
+!multivariavel/resultados/*/modelos/ensemble.json
 !univariavel/resultados/*/modelos/normalizacao.json
 !univariavel/resultados/*/modelos/ensemble.json
