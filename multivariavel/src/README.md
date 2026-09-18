@@ -39,3 +39,6 @@ curl -X POST "http://127.0.0.1:8000/prever?variavel=ph&horizonte_horas=24" \
 | `app.py` | FastAPI (`/saude`, `/regras`, `/prever`) + carga no startup + `--modelo` |
 | `models.py` | `DLinearMulti` / `PatchTSTCI` / `PatchTST_CD` — cópias fiéis dos notebooks M1/M2/M3 §8 |
 | `features.py` | Parse CETESB 4-canais + grade 5 min + interp limite 24 + winsorize p99 + z-score + 11 séries (verbatim M1/M3; cauda LN p/ M2) |
+| `teste.py` | Pipeline de teste: 9 partes × 3H × ph/od contra `dados.csv` (2026), via subprocesso uvicorn |
+| `dados.csv` | Série 2026 unseen p/ o teste (01/01–17/09, 5 min, 4 canais) |
+| `.logs/` | `M1.log`, `M2.log`, `M3.log` + `geral.log` (MAE/RMSE/MAPE/acertividade; `SEM_COBERTURA` = parte recusada com 422, fora do placar) |
