@@ -7,7 +7,7 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - `uv venv .venv --python 3.12 && uv pip install --python .venv/bin/python -r requirements.txt`
 - Run things with `.venv/bin/python` or `.venv/bin/jupyter` (venv is gitignored; never commit it).
 - Prophet needs CmdStan (~200 MB, auto-downloads on first fit, needs `g++`/`make`). Notebooks treat Prophet as **optional**: if CmdStan is missing they skip it and continue — preserve that behavior.
-- How-to-run lives in `COMO-RODAR.md` (entry point) and `univariavel/notebooks/README.md`; experiment protocol details in each `univariavel/resultados/<exp>/README.md`. Versioned probe in `univariavel/benchmark-2025/` (see its README). Theory and references in `METODOLOGIA.md`.
+- How-to-run lives in `univariavel/COMO-RODAR.md` (uni) and `multivariavel/COMO-RODAR.md` (multi); notebook index in `univariavel/notebooks/README.md`; experiment protocol details in each `univariavel/resultados/<exp>/README.md` (uni) and `multivariavel/PLANO.md` + `multivariavel/resultados/M*/README.md` (multi). Versioned probe in `univariavel/benchmark-2025/` (see its README). Theory and references in `METODOLOGIA.md`.
 
 ## Data (`univariavel/dados/`, see `univariavel/dados/README.md`)
 

@@ -1,9 +1,10 @@
 # Notebooks — índice e cadeia (regime anual: treino 2024, benchmark 2025)
 
 > **Como rodar (ambiente, comandos, troubleshooting): ver
-> [`COMO-RODAR.md`](../../COMO-RODAR.md) (canônico).** Este arquivo é só o índice
-> notebook→experimento e a ordem da cadeia. Trilha multivariável: notebooks
-> `multivariavel/notebooks/M1…M4`, protocolo em `multivariavel/PLANO.md`.
+> [`COMO-RODAR.md`](../COMO-RODAR.md) (canônico).** Este arquivo é só o índice
+> notebook→experimento e a ordem da cadeia. Trilha multivariável: guia em
+> [`../../multivariavel/COMO-RODAR.md`](../../multivariavel/COMO-RODAR.md),
+> protocolo em `multivariavel/PLANO.md`.
 
 | Notebook | Experimento | Resultados |
 |---|---|---|
@@ -34,12 +35,12 @@
 
 ## 1. Ambiente
 
-Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §1 (criar `.venv`, instalar
+Ver [`COMO-RODAR.md`](../COMO-RODAR.md) §1 (criar `.venv`, instalar
 `requirements.txt`, CmdStan para o Prophet). Sempre com o kernel do `.venv`.
 
 ## 2. Rodar
 
-Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §2 (interativo × `nbconvert --inplace`,
+Ver [`COMO-RODAR.md`](../COMO-RODAR.md) §2 (interativo × `nbconvert --inplace`,
 um notebook por vez, `nbconvert` sobrescreve os artefatos — copie
 `../resultados/<exp>/` antes de comparar versões).
 
@@ -60,5 +61,5 @@ para reutilizar sem retreinar, baixe com `bash scripts/baixar_modelos.sh` na rai
 
 ## 4. Problemas comuns
 
-Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §2 (Prophet pulado, ARIMA lento,
+Ver [`COMO-RODAR.md`](../COMO-RODAR.md) §2 (Prophet pulado, ARIMA lento,
 `ModuleNotFoundError`, reexecução que apaga outputs).

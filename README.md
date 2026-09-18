@@ -10,20 +10,20 @@ Trilha univariada concluída (v1 + v2 + API); trilha multivariável concluída
 | Documento | Conteúdo |
 |---|---|
 | `README.md` (este) | Apresentação: dados, estrutura, resultados e status |
-| [`COMO-RODAR.md`](COMO-RODAR.md) | Como rodar: ambiente, notebooks, API, checkpoints, probe |
+| [`univariavel/COMO-RODAR.md`](univariavel/COMO-RODAR.md) | Como rodar a trilha uni: ambiente, notebooks 00–18, API, checkpoints, probe |
+| [`multivariavel/COMO-RODAR.md`](multivariavel/COMO-RODAR.md) | Como rodar a trilha multi: ambiente/GPU, notebooks M1–M4, API, checkpoints |
 | [`METODOLOGIA.md`](METODOLOGIA.md) | Metodologia: taxonomia, matemática das famílias, roteiro, busca bibliográfica |
 
-Detalhes por área: [`univariavel/dados/`](univariavel/dados/README.md) · [`univariavel/notebooks/`](univariavel/notebooks/README.md) · [`univariavel/resultados/`](univariavel/resultados/README.md) · [`univariavel/benchmark-2025/`](univariavel/benchmark-2025/README.md) · [`busca_bibliografica/`](busca_bibliografica/busca-bibliografica-modelos-predicao-temporal.md) · [`CONCLUSAO.md`](CONCLUSAO.md)
+Detalhes por área: [`univariavel/dados/`](univariavel/dados/README.md) · [`univariavel/notebooks/`](univariavel/notebooks/README.md) · [`univariavel/resultados/`](univariavel/resultados/README.md) · [`univariavel/benchmark-2025/`](univariavel/benchmark-2025/README.md) · [`multivariavel/PLANO.md`](multivariavel/PLANO.md) · [`multivariavel/resultados/`](multivariavel/resultados/README.md) · [`multivariavel/src/`](multivariavel/src/README.md) · [`busca_bibliografica/`](busca_bibliografica/busca-bibliografica-modelos-predicao-temporal.md) · [`CONCLUSAO.md`](CONCLUSAO.md)
 
 ## Estrutura
 
 ```
 temporal-model/
 ├── README.md              <- este arquivo (apresentação)
-├── COMO-RODAR.md          <- como rodar o projeto
 ├── METODOLOGIA.md         <- metodologias de predição + bibliografia
-├── univariavel/             <- trilha univariada: dados/ (séries CETESB pH + OD, 5 min), app.py (API FastAPI, Swagger em /docs), notebooks/, resultados/ e benchmark-2025/
-├── multivariavel/           <- experimentos multivariados: PLANO.md, notebooks/, resultados/ (M1–M4, treino 2022–2024 + benchmark 2025) (dados próprios em multivariavel/dados/)
+├── univariavel/             <- trilha univariada: COMO-RODAR.md, dados/ (séries CETESB pH + OD, 5 min), app.py (API FastAPI, Swagger em /docs), notebooks/, resultados/ e benchmark-2025/
+├── multivariavel/           <- trilha multivariada: COMO-RODAR.md, PLANO.md, dados/ próprios, notebooks/, resultados/ (M1–M4, treino 2022–2024 + benchmark 2025), src/ (API FastAPI)
 ├── requirements.txt         <- deps (instalar com `uv pip install -r requirements.txt`)
 └── busca_bibliografica/   <- kit da busca sistemática (relatório + .bib/.ris + evidence_table.csv + passport.json + prisma.md)
 ```
@@ -36,6 +36,13 @@ pH e oxigênio dissolvido a cada 5 min. Regime anual — **treino = 2024**
 avaliação final); validação em 4 fatias de 10 dias dentro de 2024, uma por estação.
 Formato (encoding `windows-1252`, `;`, vírgula decimal) e estatísticas em
 [`univariavel/dados/README.md`](univariavel/dados/README.md).
+
+Séries **multivariáveis** (mesma estação EF01): OD + pH (alvos) + Temperatura +
+Turbidez (covariáveis observadas), a cada 5 min — **treino = 2022–2024**
+(`multivariavel/dados/treino/`), **benchmark = 2025**
+(`multivariavel/dados/benchmark/`, intocado). Precipitação excluída
+(codificação inconsistente entre anos). Detalhes em
+[`multivariavel/PLANO.md`](multivariavel/PLANO.md) §1.
 
 ## Resultados (réguas — MAE)
 
@@ -51,6 +58,23 @@ veredito em [`CONCLUSAO.md`](CONCLUSAO.md).
 Leitura curta: ensembles NNLS vencem na v1; na v2 (L=2304, purge/embargo,
 5 seeds) o PatchTST passa à frente nas duas variáveis. Sazonal-naive,
 lag-365 e Prophet ficam para trás nos dois regimes.
+
+### Multivariável (M1–M4, benchmark 2025 rolante, MAE seed-mean)
+
+Tabelas completas em [`multivariavel/resultados/`](multivariavel/resultados/README.md);
+veredito em [`multivariavel/resultados/M4-benchmark-2025/`](multivariavel/resultados/M4-benchmark-2025/).
+
+| H | pH (melhor solo) | OD (melhor solo) |
+|---|---|---|
+| 12 (1 h) | CI **0,0298** | CI **0,0305** |
+| 72 (6 h) | CI **0,0367** | CI **0,1194** |
+| 288 (24 h) | DLinear **0,0475** | DLinear **0,2305** |
+
+Leitura curta: **CI vence CD nos 6/6** (H,var) e o ranking transfere da val
+para 2025 em 5/6; em H=288 nenhum modelo multi solo bate as réguas uni-v2 do
+mesmo ano (pH 0,0465 · OD 0,2056). A média-simples lidera 5/6 mas é só
+diagnóstico — **sem régua nova declarada**. API multi em
+[`multivariavel/src/`](multivariavel/src/README.md) (`--modelo M1|M2|M3`).
 
 ## Status
 

@@ -1,8 +1,10 @@
-# Como rodar o projeto
+# Como rodar — trilha univariada
 
-Guia de execução: ambiente, notebooks, API e checkpoints. Teoria e
-bibliografia em [`METODOLOGIA.md`](METODOLOGIA.md); apresentação e resultados
-em [`README.md`](README.md).
+Guia de execução: ambiente, notebooks, API e checkpoints **univariados**
+(comandos a partir da raiz do repo). Trilha multivariável em
+[`../multivariavel/COMO-RODAR.md`](../multivariavel/COMO-RODAR.md).
+Teoria e bibliografia em [`METODOLOGIA.md`](../METODOLOGIA.md); apresentação
+e resultados em [`README.md`](../README.md).
 
 ## 1. Ambiente (uma vez)
 
@@ -17,12 +19,12 @@ Use sempre `.venv/bin/python` ou `.venv/bin/jupyter` (o `.venv/` é gitignored).
 
 Dados: séries CETESB EF01 Mogi das Cruzes (pH + OD, passo 5 min) em `univariavel/dados/`
 — treino = 2024, benchmark = 2025 (intocado até a avaliação final). Formato e
-como ler em [`univariavel/dados/README.md`](univariavel/dados/README.md).
+como ler em [`dados/README.md`](dados/README.md).
 
 ## 2. Notebooks (trilha univariada)
 
-Detalhes por notebook em [`univariavel/notebooks/README.md`](univariavel/notebooks/README.md);
-métricas e artefatos em [`univariavel/resultados/`](univariavel/resultados/README.md).
+Detalhes por notebook em [`notebooks/README.md`](notebooks/README.md);
+métricas e artefatos em [`resultados/`](resultados/README.md).
 
 **Interativo (recomendado para explorar):**
 
@@ -43,7 +45,7 @@ Abra o `.ipynb` em `univariavel/notebooks/` e selecione o kernel do `.venv`
 ```
 
 Troque o nome do arquivo (cada experimento tem o comando exato no seu
-`univariavel/resultados/<exp>/README.md`). Tempos típicos em 12c livres:
+`resultados/<exp>/README.md`). Tempos típicos em 12c livres:
 baselines (ARIMA + Prophet) 15–30 min; LSTNet/PatchTST ~10 min;
 ensembles ~5 min; 08-benchmark ~10 min.
 
@@ -57,10 +59,9 @@ Regras:
   checkpoints de 00–07 (assert com mensagem clara se ausente).
 - Cada execução escreve em `univariavel/resultados/<experimento>/`:
   `metricas_*.csv`, `modelos/` (checkpoints), `figs/`.
-- **Trilha multivariável fora desta cadeia:** notebooks
-  `multivariavel/notebooks/M1…M4`, protocolo e ordem em
-  [`multivariavel/PLANO.md`](multivariavel/PLANO.md) (treino 2022–2024,
-  `L=2304 → H∈{12,72,288}`, índice em `multivariavel/resultados/README.md`).
+- **Trilha multivariável:** guia próprio em
+  [`../multivariavel/COMO-RODAR.md`](../multivariavel/COMO-RODAR.md)
+  (notebooks M1…M4, protocolo em `../multivariavel/PLANO.md`).
 - **Reexecutar apaga outputs antigos:** o `nbconvert --inplace` sobrescreve
   métricas, modelos e figuras. Para comparar versões, copie
   `univariavel/resultados/<exp>/` antes.
@@ -107,18 +108,13 @@ Paridade notebook↔API (exit 0 = tudo passa): `.venv/bin/python scripts/test_pa
 (carrega os dois ensembles, paridade numérica contra recomputação independente,
 pesos × `ensemble.json`, smoke do `POST /prever`, edge cases de CSV).
 
-**API multivariável** (M1/M2/M3, treino 2022–2024): checkpoints no Release
-`modelo-multivariavel-v1` (`bash scripts/baixar_modelos.sh --tag modelo-multivariavel-v1 --dir /tmp/multimodelos`);
-detalhes e contrato em [`multivariavel/src/README.md`](multivariavel/src/README.md):
-
-```bash
-.venv/bin/python -m multivariavel.src.app --modelo M2   # M1 | M2 | M3 (default M2)
-```
+**API multivariável** (M1/M2/M3): ver
+[`../multivariavel/COMO-RODAR.md`](../multivariavel/COMO-RODAR.md) §4.
 
 ## 5. Probe versionado (benchmark próprio, só inferência)
 
 Compara versões de modelos nos mesmos 4 períodos de 10 dias em 2025.
-Detalhes em [`univariavel/benchmark-2025/README.md`](univariavel/benchmark-2025/README.md).
+Detalhes em [`benchmark-2025/README.md`](benchmark-2025/README.md).
 
 ```bash
 .venv/bin/python univariavel/benchmark-2025/benchmark_versoes.py --tag v1   # congela versão (~2 min CPU)
