@@ -4,9 +4,10 @@ Séries temporais **univariadas** de qualidade da água usadas para treinar o mo
 
 Regime anual: **treino = 2024** (`univariavel/dados/treino/`, ano bissexto completo), **benchmark = 2025**
 (`univariavel/dados/benchmark/`, ano completo, intocado até a avaliação final). Validação dentro de 2024:
-4 fatias de 10 dias, uma por estação (15–24 jan / 15–24 abr / 15–24 jul / 15–24 out,
-deslocáveis se caírem em outage — ver cada experimento); janelas cujo alvo termina numa
-fatia → val, o resto → treino.
+fatias de 10 dias, uma por estação — **v1** (exps 00–08): 19–28/abr, 20–29/jul, 15–24/set,
+20–24/nov · **v2** (exps 10–18): as mesmas + 13–22/dez, com purge/embargo; janelas cujo
+alvo termina numa fatia → val, o resto → treino. Tabela por experimento em
+[`../resultados/README.md`](../resultados/README.md).
 
 ## Origem
 

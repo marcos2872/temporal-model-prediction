@@ -57,6 +57,10 @@ Regras:
   checkpoints de 00–07 (assert com mensagem clara se ausente).
 - Cada execução escreve em `univariavel/resultados/<experimento>/`:
   `metricas_*.csv`, `modelos/` (checkpoints), `figs/`.
+- **Trilha multivariável fora desta cadeia:** notebooks
+  `multivariavel/notebooks/M1…M4`, protocolo e ordem em
+  [`multivariavel/PLANO.md`](multivariavel/PLANO.md) (treino 2022–2024,
+  `L=2304 → H∈{12,72,288}`, índice em `multivariavel/resultados/README.md`).
 - **Reexecutar apaga outputs antigos:** o `nbconvert --inplace` sobrescreve
   métricas, modelos e figuras. Para comparar versões, copie
   `univariavel/resultados/<exp>/` antes.
@@ -98,6 +102,18 @@ Envie um CSV CETESB (pH ou OD, ≥ ~8 dias a cada 5 min) e receba 12–288 valor
 período seguinte com timestamps. O pipeline validado roda sempre 24 h e devolve o
 prefixo pedido; gaps > 2 h no fim da série retornam `422` em vez de prever no escuro.
 Serve os ensembles campeões 06/07 (treino 2024, benchmark 2025).
+
+Paridade notebook↔API (exit 0 = tudo passa): `.venv/bin/python scripts/test_paridade.py`
+(carrega os dois ensembles, paridade numérica contra recomputação independente,
+pesos × `ensemble.json`, smoke do `POST /prever`, edge cases de CSV).
+
+**API multivariável** (M1/M2/M3, treino 2022–2024): checkpoints no Release
+`modelo-multivariavel-v1` (`bash scripts/baixar_modelos.sh --tag modelo-multivariavel-v1 --dir /tmp/multimodelos`);
+detalhes e contrato em [`multivariavel/src/README.md`](multivariavel/src/README.md):
+
+```bash
+.venv/bin/python -m multivariavel.src.app --modelo M2   # M1 | M2 | M3 (default M2)
+```
 
 ## 5. Probe versionado (benchmark próprio, só inferência)
 

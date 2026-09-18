@@ -1,4 +1,9 @@
-# Notebooks — como rodar (regime anual: treino 2024, benchmark 2025)
+# Notebooks — índice e cadeia (regime anual: treino 2024, benchmark 2025)
+
+> **Como rodar (ambiente, comandos, troubleshooting): ver
+> [`COMO-RODAR.md`](../../COMO-RODAR.md) (canônico).** Este arquivo é só o índice
+> notebook→experimento e a ordem da cadeia. Trilha multivariável: notebooks
+> `multivariavel/notebooks/M1…M4`, protocolo em `multivariavel/PLANO.md`.
 
 | Notebook | Experimento | Resultados |
 |---|---|---|
@@ -23,39 +28,26 @@
 | [`18-v2-benchmark-2025.ipynb`](18-v2-benchmark-2025.ipynb) | Campeões v2 × 2025 intocado + lag-365 em protocolo v2 (só inferência) | [`../resultados/18-v2-benchmark-2025/`](../resultados/18-v2-benchmark-2025/) |
 
 > Exceção de nome: o `09-analises-pos-benchmark.ipynb` está fora do padrão
-> `NN-<modelo>-<variavel>` porque não é um experimento com treino — é a
+> `NN-<modelo>-<variavel>` (ex.: `00-baseline-ph`, `10-v2-baseline-ph`) porque
+> não é um experimento com treino — é a
 > consolidação versionada das três análises pós-benchmark (Fase 1).
 
-## 1. Ambiente (uma vez)
+## 1. Ambiente
 
-```bash
-uv venv .venv --python 3.12
-uv pip install --python .venv/bin/python -r requirements.txt
-```
-
-O `requirements.txt` (na raiz) já deixa o Prophet funcionando — o CmdStan compila
-na primeira execução (~5 min, só na primeira vez).
+Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §1 (criar `.venv`, instalar
+`requirements.txt`, CmdStan para o Prophet). Sempre com o kernel do `.venv`.
 
 ## 2. Rodar
 
-**Interativo (recomendado para explorar):**
-```bash
-source .venv/bin/activate
-jupyter lab   # ou: jupyter notebook
-```
-Abra o `.ipynb` e selecione o kernel do `.venv` (`Python 3 (.venv)`).
-Se o kernel não aparecer: com o `.venv` ativo, rode
-`.venv/bin/python -m ipykernel install --user --name temporal-model` uma vez.
+Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §2 (interativo × `nbconvert --inplace`,
+um notebook por vez, `nbconvert` sobrescreve os artefatos — copie
+`../resultados/<exp>/` antes de comparar versões).
 
-**Via terminal (reproduzível, regenera tudo):**
-```bash
-.venv/bin/jupyter nbconvert --to notebook --execute --inplace \
-  --ExecutePreprocessor.timeout=2400 univariavel/notebooks/00-baseline-ph.ipynb
-```
-Troque o nome do arquivo. Tempos típicos em 12c livres: baselines (ARIMA + Prophet)
-15–30 min; LSTNet/PatchTST ~10 min; ensembles ~5 min; 08-benchmark ~10 min.
-Rode **um notebook por vez** (12c/23 GB estouram com jobs concorrentes);
-para runs compartilhando a máquina, limite threads (`OMP_NUM_THREADS=4`).
+**Ordem e dependências:** 00/01 → 02/03 → 04/05 → 06/07 → 08 (cadeia v1), depois
+10/11 → 12/13 → 14/15 → 16/17 → 18 (cadeia v2). Dependências v1: 04/05 recarregam
+o LSTNet do 02/03, 06/07 recarregam o 02/03 (assert com mensagem clara se ausente);
+o 08 exige os 14 checkpoints de 00–07 — e o 18, os de 10–17. Na v2 vale o
+encadeamento análogo (ver o README de cada experimento 10–18).
 
 ## 3. O que cada execução gera
 
@@ -68,9 +60,5 @@ para reutilizar sem retreinar, baixe com `bash scripts/baixar_modelos.sh` na rai
 
 ## 4. Problemas comuns
 
-- **Prophet pulado:** CmdStan ausente — rode
-  `.venv/bin/python -c "from cmdstanpy import install_cmdstan; install_cmdstan()"` (precisa de `g++`/`make`) e reexecute.
-- **ARIMA lento:** é esperado (reestimação por origem); ajuste `ARIMA_STRIDE` na célula de setup.
-- **`ModuleNotFoundError`:** kernel errado — confira no canto superior direito do Jupyter se é o do `.venv`.
-- **Reexecutar apaga outputs antigos:** o `nbconvert --inplace` sobrescreve métricas, modelos e figuras. Para comparar versões, copie `../resultados/<exp>/` antes.
-- **Dependências entre notebooks:** 04/05 recarregam o LSTNet do 02/03, 06/07 recarregam o 02/03 (assert com mensagem clara se ausente); o 08 exige os 14 checkpoints de 00–07 — rode na ordem numérica (00/01 → 02/03 → 04/05 → 06/07) antes dele.
+Ver [`COMO-RODAR.md`](../../COMO-RODAR.md) §2 (Prophet pulado, ARIMA lento,
+`ModuleNotFoundError`, reexecução que apaga outputs).

@@ -14,18 +14,18 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - Regime anual: treino = 2024 (`univariavel/dados/treino/`), benchmark = 2025 (`univariavel/dados/benchmark/`, intocado até a avaliação final). Ambos 100% validados, sem trecho provisório.
 - CETESB CSVs are **not** plain CSVs: encoding `windows-1252`, separator `;`, decimal comma, row 1 is a CETESB header (skip it), dates are `dd/mm/aaaa hh:mm`, empty cell = missing. Copy the pandas snippet from `univariavel/dados/README.md` — do not guess parsing.
 - Known landmines (2024): pH outages 16–18/jan (2,3 d), 29/abr–02/mai (2,7 d), **27/mai–13/jun (~17 d)** + micro-tails; any pH window overlapping NaN is dropped — report coverage per val slice. OD 2024 has only micro-outages.
-- Val = 4 slices of 10 days, one per season (19–28/abr, 20–29/jul, 15–24/set, 20–24/nov); windows assigned by end date. 2025 is NEVER touched by train/val/early-stopping/tuning.
+- Val = v1: 4 slices of 10 days, one per season (19–28/abr, 20–29/jul, 15–24/set, 20–24/nov); v2: 5 slices (adds 13–22/dez) with purge/embargo. Windows assigned by end date. 2025 is NEVER touched by train/val/early-stopping/tuning.
 
 ## Experiment protocol (locked — keep comparable)
 
-- Univariate only (one variable per experiment). `L=8640` (30 d), `H=288` (1 d), 5-min step, interpolation max 24 steps (2 h). Daily anchors at 23:55.
+- Univariate only (one variable per experiment). v1: `L=8640` (30 d), `H=288` (1 d), 5-min step, interpolation max 24 steps (2 h). v2 (exps 10–18): `L=2304` (8 d) + purge/embargo, same `H`. Daily anchors at 23:55.
 - ARIMA(2,1,2) runs on an **hourly grid** (`L=720h`/`H=24h`, repeat ×12) for cost — do not run it at 5-min resolution.
-- Rulers (benchmark 2025, primário): pH ensemble MAE 0.0509 · OD ensemble MAE 0.2107. Treino-2024 val rulers: pH ens 0.0357 · OD ens 0.1325.
+- Rulers (benchmark 2025 rolante, primário): v1 pH ens 0.0509 · OD ens 0.2107 (served by the API pending user decision) · v2 PatchTST pH 0.0465 · OD 0.2056 (crowned in exp 18). Treino-2024 val rulers: pH ens 0.0357 · OD ens 0.1325.
 - Run ONE remote job at a time (12c/23GB OOMs fast); cap threads (`OMP/MKL/OpenBLAS_NUM_THREADS=4`) when sharing the box, uncapped when solo. Never `sleep` inside remote commands (MCP channel times out); poll with short `cat`/`ls` calls. `pkill -f` patterns must not match your own command line — use the `[.]` bracket trick.
 
 ## Naming and layout
 
-- Layout: univariate track lives in `univariavel/`: data `univariavel/dados/` (treino 2024 + benchmark 2025, univariada), API `univariavel/app.py`, notebooks `univariavel/notebooks/NN-<modelo>-<variavel>.ipynb`, results `univariavel/resultados/NN-<modelo>-<variavel>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`, plus the versioned probe `univariavel/benchmark-2025/`. Index in `univariavel/resultados/README.md`. Binaries under `modelos/` are NOT committed — see "Model checkpoints" below.
+- Layout: univariate track lives in `univariavel/`: data `univariavel/dados/` (treino 2024 + benchmark 2025, univariada), API `univariavel/app.py`, notebooks `univariavel/notebooks/00-baseline-ph.ipynb … 08-benchmark-2025.ipynb` (v1) + `10-v2-…18-v2-benchmark-2025.ipynb` (v2; `09-analises-pos-benchmark` = pós-benchmark sem treino), results `univariavel/resultados/<exp>/` with `README.md` (metrics table + embedded figs + reading), `metricas_*.csv`, `modelos/`, `figs/`, plus the versioned probe `univariavel/benchmark-2025/`. Index in `univariavel/resultados/README.md`. Binaries under `modelos/` are NOT committed — see "Model checkpoints" below.
 - New experiments reuse the same split/protocol; add their row to `univariavel/resultados/README.md` and update the status/rulers table in the main README.
 - Rename notebooks only with `git mv`; update the tree + status in main README, the experiment README reproduce command, and the `univariavel/resultados/README.md` row.
 - Re-running a notebook with `nbconvert --inplace` **overwrites** its `univariavel/resultados/<exp>/` artifacts — back the folder up first if the old run matters. Typical runtime 5–10 min.
@@ -47,7 +47,7 @@ Time-series forecasting repo: CETESB water-quality data → baseline notebooks �
 - Detect: `sshmcp_list_servers` shows a configured server (e.g. `temporal-remote`).
   If no server / MCP unavailable → ignore this section, run locally with `.venv`.
 - Flow when active (code local, compute remote, transfer via MCP — no git on remote):
-  1. Local: create/edit `univariavel/notebooks/NN-*.ipynb`; checkpoints never go to git (see "Model checkpoints") — no `.gitignore` change needed for new exps unless new binary extensions appear.
+  1. Local: create/edit `univariavel/notebooks/<exp>.ipynb` (e.g. `00-baseline-ph`, `10-v2-baseline-ph`); checkpoints never go to git (see "Model checkpoints") — no `.gitignore` change needed for new exps unless new binary extensions appear.
   2. Remote prep via sshmcp (no git commands on remote): check work dir, venv
      (`uv venv` / `pip install -r requirements.txt` if needed) and deps (`univariavel/dados/`,
      checkpoints). Missing files → `sshmcp_upload_file` / `sshmcp_upload_directory`.
