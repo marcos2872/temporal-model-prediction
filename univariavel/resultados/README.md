@@ -7,9 +7,13 @@ Os checkpoints de `modelos/` (`.pt`, `.pkl`, `.pkl.gz`, Prophet `.json`) **não 
 vivem no GitHub Release [`modelos-v1`](https://github.com/marcos2872/temporal-model-prediction/releases/tag/modelos-v1)
 (baixe com `bash scripts/baixar_modelos.sh`); só `normalizacao.json`/`ensemble.json` ficam versionados.
 
-Protocolo: janelas `L=8640 → H=288` · treino = 2024 menos 4 fatias de val (19–28/abr,
-20–29/jul, 15–24/set, 20–24/nov, uma por estação) · benchmark = 2025 inteiro (08).
-Números abaixo = MAE na val, salvo indicação.
+Protocolo: janelas `L=8640 → H=288` (v1, exps 00–08) · `L=2304 → H=288` com
+purge/embargo (v2, exps 10–18) · treino = 2024 menos fatias de val (v1: 4 fatias —
+19–28/abr, 20–29/jul, 15–24/set, 20–24/nov, uma por estação; v2: 5 fatias, inclui
+13–22/dez) · benchmark = 2025 inteiro (08 = v1, 18 = v2, só inferência).
+Números abaixo = MAE na val, salvo indicação. O probe barato em 4 períodos de
+2025 vive em [`../benchmark-2025/`](../benchmark-2025/) (hierarquia igual à do
+rolante; o rolante 08/18 decide).
 
 | Pasta | Experimento | Métricas (val) |
 |---|---|---|
@@ -32,4 +36,7 @@ Números abaixo = MAE na val, salvo indicação.
 | [`17-v2-ensemble-od/`](17-v2-ensemble-od/) | Ensemble v2 no OD 2024 (sazonal + LSTNet-13 + LGBM-nativo + DLinear-res + NNLS fit/report, protocolo v2) | **honesto (dez): ens 0,1733, dlres 0,1842 ≈ lstnet 0,1848** · in-sample (fit 1–4): ens 0,1234; NNLS sazonal 0,0038 · lstnet 0,6771 · lgbm 0,0 · dlres 0,3216 (= v1-07) |
 | [`18-v2-benchmark-2025/`](18-v2-benchmark-2025/) | Campeões v2 × 2025 intocado (+ lag-365, protocolo v2) — **veredito v1×v2** | pH: patchtst 0,0465, ens 0,0470, saz 0,0565, lag365 0,369, prophet 1,17 · OD: patchtst 0,2056, ens 0,2133, saz 0,2519, lag365 1,14, prophet 5,34 |
 
-Quadro das réguas (benchmark 2025, critério principal): **pH → ensemble 0,0509** · **OD → ensemble 0,2107**.
+Quadro das réguas (benchmark 2025 rolante, critério principal): **v1 → ensemble
+pH 0,0509 · ensemble OD 0,2107** (servidos na API até decisão do usuário) ·
+**v2 → PatchTST pH 0,0465 · PatchTST OD 0,2056** (coroados no 18, troca pendente —
+ver `18-v2-benchmark-2025/README.md` § Veredito, item 5).

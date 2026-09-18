@@ -3,6 +3,10 @@
 Veredito final do projeto em 13/09/2026: treino em 2024, val em 4 fatias sazonais,
 benchmark no ano intocado de 2025 + auditoria de campo em set/2026.
 
+> **Adendo 17–18/09/2026:** cadeia v2 (L=2304, purge/embargo, 5 fatias, 5 seeds) e
+> trilha multivariável M1–M4 concluídas — ver §§ Adendo v2 e Adendo multivariável
+> ao final. O veredito v1 abaixo segue intacto como registro.
+
 ## Réguas finais (benchmark 2025, MAE H=1 dia)
 
 | Variável | Campeão | MAE | vs sazonal-naive |
@@ -44,7 +48,11 @@ univariado. Nas horas estáveis antes da queda, ambas as variáveis pagaram o pr
 sobre regimes mistos — **dia de evento custa ~3×, dia estável paga o prometido** (ou melhor).
 Ver `univariavel/app.py` (resposta inclui `mae_referencia_24h` exatamente para calibrar a leitura).
 
-## Próximo passo natural: multivariados — BLOQUEADO por falta de covariáveis
+## Próximo passo natural: multivariados — BLOQUEADO por falta de covariáveis (v1, superado — ver Adendo multivariável)
+
+> **Superado em 17–18/09/2026** pela trilha M1–M4 (`multivariavel/PLANO.md`,
+> `multivariavel/resultados/`): com Temp+Turbidez como covariáveis observadas, o
+> multivariado saiu do lugar. Texto original abaixo preservado como registro.
 
 O erro de campo tem cara de causa externa (chuva, vazão, temperatura) — e o LSTNet
 já nasceu multivariado, então a extensão seria natural (Fase 1 óbvia; TFT/
@@ -59,3 +67,40 @@ O dia 13/09 seria o teste crítico perfeito, se um dia houver chuva para condici
 - Acumular pontos de auditoria de campo (3 pontos em 13/09/2026; meta: ~30 dias → MAE real vs referência, por regime);
 - Alerta de deriva na API (avisar quando a entrada sai da distribuição de treino);
 - Saída probabilística (quantis) — agora com motivação concreta de campo.
+
+## Adendo v2 (17/09/2026 — protocolo L=2304, purge/embargo, 5 fatias, 5 seeds)
+
+Cadeia 10–18 em `univariavel/resultados/` (`10-v2-baseline-*` → `12/13-v2-lstnet-*` →
+`14/15-v2-patchtst-*` → `16/17-v2-ensemble-*` → `18-v2-benchmark-2025`, só inferência
+em 2025). Detalhes e tabelas completas em
+[`univariavel/resultados/`](univariavel/resultados/README.md) e
+[`univariavel/resultados/18-v2-benchmark-2025/`](univariavel/resultados/18-v2-benchmark-2025/).
+
+Benchmark 2025 rolante v2 (MAE H=1 dia): **pH → PatchTST 0,0465** (ens 0,0470,
+sazonal 0,0565) · **OD → PatchTST 0,2056** (ens 0,2133, sazonal 0,2519).
+O protocolo v2 curou o overfit do PatchTST no pH (v1: 0,0688, perdia do sazonal);
+no OD manteve a ordem do v1. Exceções honestas: LSTNet piora no OD
+(0,2127 → 0,2330) e o ensemble NNLS **não** vence em 2025 — os pesos ajustados
+na val 2024 (lstnet-dominantes) não transferiram o ranking para o ano intocado.
+lag-365 e Prophet seguem fora do jogo nos dois regimes.
+
+> **Réguas servidas:** a API (`univariavel/app.py`, `/regras`) segue servindo os
+> ensembles v1 (pH 0,0509 · OD 0,2107) até decisão do usuário — o benchmark v2
+> coroa o PatchTST, mas a troca não foi ativada (ver
+> `univariavel/resultados/18-v2-benchmark-2025/README.md` § Veredito, item 5).
+
+## Adendo multivariável (18/09/2026 — M1–M4, treino 2022–2024 + benchmark 2025)
+
+Trilha em `multivariavel/` (plano em `multivariavel/PLANO.md`, notebooks M1–M4,
+índice em `multivariavel/resultados/README.md`): alvo pH+OD (2 heads),
+Temp/Turbidez só como covariáveis observadas, `L=2304 → H∈{12,72,288}`, 3 seeds
+por (config, H). Benchmark M4 = 27 checkpoints × 2025 intocado, só inferência.
+
+Veredito M4 (rolante 2025, seed-mean): **CI vence CD nos 6/6 (H,var)** e o ranking
+CI×CD×DLinear transfere da val para 2025 em 5/6 (exceção honesta: H288-pH troca
+CI×DL dentro do dp — empate técnico). Em H=288, nenhum modelo multi solo bate as
+réguas uni-v2 do mesmo ano (pH DL 0,0475 / CI 0,0491 / CD 0,0493 × régua 0,0465 ·
+OD DL 0,2305 / CI 0,2410 / CD 0,2498 × régua 0,2056). A média-simples-diagnóstico
+lidera 5/6 mas é só diagnóstico (PLANO §2): **sem régua nova declarada**.
+Leitura: canal cruzado ajuda no curto (H=12/72, folga do CI sobre o DLinear no OD),
+mas em 24 h o teto univariado segue intacto.
